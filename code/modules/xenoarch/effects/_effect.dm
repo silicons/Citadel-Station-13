@@ -1,0 +1,4 @@
+/**
+ *
+ */
+/datum/artifact_effect
