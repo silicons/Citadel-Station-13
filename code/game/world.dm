@@ -134,6 +134,7 @@ GLOBAL_LIST(topic_status_cache)
 	GLOB.world_crafting_log = "[GLOB.log_directory]/crafting.log"
 	GLOB.click_log = "[GLOB.log_directory]/click.log"
 	GLOB.world_asset_log = "[GLOB.log_directory]/asset.log"
+	GLOB.overmap_log = "[GLOB.log_directory]/overmaps.log"
 
 
 #ifdef UNIT_TESTS
@@ -154,6 +155,7 @@ GLOBAL_LIST(topic_status_cache)
 	start_log(GLOB.reagent_log)
 	start_log(GLOB.world_crafting_log)
 	start_log(GLOB.click_log)
+	start_log(GLOB.overmap_log)
 
 	GLOB.changelog_hash = md5('html/changelog.html') //for telling if the changelog has changed recently
 	if(fexists(GLOB.config_error_log))
