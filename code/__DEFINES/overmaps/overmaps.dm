@@ -39,3 +39,35 @@
 #define OVERMAP_DOCK_SHUTTLE_NORMAL					2
 /// shuttle interdictions
 #define OVERMAP_DOCK_SHUTTLE_INTERDICTION			3
+
+// OVERMAP PLANES - commented out by default, example implementation
+
+/*
+/// turfs
+#define OVERMAP_BASE_PLANE					85
+/// objects
+#define OVERMAP_OBJECT_PLANE				86
+/// effect renders
+#define OVERMAP_EFFECT_PLANE				87
+/// sensors
+#define OVERMAP_SENSOR_PLANE				88
+/// master
+#define OVERMAP_RENDER_PLANE				89
+*/
+
+// OVERMAP LAYERS - commented out by default, example implementation
+
+/*
+/// planets
+#define OVERMAP_LAYER_DESTINATION				1
+/// hazard
+#define OVERMAP_LAYER_HAZARD					1.5
+/// ships
+#define OVERMAP_LAYER_SHIP						2
+/// shuttles
+#define OVERMAP_LAYER_SHUTTLE					3
+/// combat
+#define OVERMAP_LAYER_WEAPONS					3.5
+/// effects
+#define OVERMAP_LAYER_EFFECTS					4
+*/

@@ -181,6 +181,35 @@
 #define ABOVE_HUD_LAYER 30
 #define ABOVE_HUD_RENDER_TARGET "ABOVE_HUD_PLANE"
 
+// OVERMAPS
+
+/// turfs
+#define OVERMAP_BASE_PLANE					85
+/// objects
+#define OVERMAP_OBJECT_PLANE				86
+/// effect renders
+#define OVERMAP_EFFECT_PLANE				87
+/// sensors
+#define OVERMAP_SENSOR_PLANE				88
+/// master
+#define OVERMAP_RENDER_PLANE				89
+
+
+/// planets
+#define OVERMAP_LAYER_DESTINATION				1
+/// hazard
+#define OVERMAP_LAYER_HAZARD					1.5
+/// ships
+#define OVERMAP_LAYER_SHIP						2
+/// shuttles
+#define OVERMAP_LAYER_SHUTTLE					3
+/// combat
+#define OVERMAP_LAYER_WEAPONS					3.5
+/// effects
+#define OVERMAP_LAYER_EFFECTS					4
+
+
 #define SPLASHSCREEN_LAYER 90
 #define SPLASHSCREEN_PLANE 90
 #define SPLASHSCREEN_RENDER_TARGET "SPLASHSCREEN_PLANE"
+
