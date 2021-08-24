@@ -184,11 +184,13 @@
 // OVERMAPS
 
 /// turfs
-#define OVERMAP_BASE_PLANE					85
+#define OVERMAP_BASE_PLANE					84
 /// objects
-#define OVERMAP_OBJECT_PLANE				86
+#define OVERMAP_OBJECT_PLANE				85
 /// effect renders
-#define OVERMAP_EFFECT_PLANE				87
+#define OVERMAP_EFFECT_PLANE				86
+/// Lighting
+#define OVERMAP_LIGHTING_PLANE				87
 /// sensors
 #define OVERMAP_SENSOR_PLANE				88
 /// master

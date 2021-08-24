@@ -20,6 +20,24 @@
 	var/static/id_next = 0
 	/// associated ship datum, if any. if set to path, will be made on init.
 	var/datum/ship/ship
+	/// reference to master overmap
+	var/datum/overmap/overmap
+
+	// physics
+	/// angle
+	var/angle = 0
+	/// current transform angle
+	var/transform_angle = 0
+	/// x
+	var/x
+	/// y
+	var/y
+	/// velocity x in overmap units/second
+	var/velocity_x = 0
+	/// velocity y in overmap units/second
+	var/velocity_y = 0
+	/// angular velocity in degrees/second clockwise
+	var/velocity_angle = 0
 
 /atom/movable/overmap_object/Initialize(mapload)
 	. = ..()
@@ -34,3 +52,11 @@
 			message_admins("Overmaps: [id] location instantiation skipped due to being admin-spawned (safety). If you mean to instantiate it, call the proc manually.")
 	if(ispath(ship))
 		ship = new ship(src)
+
+/**
+ * **bind** to where it is - generating a location as necessary
+ * used for including these with maps
+ *
+ * will move onto the global overmap afterwards
+ */
+/atom/movable/overmap_object/proc/BindToLoc()
