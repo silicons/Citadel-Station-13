@@ -172,6 +172,9 @@
 /proc/log_click(atom/object, atom/location, control, params, client/C, event = "clicked", unexpected)
 	WRITE_LOG(GLOB.click_log, "[unexpected? "ERROR" :"CLICK"]: [C.ckey] - [event] : [istype(object)? "[object] ([COORD(object)])" : object] | [istype(location)? "[location] ([COORD(location)])" : location] | [control] | [params]")
 
+/proc/log_overmap(text)
+	WRITE_LOG(GLOB.overmap_log, "OVERMAP: [text]")
+
 /* Log to both DD and the logfile. */
 /proc/log_world(text)
 #ifdef USE_CUSTOM_ERROR_HANDLER

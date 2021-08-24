@@ -2995,6 +2995,7 @@
 #include "code\modules\overmaps\physics.dm"
 #include "code\modules\overmaps\view.dm"
 #include "code\modules\overmaps\vision.dm"
+#include "code\modules\overmaps\generation\location_data.dm"
 #include "code\modules\overmaps\space_exploration\interface.dm"
 #include "code\modules\overmaps\space_exploration\ship.dm"
 #include "code\modules\overmaps\space_exploration\ship_system.dm"
