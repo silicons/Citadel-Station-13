@@ -18,6 +18,8 @@
 	var/id
 	/// next id
 	var/static/id_next = 0
+	/// associated ship datum, if any. if set to path, will be made on init.
+	var/datum/ship/ship
 
 /atom/movable/overmap_object/Initialize(mapload)
 	. = ..()
@@ -25,8 +27,10 @@
 	view = new(src)
 	if(ispath(location_data, /datum/overmap_location_data))
 		location_data = new location_data
-		if(!(flags & ADMIN_SPAWNED_1) && !IsAdminAdvancedProcCall)
+		if(!(flags_1 & ADMIN_SPAWNED_1) && !IsAdminAdvancedProcCall())
 			location_data.generate(src)
 		else
 			log_overmap("Skipping location instantiation of [id] [location_data.type]")
 			message_admins("Overmaps: [id] location instantiation skipped due to being admin-spawned (safety). If you mean to instantiate it, call the proc manually.")
+	if(ispath(ship))
+		ship = new ship(src)
