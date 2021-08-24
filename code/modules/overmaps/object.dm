@@ -38,6 +38,8 @@
 	var/velocity_y = 0
 	/// angular velocity in degrees/second clockwise
 	var/velocity_angle = 0
+	/// we're moving
+	var/moving = FALSE
 
 /atom/movable/overmap_object/Initialize(mapload)
 	. = ..()

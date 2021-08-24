@@ -72,5 +72,7 @@
 #define OVERMAP_LAYER_EFFECTS					4
 */
 
-// overmap unit ratio to pixel ratio - don't change this
+/// overmap unit ratio to pixel ratio - don't change this
 #define OVERMAP_UNIT_PIXELS			1
+/// overmap view range
+#define OVERMAP_VIEW_RANGE			7

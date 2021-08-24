@@ -184,7 +184,9 @@
 // OVERMAPS
 
 /// turfs
-#define OVERMAP_BASE_PLANE					84
+#define OVERMAP_BASE_PLANE					83
+/// parallax
+#define OVERMAP_PARALLAX_PLANE				84
 /// objects
 #define OVERMAP_OBJECT_PLANE				85
 /// effect renders
