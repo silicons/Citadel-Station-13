@@ -2996,6 +2996,7 @@
 #include "code\modules\overmaps\overmap.dm"
 #include "code\modules\overmaps\physics.dm"
 #include "code\modules\overmaps\turf.dm"
+#include "code\modules\overmaps\ui.dm"
 #include "code\modules\overmaps\view.dm"
 #include "code\modules\overmaps\vision.dm"
 #include "code\modules\overmaps\generation\location_data.dm"

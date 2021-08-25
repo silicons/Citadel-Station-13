@@ -5,3 +5,4 @@
 #define OVERMAP_UI_UtILITY		"utility"
 #define OVERMAP_UI_WEAPONS		"weapons"
 #define OVERMAP_UI_SENSORS		"sensors"
+#define OVERMAP_UI_VIEW			"view"

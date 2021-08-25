@@ -11,7 +11,7 @@
 	/// the location we corrospond to. if null, we are completely virtual.
 	var/datum/overmap_location/location
 	/// view datum, used for rendering.
-	var/datum/overmap_view/view
+	var/datum/overmap_view/view_holder
 	/// location data - if a path, will be created and used to generate ourselves on init
 	var/datum/overmap_location_data/location_data
 	/// unique id
@@ -44,7 +44,7 @@
 /atom/movable/overmap_object/Initialize(mapload)
 	. = ..()
 	id = ++id_next
-	view = new(src)
+	view_holder = new(src)
 	if(ispath(location_data, /datum/overmap_location_data))
 		location_data = new location_data
 		if(!(flags_1 & ADMIN_SPAWNED_1) && !IsAdminAdvancedProcCall())

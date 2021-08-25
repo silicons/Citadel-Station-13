@@ -82,23 +82,28 @@
 	. = ..()
 	.["map"] = screen
 
-/datum/overmap_view/proc/Show(client/user)
+/datum/overmap_view/proc/Show(client/user, datum/source)
 	if(ismob(user))
 		user = user.client
 	if(!user)
 		return
 	user.screen |= GetScreen()
 	user.images |= images
-	showing |= user
+	LAZYINITLIST(showing[user])
+	showing[user] |= source
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, .proc/RemoveClient)
 
 /datum/overmap_view/proc/RemoveClient(client/C)
-	Hide(C)
+	showing -= C
+	// we don't care about cleanup they're disconnecting
 
-/datum/overmap_view/proc/Hide(client/user)
+/datum/overmap_view/proc/Hide(client/user, datum/source)
 	if(ismob(user))
 		user = user.client
 	if(!user)
+		return
+	showing[user] -= source
+	if(length(showing[user]))
 		return
 	user.screen -= GetScreen()
 	user.images -= images

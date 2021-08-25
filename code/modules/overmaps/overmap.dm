@@ -13,6 +13,8 @@ GLOBAL_DATUM(overmap, datum/overmap)
 
 	/// objects
 	var/list/atom/movable/overmap_object/objects
+	/// moving objects
+	var/list/atom/movable/overmap_object/moving
 
 /datum/overmap/New()
 	objects = list()
@@ -24,9 +26,12 @@ GLOBAL_DATUM(overmap, datum/overmap)
 	if(!z)
 		CRASH("No Z")
 	objects = list()
+	moving = list()
 	for(var/atom/movable/overmap_object/O in Z_TURFS(z))
-		objects |= O
+		objects += O
 		O.overmap = src
+		if(O.IsMoving())
+			moving +=  O
 
 /**
  * initialize
@@ -47,5 +52,5 @@ GLOBAL_DATUM(overmap, datum/overmap)
  * physics tick
  */
 /datum/overmap/proc/Tick(seconds, times_fired)
-	for(var/atom/movable/overmap_object/O as anything in objects)
+	for(var/atom/movable/overmap_object/O as anything in moving)
 		O.Tick(seconds, times_fired)
