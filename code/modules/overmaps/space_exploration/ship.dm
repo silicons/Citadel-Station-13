@@ -15,9 +15,32 @@
 /datum/ship
 	/// our object
 	var/atom/movable/overmap_object/parent
+	/// subsystems by type
+	var/list/datum/ship_system/systems
+	/// all machinery in us
+	var/list/obj/machinery/ship/machinery
 
 /datum/ship/New(atom/movable/overmap_object/parent)
 	src.parent = parent
+	machinery = list()
+	InitializeSystems()
+	LinkMachinery()
+
+/datum/ship/Destroy()
+	UnlinkMachinery()
+	DestroySystems()
+	return ..()
+
+/datum/ship/proc/InitializeSystems()
+
+/datum/ship/proc/LinkMachinery()
+
+/datum/ship/proc/DestroySystems()
+	for(var/path in systems)
+		qdel(systems[path])
+	systems = null
+
+/datum/ship/proc/UnlinkMachinery()
 
 /datum/ship/Destroy()
 	if(parent)

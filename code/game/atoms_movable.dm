@@ -1,7 +1,9 @@
 /atom/movable
 	layer = OBJ_LAYER
 	glide_size = 8
-	SET_APPEARANCE_FLAGS(TILE_BOUND | PIXEL_SCALE)
+	bound_width = 32
+	bound_height = 32
+	SET_APPEARANCE_FLAGS(TILE_BOUND | PIXEL_SCALE | TILE_MOVER)
 	var/last_move = null
 	var/last_move_time = 0
 	var/anchored = FALSE

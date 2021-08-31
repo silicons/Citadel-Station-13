@@ -2,11 +2,19 @@
  * simulation tick
  */
 /atom/movable/overmap_object/proc/Tick(seconds, times_fired)
-	// check if we need to still move
-	if(!IsMoving())
-		moving = FALSE
-		overmap.moving -= src
-	#warn impl
+	// movement
+	if(moving)
+		if(velocity_angle)
+			Turn(velocity_angle)
+		if(velocity_x || velocity_y)
+			real_x += velocity_x
+			real_y += velocity_y
+			MoveToOffsets()
+	// other processes
+
+	// check if we need to keep going
+	if(!ShouldProcess())
+		StopProcessing()
 
 /atom/movable/overmap_object/Cross(atom/movable/AM)
 	// No rigidbody collisions implemented yet
@@ -36,7 +44,27 @@
 	velocity_x = 0
 	velocity_y = 0
 	velocity_angle = 0
-	#warn impl
+	ResetStepOffsets()
+	#warn if moved out of overmap, rip it out of the map entirely, check for overmaps zlevel and stop moving
+
+/**
+ * resets our real step offset tracking to our loc
+ */
+/atom/movable/overmap_object/proc/ResetStepOffsets()
+	real_x = (x - 1) * 32 + step_x
+	real_y = (y - 1) * 32 + step_y
+
+/**
+ * move to our real loc
+ */
+/atom/movable/overmap_object/proc/MoveToOffsets()
+	Move(locate(1,1,z), real_x - 32, real_y - 32)
+
+/**
+ * checks if we need processing
+ */
+/atom/movable/overmap_object/proc/ShouldProcess()
+	return IsMoving()
 
 /**
  * checks if we're moving
@@ -53,4 +81,35 @@
 	velocity_angle += angle
 	if(!moving)
 		moving = TRUE
-		overmap.moving += src
+		StartProcessing()
+
+/**
+ * sets velocity
+ * if a value is null, doesn't set it
+ */
+/atom/movable/overmap_object/proc/SetVelocity(x, y, angle)
+	if(!isnull(x))
+		velocity_x = x
+	if(!isnull(y))
+		velocity_y = y
+	if(!isnull(angle))
+		velocity_angle = angle
+	if(!moving)
+		moving = TRUE
+		StartProcessing()
+
+/**
+ * stops processing
+ */
+/atom/movable/overmap_object/proc/StopProcessing()
+	if(!(datum_flags & DF_ISPROCESSING))
+		return
+	overmap?.processing -= src
+
+/**
+ * starts processing
+ */
+/atom/movable/overmap_object/proc/StartProcessing()
+	if(datum_flags & DF_ISPROCESSING)
+		return
+	overmap?.processing += src

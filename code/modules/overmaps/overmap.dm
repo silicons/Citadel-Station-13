@@ -1,5 +1,12 @@
 GLOBAL_DATUM(overmap, datum/overmap)
 
+/proc/BuildOvermap()
+	if(GLOB.overmap)
+		return
+	GLOB.overmap = New()
+	GLOB.overmap.Initialize()
+
+
 /**
  * master overmaps holder
  *
@@ -13,11 +20,12 @@ GLOBAL_DATUM(overmap, datum/overmap)
 
 	/// objects
 	var/list/atom/movable/overmap_object/objects
-	/// moving objects
-	var/list/atom/movable/overmap_object/moving
+	/// processing objects
+	var/list/atom/movable/overmap_object/processing
 
 /datum/overmap/New()
 	objects = list()
+	processing = list()
 
 /**
  * when an admin fucks up
@@ -26,7 +34,7 @@ GLOBAL_DATUM(overmap, datum/overmap)
 	if(!z)
 		CRASH("No Z")
 	objects = list()
-	moving = list()
+	processing = list()
 	for(var/atom/movable/overmap_object/O in Z_TURFS(z))
 		objects += O
 		O.overmap = src
@@ -49,8 +57,8 @@ GLOBAL_DATUM(overmap, datum/overmap)
 	z = z_datum.z
 
 /**
- * physics tick
+ * processing tick
  */
 /datum/overmap/proc/Tick(seconds, times_fired)
-	for(var/atom/movable/overmap_object/O as anything in moving)
+	for(var/atom/movable/overmap_object/O as anything in processing)
 		O.Tick(seconds, times_fired)

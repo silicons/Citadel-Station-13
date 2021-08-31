@@ -22,3 +22,4 @@
 #ifdef FIND_REF_NO_CHECK_TICK
 	loop_checks = FALSE
 #endif
+	movement_mode = PIXEL_MOVEMENT_MODE

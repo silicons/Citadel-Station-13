@@ -53,7 +53,7 @@ GLOBAL_LIST_EMPTY(typing_indicator_overlays)
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	icon = 'icons/mob/talk.dmi'
 	icon_state = "normal_typing"
-	appearance_flags = RESET_COLOR | TILE_BOUND | PIXEL_SCALE
+	appearance_flags = RESET_COLOR | TILE_BOUND | PIXEL_SCALE | TILE_MOVER
 	layer = ABOVE_FLY_LAYER
 
 /obj/effect/overlay/typing_indicator/machine

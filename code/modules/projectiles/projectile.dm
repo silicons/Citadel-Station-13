@@ -18,7 +18,7 @@
 	movement_type = FLYING
 	animate_movement = NO_STEPS
 	hitsound = 'sound/weapons/pierce.ogg'
-	appearance_flags = PIXEL_SCALE
+	appearance_flags = PIXEL_SCALE | TILE_MOVER
 	var/hitsound_wall = ""
 
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF

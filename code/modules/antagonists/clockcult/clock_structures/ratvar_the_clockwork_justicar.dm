@@ -8,7 +8,7 @@
 	pixel_x = -235
 	pixel_y = -248
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-	appearance_flags = 0
+	appearance_flags = TILE_MOVER
 	light_power = 0.7
 	light_range = 15
 	light_color = "#BE8700"

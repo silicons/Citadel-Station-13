@@ -7,6 +7,7 @@
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OvermapObjectStandalone")
+		ui.open()
 	view_holder.Show(user, src)
 
 /atom/movable/overmap_object/ui_close(mob/user)
@@ -15,4 +16,8 @@
 
 /atom/movable/overmap_object/ui_static_data(mob/user)
 	. = ..()
-	.[OVERMAP_UI_VIEW] = view_holder.ui_static_data(user)
+	.[OVERMAP_UI_KEY_STATIC(OVERMAP_UI_VIEW)] = view_holder.ui_static_data(user)
+
+/atom/movable/overmap_object/ui_data(mob/user)
+	. = ..()
+	.[OVERMAP_UI_KEY(OVERMAP_UI_VIEW)] = view_holder.ui_data(user)

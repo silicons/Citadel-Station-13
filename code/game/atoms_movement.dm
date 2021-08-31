@@ -6,6 +6,8 @@
 // To be removed on step_ conversion
 // All this work to prevent a second bump
 /atom/movable/Move(atom/newloc, direct=0, glide_size_override = 0)
+	if(!(appearance_flags & TILE_MOVER))
+		return ..()		// pixel movement
 	. = FALSE
 	if(!newloc || newloc == loc)
 		return
@@ -52,6 +54,8 @@
 ////////////////////////////////////////
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
+	if(!(appearance_flags & TILE_MOVER))
+		return ..()		// pixel movement
 	var/atom/movable/pullee = pulling
 	var/turf/T = loc
 	if(!moving_from_pull)
@@ -223,18 +227,52 @@
 
 ///////////// FORCED MOVEMENT /////////////
 
-/atom/movable/proc/forceMove(atom/destination)
+/atom/movable/proc/forceMove(atom/destination, step_x = 0, step_y = 0)
 	. = FALSE
 	if(destination)
-		. = doMove(destination)
+		. = doMove(destination, step_x, step_y)
 	else
 		CRASH("No valid destination passed into forceMove")
 
 /atom/movable/proc/moveToNullspace()
 	return doMove(null)
 
-/atom/movable/proc/doMove(atom/destination)
+/atom/movable/proc/doMove(atom/destination, step_x = 0, step_y = 0)
 	. = FALSE
+	if(!(appearance_flags & TILE_MOVER))
+		var/list/oldstuff = bounds()
+		var/oldLoc = loc
+		for(var/atom/A as anything in locs)
+			A.Exited(src, destination)
+		for(var/atom/A as anything in oldstuff)
+			if(A == src)
+				continue
+			A.Uncrossed(src, destination)
+		var/turf/oldturf = get_turf(loc)
+		var/oldZ = oldturf?.z || null
+		loc = destination
+		src.step_x = step_x
+		src.step_y = step_y
+		if(!isturf(destination))
+			destination.Entered(src, oldLoc)
+			for(var/atom/movable/AM in destination)
+				if(AM == src)
+					continue
+				AM.Crossed(src, oldLoc)
+		else
+			var/list/newstuff = bounds()
+			for(var/atom/A as anything in locs)
+				A.Entered(src, oldLoc)
+			for(var/atom/A as anything in newstuff)
+				if(A == src)
+					continue
+				A.Crossed(src, oldLoc)
+		var/turf/newturf = get_turf(loc)
+		var/newZ = newturf?.z || null
+		if(oldZ != newZ)
+			onTransitZ(oldZ, newZ)
+		Moved(oldLoc, NONE, TRUE)
+		return
 	if(destination)
 		if(pulledby)
 			pulledby.stop_pulling()

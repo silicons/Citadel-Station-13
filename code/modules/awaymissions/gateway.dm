@@ -326,7 +326,7 @@ GLOBAL_LIST_EMPTY(gateway_destinations)
 	name = "Confidential Correspondence, Pg 1"
 
 /obj/effect/gateway_portal_effect
-	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE
+	appearance_flags = KEEP_TOGETHER | TILE_BOUND | PIXEL_SCALE | TILE_MOVER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	vis_flags = VIS_INHERIT_ID
 	layer = GATEWAY_UNDERLAY_LAYER //Slightly lower than gateway itself

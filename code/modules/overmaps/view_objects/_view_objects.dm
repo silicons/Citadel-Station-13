@@ -2,6 +2,7 @@
  * master superclass of overmap vision/view objects
  */
 /atom/movable/overmap_hud
+	plane = OVERMAP_EFFECT_PLANE
 	/// parent view
 	var/datum/overmap_view/parent
 	/// default screen loc
