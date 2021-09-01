@@ -3027,6 +3027,7 @@
 #include "code\modules\overmaps\subtypes\included.dm"
 #include "code\modules\overmaps\subtypes\projectile.dm"
 #include "code\modules\overmaps\view_objects\_view_objects.dm"
+#include "code\modules\overmaps\view_objects\background.dm"
 #include "code\modules\overmaps\view_objects\effects.dm"
 #include "code\modules\overmaps\view_objects\master.dm"
 #include "code\modules\overmaps\view_objects\parallax.dm"

@@ -183,6 +183,8 @@
 
 // OVERMAPS
 
+/// background
+#define OVERMAP_BACKGROUND_PLANE			82
 /// turfs
 #define OVERMAP_BASE_PLANE					83
 /// parallax

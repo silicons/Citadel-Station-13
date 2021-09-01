@@ -14,6 +14,8 @@
 	var/list/atom/movable/overmap_hud/parallax/parallax_layers
 	/// master object - holds turfs
 	var/atom/movable/overmap_hud/master/master
+	/// background object - goes below everything else
+	var/atom/movable/overmap_hud/background/background
 	/// primary lighting
 	var/atom/movable/overmap_hud/light/circle/static_vision
 	/// static vision range
@@ -34,10 +36,16 @@
 	initialize_parallax()
 	initialize_lighting()
 	initialize_images()
+	initialize_background()
 	initialize_master()
+	Update()
 
 /datum/overmap_view/proc/initialize_planes()
-	#warn impl
+	if(islist(plane_masters))
+		QDEL_LIST(plane_masters)
+	plane_masters = list()
+	for(var/path in subtypesof(/atom/movable/overmap_hud/plane))
+		plane_masters += new path(null, src)
 
 /datum/overmap_view/proc/initialize_parallax()
 	#warn impl
@@ -49,8 +57,10 @@
 	images = list()
 
 /datum/overmap_view/proc/initialize_master()
-	#warn impl
-	Update()
+	master = new(null, src)
+
+/datum/overmap_view/proc/initialize_background()
+	background = new(null, src)
 
 /**
  * updates our location
@@ -67,7 +77,7 @@
  * Gets the screen objects to apply to a client
  */
 /datum/overmap_view/proc/GetScreen()
-	. = list(master, static_vision, darkness)
+	. = list(master, static_vision, darkness, background)
 	. |= plane_masters
 	. |= parallax_layers
 
@@ -124,6 +134,7 @@
 	if(view_range == newrange)
 		return
 	view_range = newrange
+	background?.Update()
 	Update()
 
 /datum/overmap_view/proc/SetStaticVision(newrange)
