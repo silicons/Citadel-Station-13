@@ -11,6 +11,7 @@
 	appearance_flags = NONE
 	bound_width = 32
 	bound_height = 32
+	step_size = OVERMAPS_MAX_SPEED_PIXELS
 
 	/// the location we corrospond to. if null, we are completely virtual.
 	var/datum/overmap_location/location
@@ -28,7 +29,7 @@
 	var/datum/overmap/overmap
 
 	// physics
-	/// angle
+	/// angle clockwise from north
 	var/angle = 0
 	/// current transform angle
 	var/transform_angle = 0

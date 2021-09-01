@@ -76,3 +76,11 @@
 #define OVERMAP_UNIT_PIXELS			1
 /// overmap view range
 #define OVERMAP_VIEW_RANGE			7
+/// max speed in pixels per second
+#define OVERMAP_MAX_SPEED_PIXELS	64
+/// max speed in units per second
+#define OVERMAP_MAX_SPEED			(OVERMAP_MAP_SPEED_PIXELS * OVERMAP_UNIT_PIXELS)
+
+// helpers
+/// quantize velocity
+#define OVERMAPS_QUANTIZE_VELOCITY(val)			(round(val, 0.001))

@@ -58,7 +58,7 @@
  * move to our real loc
  */
 /atom/movable/overmap_object/proc/MoveToOffsets()
-	Move(locate(1,1,z), real_x - 32, real_y - 32)
+	Move(locate(1,1,z), NONE, real_x - 32, real_y - 32)
 
 /**
  * checks if we need processing
@@ -73,12 +73,20 @@
 	return OVERMAPS_QUANTIZE_VELOCITY(velocity_x) || OVERMAPS_QUANTIZE_VELOCITY(velocity_y) || OVERMAPS_QUANTIZE_VELOCITY(velocity_angle)
 
 /**
+ * turns our angle
+ */
+/atom/movable/overmap_object/proc/Turn(amt)
+	angle += amt
+	transform.Turn(amt)
+
+
+/**
  * adjust velocities
  */
 /atom/movable/overmap_object/proc/AdjustVelocity(x, y, angle)
-	velocity_x += x
-	velocity_y += y
-	velocity_angle += angle
+	velocity_x = clamp(velocity_x + x, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
+	velocity_y = clamp(velocity_y + y, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
+	velocity_angle = MODULUS(velocity_angle + angle, 360)
 	if(!moving)
 		moving = TRUE
 		StartProcessing()
@@ -89,11 +97,11 @@
  */
 /atom/movable/overmap_object/proc/SetVelocity(x, y, angle)
 	if(!isnull(x))
-		velocity_x = x
+		velocity_x = clamp(x, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
 	if(!isnull(y))
-		velocity_y = y
+		velocity_y = clamp(y, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
 	if(!isnull(angle))
-		velocity_angle = angle
+		velocity_angle = MODULUS(angle, 360)
 	if(!moving)
 		moving = TRUE
 		StartProcessing()

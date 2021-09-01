@@ -2990,6 +2990,7 @@
 #include "code\modules\NTNet\network.dm"
 #include "code\modules\NTNet\relays.dm"
 #include "code\modules\NTNet\services\_service.dm"
+#include "code\modules\overmaps\appearance.dm"
 #include "code\modules\overmaps\area.dm"
 #include "code\modules\overmaps\docking.dm"
 #include "code\modules\overmaps\location.dm"
