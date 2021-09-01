@@ -1,4 +1,4 @@
-GLOBAL_DATUM(overmap, datum/overmap)
+GLOBAL_DATUM(overmap, /datum/overmap)
 
 /proc/BuildOvermap()
 	if(GLOB.overmap)
@@ -54,7 +54,7 @@ GLOBAL_DATUM(overmap, datum/overmap)
 	if(z || z_datum)
 		CRASH("Duplicate InitializeLevel detected: [z] [z_datum]")
 	z_datum = SSmapping.add_new_zlevel("Overmap_[id]", list(ZTRAIT_LINKAGE = UNAFFECTED))
-	z = z_datum.z
+	z = z_datum.z_value
 
 /**
  * processing tick

@@ -3032,6 +3032,7 @@
 #include "code\modules\overmaps\view_objects\master.dm"
 #include "code\modules\overmaps\view_objects\parallax.dm"
 #include "code\modules\overmaps\view_objects\plane_masters.dm"
+#include "code\modules\overmaps\view_objects\sensor.dm"
 #include "code\modules\overmaps\view_objects\static_lighting.dm"
 #include "code\modules\paperwork\carbonpaper.dm"
 #include "code\modules\paperwork\clipboard.dm"
