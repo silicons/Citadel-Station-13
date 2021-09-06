@@ -12,6 +12,8 @@
 
 	/// don't yell at me please - for if someone in the future thinks reallocating overmaps is necessary
 	var/allow_destroy = FALSE
+	/// static lighting we're lit by
+	var/list/atom/movable/overmap_lighting/lit_by
 
 /turf/overmap/Initialize(mapload)
 	flags_1 |= INITIALIZED_1

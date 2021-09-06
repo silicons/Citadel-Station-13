@@ -1,4 +1,11 @@
 /**
+ * Requests a view datum be made if not already
+ */
+/atom/movable/overmap_object/proc/AssertViewInitialized()
+	if(!view_holder)
+		view_holder = new(src)
+
+/**
  * view datums
  *
  * these are necessary to manage the view shown on overmap uis
@@ -23,6 +30,9 @@
 	/// lighting darkifier
 	var/atom/movable/overmap_hud/darkifier/darkness
 
+	/// the object we are the view for
+	var/atom/movable/overmap_object/object
+
 	/// images to show to users
 	var/list/images
 	/// showing
@@ -32,13 +42,25 @@
 	if(!object)
 		CRASH("Invalid object")
 	screen = "map_[object.id]"
+	object.AssertStaticVision()
 	initialize_planes()
 	initialize_parallax()
-	initialize_lighting()
 	initialize_images()
 	initialize_background()
 	initialize_master()
 	Update()
+
+/datum/overmap_view/Destroy()
+	for(var/i in showing)
+		Hide(showing)
+	QDEL_NULL(master)
+	QDEL_NULL(background)
+	QDEL_NULL(darkness)
+	QDEL_LIST(plane_masters)
+	QDEL_LIST(parallax_layers)
+	object = null
+	images = list()
+	return ..()
 
 /datum/overmap_view/proc/initialize_planes()
 	if(islist(plane_masters))
@@ -48,9 +70,6 @@
 		plane_masters += new path(null, src)
 
 /datum/overmap_view/proc/initialize_parallax()
-	#warn impl
-
-/datum/overmap_view/proc/initialize_lighting()
 	#warn impl
 
 /datum/overmap_view/proc/initialize_images()
@@ -69,15 +88,10 @@
 	#warn impl
 
 /**
- * updates static vision range
- */
-/datum/overmap_view/proc/UpdateStaticVision()
-
-/**
  * Gets the screen objects to apply to a client
  */
 /datum/overmap_view/proc/GetScreen()
-	. = list(master, static_vision, darkness, background)
+	. = list(master, darkness, background)
 	. |= plane_masters
 	. |= parallax_layers
 

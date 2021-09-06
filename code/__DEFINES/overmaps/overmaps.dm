@@ -86,7 +86,7 @@
 /// max speed in pixels per second
 #define OVERMAPS_MAX_SPEED_PIXELS	64
 /// max speed in units per second
-#define OVERMAPS_MAX_SPEED			(OVERMAP_MAP_SPEED_PIXELS * OVERMAP_UNIT_PIXELS)
+#define OVERMAPS_MAX_SPEED			(OVERMAPS_MAP_SPEED_PIXELS * OVERMAPS_UNIT_PIXELS)
 
 // helpers
 /// quantize velocity

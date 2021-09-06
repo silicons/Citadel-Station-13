@@ -3,6 +3,11 @@
  */
 /atom/movable/overmap_object/proc/Tick(seconds, times_fired)
 	// movement
+	if(moving && !isturf(loc))
+		velocity_x = 0
+		velocity_y = 0
+		angle = 0
+		moving = FALSE
 	if(moving)
 		if(velocity_angle)
 			Turn(velocity_angle)
@@ -45,7 +50,19 @@
 	velocity_y = 0
 	velocity_angle = 0
 	ResetStepOffsets()
-	#warn if moved out of overmap, rip it out of the map entirely, check for overmaps zlevel and stop moving
+	CheckOvermap()
+
+/**
+ * Automatically puts us in and takes us out of an overmap if we're in/out of the zlevel
+ */
+/atom/movable/overmap_object/proc/CheckOvermap()
+	var/turf/T = get_turf(src)
+	if(!overmap)
+		if(T && (T.z == GLOB.overmap?.z))
+			GLOB.overmap.AddObject(src)
+	else if(overmap)
+		if(!T || (T.z != GLOB.overmap?.z))
+			GLOB.overmap.RemoveObject(src)
 
 /**
  * resets our real step offset tracking to our loc
@@ -57,7 +74,7 @@
 /**
  * move to our real loc
  */
-/atom/movable/overmap_object/proc/MoveToOffsets()
+/atom/movable/overmap_object/proc/MoveToOffsets(forcemove = FALSE)
 	Move(locate(1,1,z), NONE, real_x - 32, real_y - 32)
 
 /**

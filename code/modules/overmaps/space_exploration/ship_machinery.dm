@@ -7,20 +7,6 @@
 	desc = "This is bugged."
 	icon = 'icons/overmap/machinery.dmi'
 
-	/// the object we belong to, if any
-	var/atom/movable/overmap_object/object
-	/// the ship we're linked to, if any
-	var/datum/ship/ship
-	/// the ship system datum we're linked to, if any
-	var/datum/ship_system/system
-
-	/// the tgui interface component we use
-	var/ui_interface
-
-// mark ui static data dirty
-/obj/machinery/ship/proc/UpdateUIStatic()
-	system.MarkUIDirty(src)
-
 // standard ui static data
 /obj/machinery/ship/ui_static_data(mob/user)
 	. = list()
@@ -36,6 +22,16 @@
  */
 /obj/machinery/ship/device
 	name = "ship systems device"
+	/// the ship we're linked to, if any
+	var/datum/ship/ship
+	/// the ship system datum we're linked to, if any
+	var/datum/ship_system/system
+	/// the tgui interface component we use - loaded as-is or with [ui-interface]Component if loaded from within a system.
+	var/ui_interface
+
+// mark ui static data dirty
+/obj/machinery/ship/device/proc/UpdateUIStatic()
+	system?.MarkUIDirty(src)
 
 /**
  * Interface subtype
@@ -69,10 +65,12 @@
 
 /**
  * Host subtype
- * Thinsg like control columns which provide access
+ * Things like control columns which provide access
  */
 /obj/machinery/ship/host
 	name = "ship controller host"
+	/// the ship we're linked to, if any
+	var/datum/ship/ship
 
 /**
  * what control flags we give to an interface

@@ -4,6 +4,7 @@
 
 /atom/movable/overmap_object/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
+	AssertViewInitialized()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "OvermapObjectStandalone")

@@ -3,7 +3,7 @@
  */
 /atom/movable/overmap_hud/background
 	name = "helm holographics"
-	icon = 'icons/overmaps/32x32.dmi'
+	icon = 'icons/overmaps/turfs.dmi'
 	icon_state = "background"
 	plane = OVERMAP_BACKGROUND_PLANE
 
@@ -12,4 +12,4 @@
 	Update()
 
 /atom/movable/overmap_hud/background/proc/Update()
-	screne_loc = "[parent.screen]:1,1 to [parent.view_range * 2 + 1],[parent.view_range * 2 + 1]"
+	screen_loc = "[parent.screen]:1,1 to [parent.view_range * 2 + 1],[parent.view_range * 2 + 1]"
