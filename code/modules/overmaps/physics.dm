@@ -18,6 +18,9 @@
 	// other processes
 
 	// check if we need to keep going
+	if(ship?.Tick(seconds, times_fired))
+		// we know we need to
+		return
 	if(!ShouldProcess())
 		StopProcessing()
 
@@ -81,7 +84,7 @@
  * checks if we need processing
  */
 /atom/movable/overmap_object/proc/ShouldProcess()
-	return IsMoving()
+	return IsMoving() || ship?.ShouldProcess()
 
 /**
  * checks if we're moving

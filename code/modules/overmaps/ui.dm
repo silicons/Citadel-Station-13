@@ -7,7 +7,7 @@
 	AssertViewInitialized()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "OvermapObjectStandalone")
+		ui = new(user, src, "OvermapView")
 		ui.open()
 	view_holder.Show(user, src)
 
