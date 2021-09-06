@@ -73,27 +73,20 @@
 
 /atom/movable/overmap_object/proc/OvermapInitialize(mapload)
 	view_holder = new(src)
+	LocationInitialize(mapload)
+	ShipInitialize(mapload)
+
+/atom/movable/overmap_object/proc/LocationInitialize(mapload)
 	if(ispath(location_data, /datum/overmap_location_data))
 		location_data = new location_data
+		if(location_data.lazyload)
+			return
 		if(!(flags_1 & ADMIN_SPAWNED_1) && !IsAdminAdvancedProcCall())
 			location_data.generate(src)
 		else
 			log_overmap("Skipping location instantiation of [id] [location_data.type]")
 			message_admins("Overmaps: [id] location instantiation skipped due to being admin-spawned (safety). If you mean to instantiate it, call the proc manually.")
+
+/atom/movable/overmap_object/proc/ShipInitialize(mapload)
 	if(ispath(ship))
 		ship = new ship(src)
-	BindToLoc()
-	MoveToStart()
-
-/**
- * **bind** to where it is - generating a location as necessary
- * used for including these with maps
- *
- * will move onto the global overmap afterwards
- */
-/atom/movable/overmap_object/proc/BindToLoc()
-
-/**
- * move us to our proper overmaps start, if not already there
- */
-/atom/movable/overmap_object/proc/MoveToStart()

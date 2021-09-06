@@ -17,9 +17,9 @@
 // control flags for what a console can access
 /// control helm/pilot
 #define OVERMAP_CONTROL_HELM						(1<<0)
-/// view map
+/// view map and sensor contacts
 #define OVERMAP_CONTROL_MAP							(1<<1)
-/// control sensors
+/// control sensors and run ship scans
 #define OVERMAP_CONTROL_SENSORS						(1<<2)
 /// control weapons
 #define OVERMAP_CONTROL_WEAPONS						(1<<3)

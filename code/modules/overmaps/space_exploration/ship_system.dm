@@ -12,6 +12,8 @@
 	var/name = "System (unknown)"
 	/// Devices in us **and controllable**
 	var/list/obj/machinery/ship/device/devices
+	/// ui data id
+	var/data_id
 
 /datum/ship_system/New(datum/ship/ship)
 	src.ship = ship
