@@ -38,7 +38,7 @@
 /atom/movable/overmap_lighting/proc/Remove()
 	if(!applied)
 		return
-	for(var/turf/T in range(applied, applied_dist))
+	for(var/turf/overmap/T in range(applied, applied_dist))
 		LAZYREMOVE(T.lit_by, src)
 	applied = null
 	applied_dist = null
@@ -48,7 +48,7 @@
 		return
 	applied = loc
 	applied_dist = distance
-	for(var/turf/T in range(applied, distance))
+	for(var/turf/overmap/T in range(applied, distance))
 		if(sqrt((T.x - x)**2 + (T.y - y)**2) > (distance * 1.49))
 			continue
 		LAZYADD(T.lit_by, src)

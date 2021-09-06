@@ -1,0 +1,4 @@
+/**
+ * Planet datums
+ */
+/datum/planet
