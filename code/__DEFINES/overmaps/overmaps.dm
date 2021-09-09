@@ -91,3 +91,6 @@
 // helpers
 /// quantize velocity
 #define OVERMAPS_QUANTIZE_VELOCITY(val)			(round(val, 0.001))
+
+// iffs
+#define OVERMAP_IFF_NT "nt"

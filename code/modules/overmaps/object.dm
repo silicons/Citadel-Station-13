@@ -28,7 +28,8 @@
 	/// reference to master overmap
 	var/datum/overmap/overmap
 
-	// physics
+	/* physics */
+
 	/// angle clockwise from north
 	var/angle = 0
 	/// current transform angle
@@ -52,6 +53,8 @@
 	var/static_vision_range = 1
 	/// static vision image - lazyloaded
 	var/atom/movable/overmap_hud/light/static_vision
+	/// todo: radar pings (green: baddies, blue: nt, white: unknown)
+	var/radarIFF
 
 /atom/movable/overmap_object/New()
 	id = ++id_next

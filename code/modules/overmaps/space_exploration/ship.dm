@@ -19,6 +19,14 @@
 	var/list/datum/ship_system/systems
 	/// all machinery in us
 	var/list/obj/machinery/ship/machinery
+	/// var list about helm
+
+	/// bogeys detected
+	var/list/bogeys = list(
+		"enemy" = list(), // weakref of their ship datums?
+		"friendly" = list(),
+		"neutral" = list()
+	)
 
 /datum/ship/New(atom/movable/overmap_object/parent)
 	src.parent = parent

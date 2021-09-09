@@ -2993,6 +2993,7 @@
 #include "code\modules\overmaps\appearance.dm"
 #include "code\modules\overmaps\area.dm"
 #include "code\modules\overmaps\docking.dm"
+#include "code\modules\overmaps\helpers.dm"
 #include "code\modules\overmaps\lighting.dm"
 #include "code\modules\overmaps\location.dm"
 #include "code\modules\overmaps\object.dm"

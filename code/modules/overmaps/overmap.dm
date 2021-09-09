@@ -3,7 +3,7 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 /proc/BuildOvermap()
 	if(GLOB.overmap)
 		return
-	GLOB.overmap = New()
+	GLOB.overmap = new()
 	GLOB.overmap.Initialize()
 
 
@@ -44,8 +44,8 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	for(var/atom/movable/overmap_object/O in Z_TURFS(z))
 		objects += O
 		O.overmap = src
-		if(O.IsMoving())
-			moving +=  O
+		// if(O.IsMoving())
+		// 	O.moving +=  O
 
 /**
  * initialize
@@ -65,9 +65,9 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 /**
  * processing tick
  */
-/datum/overmap/proc/Tick(seconds, times_fired)
+/datum/overmap/proc/Tick(ds, times_fired)
 	for(var/atom/movable/overmap_object/O as anything in processing)
-		O.Tick(seconds, times_fired)
+		O.Tick(ds, times_fired)
 
 /**
  * Add an object

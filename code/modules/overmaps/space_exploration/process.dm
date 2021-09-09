@@ -1,10 +1,10 @@
 /**
  * Simulation tick
  */
-/datum/ship/proc/Tick(seconds, times_fired)
+/datum/ship/proc/Tick(ds, times_fired)
 	. = FALSE
 	for(var/datum/ship_system/S in systems)
-		. |= S.Tick(seconds, times_fired)
+		. |= S.Tick(ds, times_fired)
 
 /**
  * Manual sim check

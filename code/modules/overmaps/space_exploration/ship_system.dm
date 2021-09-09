@@ -30,7 +30,7 @@
  * Simulation tick
  * Return TRUE when a system needs to keep ticking
  */
-/datum/ship_system/proc/Tick(seconds, times_fired)
+/datum/ship_system/proc/Tick(ds, times_fired)
 	return ShouldProcess()
 
 /**

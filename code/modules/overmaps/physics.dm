@@ -1,7 +1,9 @@
 /**
  * simulation tick
  */
-/atom/movable/overmap_object/proc/Tick(seconds, times_fired)
+/atom/movable/overmap_object/proc/Tick(ds, times_fired)
+	if(!ShouldProcess())
+		StopProcessing()
 	// movement
 	if(moving && !isturf(loc))
 		velocity_x = 0
@@ -18,11 +20,9 @@
 	// other processes
 
 	// check if we need to keep going
-	if(ship?.Tick(seconds, times_fired))
+	if(ship?.Tick(ds, times_fired))
 		// we know we need to
 		return
-	if(!ShouldProcess())
-		StopProcessing()
 
 /atom/movable/overmap_object/Cross(atom/movable/AM)
 	// No rigidbody collisions implemented yet
