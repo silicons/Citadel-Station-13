@@ -23,7 +23,7 @@
 
 // mark ui static data dirty
 /obj/machinery/ship/device/proc/UpdateUIStatic()
-	system?.MarkUIDirty(src)
+	// system?.MarkUIDirty(src)
 	update_static_data()
 
 /obj/machinery/ship/device/ui_static_data(mob/user)

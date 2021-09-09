@@ -21,11 +21,15 @@
 	var/list/obj/machinery/ship/machinery
 	/// var list about helm
 
+	/// our IFF
+	var/iff = OVERMAP_IFF_UNKNOWN
+
 	/// bogeys detected
 	var/list/bogeys = list(
-		"enemy" = list(), // weakref of their ship datums?
+		"enemy" = list(), // weakref of their ship datums.
 		"friendly" = list(),
-		"neutral" = list()
+		"neutral" = list(),
+		"tracked" = list()
 	)
 
 /datum/ship/New(atom/movable/overmap_object/parent)
@@ -53,4 +57,5 @@
 /datum/ship/Destroy()
 	if(parent)
 		parent.ship = null
+	bogeys = null
 	return ..()

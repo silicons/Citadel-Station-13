@@ -92,5 +92,12 @@
 /// quantize velocity
 #define OVERMAPS_QUANTIZE_VELOCITY(val)			(round(val, 0.001))
 
-// iffs
+// IFFS
+/// NT Faction
 #define OVERMAP_IFF_NT "nt"
+/// Syndies
+#define OVERMAP_IFF_SYNDIE "syndicate"
+/// wizard federation
+#define OVERMAP_IFF_WIZARD "wizard"
+/// unknown
+#define OVERMAP_IFF_UNKNOWN "unknown"

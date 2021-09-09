@@ -16,3 +16,5 @@
 // standard ui data
 /obj/machinery/ship/ui_data(mob/user)
 	. = list()
+
+// /obj/machinery/computer/
