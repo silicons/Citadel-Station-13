@@ -5,7 +5,9 @@
 	idle_power_usage = 10
 	active_power_usage = 500
 	use_power = IDLE_POWER_USE
+
 	var/enabled = FALSE
+	var/range = 8
 
 /obj/machinery/ship/device/radar/Initialize()
 	. = ..()
@@ -27,3 +29,4 @@
 
 	// .["bogeys"] = ship.bogeys
 	.["enabled"] = enabled
+// todo: steal camera code
