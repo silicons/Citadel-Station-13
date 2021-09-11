@@ -53,8 +53,7 @@
 	var/static_vision_range = 1
 	/// static vision image - lazyloaded
 	var/atom/movable/overmap_hud/light/static_vision
-	/// todo: radar pings (green: baddies, blue: nt, white: unknown)
-	var/radarIFF
+	// IFF's are only on the ship datums!
 
 /atom/movable/overmap_object/New()
 	id = ++id_next
@@ -67,6 +66,9 @@
 	if(istype(view_holder))
 		QDEL_NULL(view_holder)
 	#warn decide what to do with ship and location because we can't always just wipe it
+	// just qdel the ship then?
+	if (ship)
+		warning("attempted to qdel ship!")
 	return ..()
 
 /atom/movable/overmap_object/Initialize(mapload)

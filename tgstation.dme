@@ -3021,7 +3021,6 @@
 #include "code\modules\overmaps\presets\generated.dm"
 #include "code\modules\overmaps\presets\included.dm"
 #include "code\modules\overmaps\space_exploration\process.dm"
-#include "code\modules\overmaps\space_exploration\scan.dm"
 #include "code\modules\overmaps\space_exploration\ship.dm"
 #include "code\modules\overmaps\space_exploration\ship_system.dm"
 #include "code\modules\overmaps\space_exploration\transponder.dm"

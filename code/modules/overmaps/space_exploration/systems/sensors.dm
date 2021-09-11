@@ -1,9 +1,6 @@
 /**
  * radar.
- * How it works?
- *
- * 1.) Ping around it <br />
- * 2.) When the ping returns, see if they are returning
+ * How it works? i dont know
  */
 /datum/ship_system/radar
 	name = "Primary Radar (unknown)"
@@ -42,7 +39,8 @@
 /datum/ship_system/radar/proc/updateRange(range)
 	src.range = range
 	src.IFFrange = (range / 2) + 1
-	return range * power_usage
+	var/new_draw = range * power_usage
+	// todo: continue
 
 /// hey keb idk if this is slow
 /datum/ship_system/radar/proc/ping()
@@ -53,24 +51,15 @@
 			continue
 
 		var/datum/weakref/wr = WEAKREF(OM.ship)
-		ship.bogeys["tracked"] |= wr // default grey
+		var/cstring = "[OM.x],[OM.y]"
 
-		if (get_dist(ship.parent, OM) > IFFrange)
-			continue
+		// microop
+		if (!ship.bogeys[wr])
+			ship.bogeys[wr] = list("coord" = cstring, "iff" = OM.ship.iff) // default grey
+		else
+			// IFFS DO NOT UPDATE :copium:
+			if (ship.bogeys[wr]["coord"] == cstring)
+				continue
+			ship.bogeys[wr]["coord"] = cstring
 
-		if (verifyIFF(OM.ship.iff, enemyIFF))
-			ship.bogeys["enemy"] |= wr // green
-			ship.bogeys["friendly"] -= wr // blue
-			ship.bogeys["neutral"] -= wr // white
-			continue
-
-		if (verifyIFF(OM.ship.iff, friendlyIFF))
-			ship.bogeys["enemy"] -= wr
-			ship.bogeys["friendly"] |= wr
-			ship.bogeys["neutral"] -= wr
-			continue
-
-		ship.bogeys["enemy"] -= wr
-		ship.bogeys["friendly"] -= wr
-		ship.bogeys["neutral"] |= wr
 	stillboggingthestack = FALSE

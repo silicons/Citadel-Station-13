@@ -68,7 +68,11 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	InitializeLevel()
 
 /**
+ * # InitializeLevel
  * creates our zlevel
+ *
+ * ### crab related (see `rustg_cnoise_generate`)
+ * ![funny crab](https://cdn.discordapp.com/emojis/839067599496675348.png?v=1)
  */
 /datum/overmap/proc/InitializeLevel()
 	if(z || z_datum)
@@ -76,9 +80,27 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	z_datum = SSmapping.add_new_zlevel("Overmap_[id]", list(ZTRAIT_LINKAGE = UNAFFECTED))
 	z = z_datum.z_value
 
-	// BEGIN generation
+	// BEGIN generation (SPACE ASTEROID TGEN)
 	string_gen = rustg_cnoise_generate("[initial_closed_chance]", "[smoothing_iterations]", "[birth_limit]", "[death_limit]", "[world.maxx]", "[world.maxy]") //Generate the raw CA data
-	// todo, for i in 1 to maxx * (maxy - 1) <- index starts at 0
+	var/turf/A = get_turf(locate(0, 0, z))
+	var/turf/B = get_turf(locate(world.maxx, world.maxx, z))
+	var/block = block(A, B)
+	for(var/t in block)
+		var/turf/T = t
+		var/closed = text2num(string_gen[world.maxx * (T.y - 1) + T.x])
+		// if it's closed, asteroid or emp. prob70 asteroid else emp
+		// TODO: hazard here
+		if (closed)
+			if(prob(80))
+				new /atom/movable/overmap_object/hazard(T.loc)
+			else
+				new /atom/movable/overmap_object/hazard(T.loc)
+		else
+			// station
+			if(prob(20))
+				new /atom/movable/overmap_object/preset/generated(T.loc)
+			continue
+
 
 /**
  * processing tick
