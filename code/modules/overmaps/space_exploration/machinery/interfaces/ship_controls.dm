@@ -55,7 +55,7 @@
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	// Update the camera, showing static if necessary and updating data if the location has moved.
-	update_active_camera_screen()
+	updateScreen()
 
 	if(!ui)
 		// Register map objects

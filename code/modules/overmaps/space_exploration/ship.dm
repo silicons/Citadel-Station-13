@@ -32,6 +32,12 @@
 		"tracked" = list()
 	)
 
+	/* ship based tomfoolery. */
+	/// Angle we /want/ to achive. Slowly ticks up based on where engines are facing etc.
+	var/target_angle = 0
+	/// turning radius of the ship. Calculated / t if target angle != parent.angle
+	var/turning_radius = 90
+
 /datum/ship/New(atom/movable/overmap_object/parent)
 	src.parent = parent
 	machinery = list()
@@ -59,3 +65,9 @@
 		parent.ship = null
 	bogeys = null
 	return ..()
+
+/// In degrees.
+/datum/ship/set_desired_angle(rudder_angle)
+	if (target_angle == rudder_angle)
+		return FALSE
+	target_angle = rudder_angle
