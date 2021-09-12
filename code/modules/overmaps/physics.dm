@@ -128,8 +128,18 @@
 /**
  * turns our motion by a certain angle.
  */
-/atom/movable/overmap_object/proc/TurnVelocity(angles)
+/atom/movable/overmap_object/proc/TurnVelocity(angle)
+	var/currAngle = arctan(y, x)
+	var/currVel = sqrt(y**2 + x**2)
+	currAngle += angle
+	SetVelocity(sin(currAngle) * currVel, cos(currAngle) * currVel)
 
+/**
+ * Completely turns by a certain angle
+ */
+/atom/movable/overmap_object/proc/TurnPhysics(angle)
+	Turn(angle)
+	TurnVelocity(angle)
 
 /**
  * sets velocity
