@@ -88,17 +88,15 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	for(var/t in block)
 		var/turf/T = t
 		var/closed = text2num(string_gen[world.maxx * (T.y - 1) + T.x])
-		// if it's closed, asteroid or emp. prob70 asteroid else emp
-		// TODO: hazard here
 		if (closed)
 			if(prob(80))
-				new /atom/movable/overmap_object/hazard(T.loc)
+				InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
 			else
-				new /atom/movable/overmap_object/hazard(T.loc)
+				InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
 		else
 			// station
 			if(prob(20))
-				new /atom/movable/overmap_object/preset/generated(T.loc)
+				InstantiateObject(/atom/movable/overmap_object/preset/generated, T.loc.x, T.loc.y)
 			continue
 
 
