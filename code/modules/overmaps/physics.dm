@@ -101,15 +101,35 @@
 
 
 /**
- * adjust velocities
+ * adjust velocities relative to map.
+ * angle is entirely detached from velocity on overmaps physics sim to optimize for standard case
+ * for adjusting using thrusters on directions, etc, use AdjustVelocityRel if you don't want to math
  */
-/atom/movable/overmap_object/proc/AdjustVelocity(x, y, angle)
+/atom/movable/overmap_object/proc/AdjustVelocity(x = 0, y = 0, angle = 0)
 	velocity_x = clamp(velocity_x + x, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
 	velocity_y = clamp(velocity_y + y, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
 	velocity_angle = MODULUS(velocity_angle + angle, 360)
 	if(!moving)
 		moving = TRUE
 		StartProcessing()
+
+/**
+ * adjusts velocity relative to self, rather than map
+ *
+ * @params
+ * - parallel - front/back speed. positive = forwards.
+ * - perpendicular - sideways speed. posiive = right.
+ */
+/atom/movable/overmap_object/proc/AdjustVelocityRel(parallel = 0, perpendicular = 0)
+	var/x = sin(angle) * parallel - sin(angle + 90) * perpendicular
+	var/y = cos(angle) * parallel - cos(angle + 90) * perpendicular
+	return AdjustVelocity(x, y, 0)
+
+/**
+ * turns our motion by a certain angle.
+ */
+/atom/movable/overmap_object/proc/TurnVelocity(angles)
+
 
 /**
  * sets velocity
