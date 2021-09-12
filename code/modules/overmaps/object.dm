@@ -53,20 +53,24 @@
 	var/static_vision_range = 1
 	/// static vision image - lazyloaded
 	var/atom/movable/overmap_hud/light/static_vision
-	/// todo: radar pings (green: baddies, blue: nt, white: unknown)
-	var/radarIFF
+	// IFF's are only on the ship datums!
 
 /atom/movable/overmap_object/New()
 	id = ++id_next
 	CheckOvermap()
 	return ..()
 
-/atom/movable/overmap_object/Destroy()
+/atom/movable/overmap_object/Destroy(force = FALSE)
+	if (ship)
+		stack_trace("ALRIGHT WHICH FUCKER TRIED TO DELETE *MY* DVIEW?")
+		if (!force)
+			return QDEL_HINT_LETMELIVE
+		log_world("EVACUATE THE SHITCODE IS TRYING TO STEAL MUH JOBS")
+
 	if(istype(location_data))
 		QDEL_NULL(location_data)
 	if(istype(view_holder))
 		QDEL_NULL(view_holder)
-	#warn decide what to do with ship and location because we can't always just wipe it
 	return ..()
 
 /atom/movable/overmap_object/Initialize(mapload)

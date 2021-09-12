@@ -23,6 +23,20 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	/// processing objects
 	var/list/atom/movable/overmap_object/processing
 
+	/* tgen */
+	/// terrain gen data
+	var/string_gen
+	///Chance of cells starting closed - we want more open cells
+	var/initial_closed_chance = 15
+	///Amount of smoothing iterations - might lower this, more clumps of space rocks.
+	var/smoothing_iterations = 15
+	///How much neighbours does a dead cell need to become alive - higher as we want small clumps
+	var/birth_limit = 5
+	///How little neighbours does a alive cell need to die - ditto
+	var/death_limit = 2
+	///prob of spawning a station
+	var/station_prob = 20
+
 	/// unique id
 	var/id
 	/// next id
@@ -54,13 +68,37 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	InitializeLevel()
 
 /**
+ * # InitializeLevel
  * creates our zlevel
+ *
+ * ### crab related (see `rustg_cnoise_generate`)
+ * ![funny crab](https://cdn.discordapp.com/emojis/839067599496675348.png?v=1)
  */
 /datum/overmap/proc/InitializeLevel()
 	if(z || z_datum)
 		CRASH("Duplicate InitializeLevel detected: [z] [z_datum]")
 	z_datum = SSmapping.add_new_zlevel("Overmap_[id]", list(ZTRAIT_LINKAGE = UNAFFECTED))
 	z = z_datum.z_value
+
+	// BEGIN generation (SPACE ASTEROID TGEN)
+	string_gen = rustg_cnoise_generate("[initial_closed_chance]", "[smoothing_iterations]", "[birth_limit]", "[death_limit]", "[world.maxx]", "[world.maxy]") //Generate the raw CA data
+	var/turf/A = get_turf(locate(0, 0, z))
+	var/turf/B = get_turf(locate(world.maxx, world.maxx, z))
+	var/block = block(A, B)
+	for(var/t in block)
+		var/turf/T = t
+		var/closed = text2num(string_gen[world.maxx * (T.y - 1) + T.x])
+		if (closed)
+			if(prob(80))
+				InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
+			else
+				InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
+		else
+			// station
+			if(prob(20))
+				InstantiateObject(/atom/movable/overmap_object/preset/generated, T.loc.x, T.loc.y)
+			continue
+
 
 /**
  * processing tick

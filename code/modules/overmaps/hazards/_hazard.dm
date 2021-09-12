@@ -17,6 +17,10 @@
 	. = ..()
 	if(!istype(AM, /atom/movable/overmap_object))
 		return
+
+	if(istype(AM, src.type))
+		return
+
 	var/atom/movable/overmap_object/O = AM
 	O.AddHazard(src, hazard_id, hazard_strength)
 

@@ -8,7 +8,7 @@
 	/// default screen loc
 	var/default_screen_loc = "CENTER"
 
-/atom/movable/overmap_hud/Initialize(mapoad, datum/overmap_view/creator)
+/atom/movable/overmap_hud/Initialize(mapload, datum/overmap_view/creator)
 	. = ..()
 	if(!istype(creator))
 		CRASH("Invalid creator view")
