@@ -14,3 +14,13 @@ GLOBAL_DATUM(game_master, /datum/game_master)
 	/// storytellers
 	var/list/datum/gm_mode/storytellers
 
+	/// active storyteller
+	var/datum/gm_mode/storyteller
+	/// ticking processes
+	var/list/datum/gm_process/processing
+
+	/// postponed for
+	var/postponed_for = 0
+	/// paused?
+	var/paused = FALSE
+

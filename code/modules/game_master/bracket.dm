@@ -16,6 +16,8 @@
 	var/list/disabled
 
 /datum/gm_bracket/New()
+	if(!id)
+		id = "[path]"
 	actions = list()
 	disabled = list()
 
