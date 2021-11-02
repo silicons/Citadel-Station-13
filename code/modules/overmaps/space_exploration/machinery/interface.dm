@@ -1,7 +1,7 @@
 /**
  * Interface subtype
  * Controls the ship
- * Uses control columns to get what the can control
+ * Uses control columns to get what they can control
  */
 /obj/machinery/ship/interface
 	name = "ship control interface"
