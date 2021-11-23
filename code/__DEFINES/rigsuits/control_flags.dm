@@ -17,3 +17,7 @@
 #define RIG_CONTROL_UI_MODULES					(1<<5)
 /// Can deploy/undeploy pieces
 #define RIG_CONTROL_DEPLOY						(1<<6)
+/// Can deploy the suit unmanned
+#define RIG_CONTROL_UNMANNED_ACTIVATION			(1<<7)
+/// Can modify control flags of other controllers that do not have this flag
+#define RIG_CONTROL_PERMISSION_PANEL			(1<<8)

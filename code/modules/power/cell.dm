@@ -23,6 +23,9 @@
 	var/grown_battery = FALSE // If it's a grown that acts as a battery, add a wire overlay to it.
 	rad_flags = RAD_NO_CONTAMINATE // Prevent the same cheese as with the stock parts
 
+	/// Cell type
+	var/cell_type = CELL_TYPE_DEFAULT
+
 /obj/item/stock_parts/cell/get_cell()
 	return src
 

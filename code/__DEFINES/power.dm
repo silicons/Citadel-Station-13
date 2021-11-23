@@ -6,3 +6,9 @@
 #define WATTS / 0.002
 ///conversion ratio from watts to joules
 #define JOULES * 0.002
+
+// cell types
+/// normal power cells
+#define CELL_TYPE_DEFAULT	(1<<0)
+/// Rig power cells
+#define CELL_TYPE_RIG		(1<<1)
