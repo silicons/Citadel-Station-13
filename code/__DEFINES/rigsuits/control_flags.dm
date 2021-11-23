@@ -21,3 +21,5 @@
 #define RIG_CONTROL_UNMANNED_ACTIVATION			(1<<7)
 /// Can modify control flags of other controllers that do not have this flag
 #define RIG_CONTROL_PERMISSION_PANEL			(1<<8)
+/// Can use the command line interface - someone with access to the back panel can ALWAYS do this!
+#define RIG_CONTROL_DEBUG_INTERFACE				(1<<9)

@@ -7,6 +7,60 @@
 	icon = 'icons/modules/rigsuits/rigs.dmi'
 	icon_state = ""
 
+	// Basics
+	/// Active theme
+	var/datum/rig_theme/theme = /datum/rig_theme
+
+	// Pieces
+	/// all pieces
+	var/list/obj/item/pieces
+
+	// Components
+	/// all components
+	var/list/obj/item/rig_component/components
+
+	// Integrals - singleton components
+	/// armor
+	var/obj/item/rig_component/integral/armor/integral_armor
+	/// environmental
+	var/obj/item/rig_component/integral/environmental/integral_environmental
+	/// headlamp
+	var/obj/item/rig_component/integral/light/integral_light
+	/// magboots
+	var/obj/item/rig_component/integral/magboots/integral_magboots
+
+	// Logistics
+	/// Cached slot usage - ordered tuple based on theme
+	var/list/cached_slots
+	/// Cached size usage - ordered tuple based on theme
+	var/list/cached_sizes
+	/// Cached weight
+	var/cached_weight
+
+	// Control
+	/// users - associated to control flag
+	var/list/users
+	/// master user - effectively can do everything - usually the pilot, if it isn't, they're probably being hijacked
+	var/mob/living/owner
+
+	// Maintenance
+	/// debug log - up to 20 entries, output by debug interface
+	var/list/debug_logz
+
+	// UI
+	/// list of components that need their ui_data updated
+	var/list/obj/item/rig_component/ui_update_pending
+	/// list of components that need their ui_static_data updated
+	var/list/obj/item/rig_component/ui_static_update_pending
+	/// list of components that need their ui_data for the maintenance panel updated
+	var/list/obj/item/rig_component/maintenance_ui_update_pending
+	/// list of components that need their ui_static_data for the maintenance panel updated
+	var/list/obj/item/rig_component/maintenance_ui_static_update_pending
+	/// ui static update timerid for the maintenance panel
+	var/maintenance_static_update_timerid
+	/// ui static update timerid
+	var/static_update_timerid
+
 // WARNING: Quick deploy onto only supports humans with back slots for now!
 /obj/item/rig/Initialize(mapload, datum/rig_theme/theme_override, mob/living/carbon/human/quick_deploy_onto)
 	. = ..()
@@ -26,6 +80,11 @@
  * For when admins are dunces
  */
 /obj/item/rig/proc/rebuild_internal_datastructures()
+#warn rebuild cached slots
+#warn rebuild cached sizes
+#warn rebuild cached weight
+#warn rebuild integrals
+#warn rebuild ui updates
 
 /**
  * Applies a theme
