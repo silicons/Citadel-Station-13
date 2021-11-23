@@ -56,10 +56,10 @@
 	var/list/obj/item/rig_component/maintenance_ui_update_pending
 	/// list of components that need their ui_static_data for the maintenance panel updated
 	var/list/obj/item/rig_component/maintenance_ui_static_update_pending
-	/// ui static update timerid for the maintenance panel
-	var/maintenance_static_update_timerid
-	/// ui static update timerid
+	/// ui static update timerid for both normal and maintenance panel
 	var/static_update_timerid
+	/// debug log needs flushing?
+	var/flush_debug_log = FALSE
 
 // WARNING: Quick deploy onto only supports humans with back slots for now!
 /obj/item/rig/Initialize(mapload, datum/rig_theme/theme_override, mob/living/carbon/human/quick_deploy_onto)
