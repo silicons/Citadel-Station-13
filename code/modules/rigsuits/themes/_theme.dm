@@ -56,10 +56,10 @@ GLOBAL_LIST_EMPTY(rig_themes)
 	)
 	/// rig piece flags
 	var/list/piece_flags = list(
-		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT,
-		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT,
-		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT,
-		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT
+		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT | RIG_PIECE_ENVIRONMENTAL_REQUIRES_SEAL | RIG_PIECE_AUTODEPLOYS | RIG_PIECE_RIGID, RIG_PIECE_ACTION_BUTTON,
+		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT | RIG_PIECE_ENVIRONMENTAL_REQUIRES_SEAL | RIG_PIECE_AUTODEPLOYS | RIG_PIECE_RIGID,
+		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT | RIG_PIECE_ENVIRONMENTAL_REQUIRES_SEAL | RIG_PIECE_AUTODEPLOYS | RIG_PIECE_RIGID,
+		RIG_PIECE_INHERITS_ARMOR | RIG_PIECE_INHERITS_ENVIRONMENTAL | RIG_PIECE_FIT_OVER_DEFAULT | RIG_PIECE_ENVIRONMENTAL_REQUIRES_SEAL | RIG_PIECE_AUTODEPLOYS | RIG_PIECE_RIGID,
 	)
 	/// rig piece base inv states
 	var/list/piece_inv_states = list(
@@ -85,6 +85,14 @@ GLOBAL_LIST_EMPTY(rig_themes)
 	var/integral_environmental = null
 	/// environmental module unmodifiable - if this is true, it won't take slots either!
 	var/integral_environmental_fixed = FALSE
+	/// starting headlamp
+	var/integral_light = /obj/item/rig_component/integral/light
+	/// headlamp fixed? won't take slots if so, can't be removed
+	var/integral_light_fixed = FALSE
+	/// starting magboots/traction boots
+	var/integral_magboots = /obj/item/rig_component/integral/magboots
+	/// magboots fixed? won't take slots if so, can't be removed
+	var/integrla_magboots_fixed = FALSE
 
 	// components
 	/// starting components - typepath list
@@ -149,9 +157,9 @@ GLOBAL_LIST_EMPTY(rig_themes)
 	var/unbreakable = FALSE
 	/// damage is all or nothing - no partial operation
 	var/damage_all_or_nothing = FALSE
-
-
-
-	// durability
-
-	// intrinsics
+	/// relative "error checking" capability - helps resist malfunctions before a piece fully breaks - from +100 to -100 (WIP)
+	var/reliability_bias = 0
+	/// max total weight before slowdown
+	var/carry_weight = 50
+	/// divide extra weight by this for slowdown
+	var/extra_weight_divisor = 30
