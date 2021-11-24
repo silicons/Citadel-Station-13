@@ -28,6 +28,12 @@
 		ui = new(user, src, "RigMaintenance", "[rig.name]")
 		ui.open()
 
+/datum/rig_maintenance_ui/ui_status(mob/user, datum/ui_state/state)
+	. = ..()
+
+/datum/rig_maintenance_ui/ui_state(mob/user)
+	. = ..()
+
 /datum/rig_maintenance_ui/ui_static_data(mob/user)
 	. = ..()
 
@@ -37,3 +43,5 @@
 /datum/rig_maintenance_ui/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 
+/datum/rig_maintenance_ui/ui_host(mob/user)
+	. = ..()

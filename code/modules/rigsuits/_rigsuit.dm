@@ -18,6 +18,10 @@
 	// Components
 	/// all components
 	var/list/obj/item/rig_component/components
+	/// Cached conflict types by area - ordered tuple
+	var/list/cached_local_conflicts
+	/// global conflict flags
+	var/cached_conflict_global
 
 	// Integrals - singleton components
 	/// armor
@@ -45,21 +49,19 @@
 
 	// Maintenance
 	/// debug log - up to 20 entries, output by debug interface
-	var/list/debug_logz
+	var/list/debug_logs
 
 	// UI
 	/// list of components that need their ui_data updated
 	var/list/obj/item/rig_component/ui_update_pending
 	/// list of components that need their ui_static_data updated
 	var/list/obj/item/rig_component/ui_static_update_pending
-	/// list of components that need their ui_data for the maintenance panel updated
-	var/list/obj/item/rig_component/maintenance_ui_update_pending
-	/// list of components that need their ui_static_data for the maintenance panel updated
-	var/list/obj/item/rig_component/maintenance_ui_static_update_pending
-	/// ui static update timerid for both normal and maintenance panel
-	var/static_update_timerid
+	/// list of components that need their maintenance ui data updated
+	var/list/obj/item/rig_component/ui_maintenance_update_pending
 	/// debug log needs flushing?
 	var/flush_debug_log = FALSE
+	/// module reflists need flushing?
+	var/flush_module_refs = FALSE
 
 // WARNING: Quick deploy onto only supports humans with back slots for now!
 /obj/item/rig/Initialize(mapload, datum/rig_theme/theme_override, mob/living/carbon/human/quick_deploy_onto)
