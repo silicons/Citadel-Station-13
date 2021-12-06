@@ -32,6 +32,8 @@
 	var/obj/item/rig_component/integral/light/integral_light
 	/// magboots
 	var/obj/item/rig_component/integral/magboots/integral_magboots
+	/// insulation
+	var/obj/item/rig_component/integral/insulation/integral_insulation
 
 	// Logistics
 	/// Cached slot usage - ordered tuple based on theme

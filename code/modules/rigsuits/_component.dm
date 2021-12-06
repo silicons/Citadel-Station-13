@@ -28,6 +28,12 @@
 	var/internal = FALSE
 	/// Maintenance actions
 	var/list/maintenance_actions
+	/// Brute damage
+	var/brute_dam = 0
+	/// Burn damage
+	var/burn_dam = 0
+	/// Max integrity
+	var/max_dam = 100
 
 /obj/item/rig_component/Initialize()
 	if(maintenance_actions)

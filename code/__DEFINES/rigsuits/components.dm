@@ -5,4 +5,3 @@
 // conflict flags
 /// None
 #define RIG_CONFLICT_NONE				NONE
-
