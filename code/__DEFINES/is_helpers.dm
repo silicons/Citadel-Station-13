@@ -263,3 +263,44 @@ GLOBAL_LIST_INIT(book_types, typecacheof(list(
 	/obj/item/book,
 	/obj/item/spellbook,
 	/obj/item/storage/book)))
+
+/proc/is_vector(list/L, len = 3)
+	if(!islist(L) || L.len != len)
+		return FALSE
+	for(var/i in 1 to L.len)
+		if(!isnum(L[i]))
+			return FALSE
+	return TRUE
+
+/proc/is_hexcolor(A)
+	if(!istext(A))
+		return FALSE
+	A = uppertext(A)
+	if(A[1] != "#")
+		return FALSE
+	var/size = length(A)
+	if(size != 7 && size != 9)
+		return FALSE
+	for(var/i in 2 to size)
+		var/ascii = text2ascii(A, i)
+		if(ascii != 35 && !ISINRANGE(ascii, 65, 70))
+			return FALSE
+	return TRUE
+
+/proc/is_colormatrix(list/L)
+	if(!islist(L))
+		return FALSE
+	var/size = L.len
+	switch(size)
+		// RGB
+		if(9 to 12)
+			return is_vector(L, size)
+		// RGBA
+		if(16 to 20)
+			return is_vector(L, size)
+		// Row-by-row
+		if(3 to 5)
+			for(var/i in 1 to size)
+				if(!is_hexcolor(L[i]) && !isnull(L[i]))
+					return FALSE
+			return TRUE

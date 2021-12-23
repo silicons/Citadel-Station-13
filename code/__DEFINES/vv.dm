@@ -84,6 +84,9 @@
 #define VV_HK_PARSE_GASSTRING "parse_gasstring"
 #define VV_HK_SET_VOLUME "set_volume"
 
+// /particles
+#define VV_HK_PARTICLE_PANEL "particle_edit"
+
 // /atom
 #define VV_HK_MODIFY_TRANSFORM "atom_transform"
 #define VV_HK_ADD_REAGENT "addreagent"
@@ -93,6 +96,7 @@
 // #define VV_HK_RADIATE "radiate"
 #define VV_HK_EDIT_FILTERS "edit_filters"
 // #define VV_HK_ADD_AI "add_ai"
+#define VV_HK_ATOM_PARTICLES "edit_particles"
 
 // /obj
 #define VV_HK_OSAY "osay"

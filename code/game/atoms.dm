@@ -984,6 +984,7 @@
 	// VV_DROPDOWN_OPTION(VV_HK_RADIATE, "Radiate")
 	VV_DROPDOWN_OPTION(VV_HK_EDIT_FILTERS, "Edit Filters")
 	// VV_DROPDOWN_OPTION(VV_HK_ADD_AI, "Add AI controller")
+	VV_DROPDOWN_OPTION(VV_HK_ATOM_PARTICLES, "Add/Edit Particles")
 
 /atom/vv_do_topic(list/href_list)
 	. = ..()
@@ -1030,6 +1031,11 @@
 	if(href_list[VV_HK_EDIT_FILTERS] && check_rights(R_VAREDIT))
 		var/client/C = usr.client
 		C?.open_filter_editor(src)
+	if(href_list[VV_HK_ATOM_PARTICLES] && check_rights(R_DEBUG))		// why debug? because people are IDIOTS
+		if(!particles)
+			particles = new /particles
+			particles.spawning = 0
+		particles.ui_interact(usr)
 
 /atom/vv_get_header()
 	. = ..()

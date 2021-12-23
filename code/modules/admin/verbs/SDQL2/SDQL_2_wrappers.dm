@@ -244,3 +244,6 @@
  */
 /atom/proc/_contents()
 	return contents.Copy()
+
+/proc/_generator(_type, _A, _B, _rand)
+	return generator(_type, _A, _B, _rand)
