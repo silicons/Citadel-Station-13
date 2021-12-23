@@ -15,10 +15,8 @@
 #define SERVICE_TYPE_INVALID		0
 /// control command - accepted by most network peripherals
 #define SERVICE_TYPE_COMMAND		1
-/// text messages whether for IRC or for PDAs/etc
-#define SERVICE_TYPE_TEXT			2
-/// voice message packets for radio/etc
-#define SERVICE_TYPE_VOICE			3
+/// command response from a control command
+#define SERVICE_TYPE_RESPONSE		2
 
 // header types
 /// sender ID - number
@@ -35,3 +33,15 @@
 #define VOICE_VOLUME_NORMAL			3
 /// shouting
 #define VOICE_VOLUME_LOUD			4
+
+// response codes
+/// timed out - receiving machinery is not pinging back
+#define STATUS_CODE_TRANSMIT_FAILURE		0
+/// OK - done as asked
+#define STATUS_CODE_OK						1
+/// Permission denied
+#define STATUS_CODE_UNAUTHORIZED			2
+/// timed out (but receiving machinery is active)
+#define STATUS_CODE_TIMEOUT					3
+/// invalid command
+#define STATUS_CODE_INVALID_COMMAND			4

@@ -79,7 +79,7 @@
 	var/datum/network_data/data
 
 /datum/network_packet/New()
-	
+
 
 /datum/network_packet/proc/get_sender()
 	return sender_id
