@@ -14,16 +14,45 @@
 	var/name = "Undefined Particle"
 	/// Player-facing name
 	var/scan_name = "???"
+	/// Discovered name
+	var/discovered_name = "Undefined Particle"
 	/// ID
 	var/id
 	/// next UID
 	var/static/id_next = 0
-	/// valid projection types
-	var/valid_projection_types = NONE
-	/// valid projection modes
-	var/valid_projection_modes = NONE
-	/// projection properties
-	var/projection_properties = NONE
+	/// Supported projections
+	var/list/supported_projections = list(
+
+	)
+
+
+	// /// Supports "burst" projections - AOEs, delayed AOEs, projectiles, "get target in range", etc - affect once, or every x ticks
+	// var/projection_burst = TRUE
+	// /// Supports "static" projections
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// /// valid projection types
+	// var/valid_projection_types = NONE
+	// /// valid projection modes
+	// var/valid_projection_modes = NONE
+	// /// default projection properties
+	// var/projection_properties = NONE
+	// /// default visual properties
+	// var/visual_properties = NONE
+	// /// the color associated with this particle
+	// var/color = "#ffffff"
+
 
 /datum/exotic_particle/New()
 	id = ++id_next
@@ -79,29 +108,31 @@
 
 // Projection procs
 /**
- * Project this particle
+ * Project this particle, returning a /datum/exotic_cast
  *
  * @params
  * * type - bitflag of the type of projection (e.g. self, beam, field, etc)
- * * mode - mode of the projection (e.g. destructive, constructive, synchronizing, etc)
- * * proeprties - projection properties (e.g. blocked by glass, etc). usually defaulting to the [projection_properties] set on this.
  * * variables - /datum/exotic_property instance = value list for additional information unable to be conveyed by flags
  * * origin - atom this projection originates from
  * * user - atom that's consciously responsible for triggering this projection
  * * targets - list of targets. unreliable/nonsensical for things like fields, but used for targeted/beam/etc
+ * * mode - mode of the projection (e.g. destructive, constructive, synchronizing, etc)
+ * * proeprties - projection properties (e.g. blocked by glass, etc). usually defaulting to the [projection_properties] set on this.
+ * * visuals - visuals usually defaulting to [projection_visuals]
  */
-/datum/exotic_particle/proc/Project(type, mode, properties = projection_properties, list/variables, atom/origin, atom/user, list/targets)
+/datum/exotic_particle/proc/Project(type, list/variables, atom/origin, atom/user, list/targets, mode, properties = projection_properties, visuals = projection_visuals)
 
 /**
  * Project this particle constantly, returning a /datum/exotic_field.
  *
  * @params
  * * type - bitflag of the type of projection (e.g. self, beam, field, etc)
- * * mode - mode of the projection (e.g. destructive, constructive, synchronizing, etc)
- * * proeprties - projection properties (e.g. blocked by glass, etc). usually defaulting to the [projection_properties] set on this.
  * * variables - /datum/exotic_property instance = value list for additional information unable to be conveyed by flags
  * * origin - atom this projection originates from
  * * user - atom that's consciously responsible for triggering this projection
  * * targets - list of targets. unreliable/nonsensical for things like fields, but used for targeted/beam/etc
+ * * mode - mode of the projection (e.g. destructive, constructive, synchronizing, etc)
+ * * proeprties - projection properties (e.g. blocked by glass, etc). usually defaulting to the [projection_properties] set on this.
+ * * visuals - visuals usually defaulting to [projection_visuals]
  */
-/datum/exotic_particle/proc/Field(type, mode, properties = projection_properties, list/variables, atom/origin, atom/user, list/targets)
+/datum/exotic_particle/proc/Field(type, list/variables, atom/origin, atom/user, list/targets, mode, properties = projection_properties, visuals = projection_visuals)

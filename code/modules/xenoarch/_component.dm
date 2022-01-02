@@ -20,3 +20,9 @@
  */
 /datum/component/anomaly
 
+/datum/component/anomaly/Initialize()
+	if(!isobj(parent))
+		return COMPONENT_INCOMPATIBLE
+	if((. = ..()) == COMPONENT_INCOMPATIBLE)
+		return
+

@@ -37,3 +37,18 @@
 #define EXOTIC_NO_MOBS							(1<<4)
 /// For fields, attempt to simulate a radial burst
 #define EXOTIC_YES_WAVE							(1<<5)
+
+// visual default flags
+/// sparkle of particle color on afflicted mobs
+#define EXOTIC_VISUAL_DEFAULT_SPARKLE_MOBS		(1<<0)
+/// sparkle of particle color on everything
+#define EXOTIC_VISUAL_DEFAULT_SPARKLE_ALL		(1<<1)
+/// wave of particle color
+#define EXOTIC_VISUAL_DEFAULT_WAVE				(1<<2)
+/// default scale visual alpha/intensity to intensity
+#define EXOTIC_VISUAL_DEFAULT_SCALE				(1<<3)
+
+/// minimum particle intensity
+#define EXOTIC_INTENSITY_MIN					0
+/// maximum particle intensity
+#define EXOTIC_INTENSITY_MAX					1

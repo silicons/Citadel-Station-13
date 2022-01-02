@@ -12,6 +12,8 @@
 	var/projection = NONE
 	/// projection properties passed in
 	var/properties = NONE
+	/// visual properties passed in
+	var/visuals = NONE
 
 	/// turfs already afflicted
 	var/list/turf/turfS_hit = list()
@@ -27,3 +29,4 @@
 	var/range = 1
 	/// target list - atoms, or angles clockwise from NORTH.
 	var/list/targets = list()
+

@@ -13,6 +13,8 @@
 	var/projection = NONE
 	/// projection properties passed in
 	var/properties = NONE
+	/// visual flags passed in
+	var/visuals = NONE
 
 	/// turfs currently afflicted
 	var/list/turf/turfs = list()
