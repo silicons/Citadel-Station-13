@@ -190,4 +190,4 @@
 
 /atom/movable/screen/plane_master/admin/above
 	name = "admin overlighting plane"
-	plane = ADMIN_PLANE_OVER
+	plane = ADMIN_PLANE_ABOVE

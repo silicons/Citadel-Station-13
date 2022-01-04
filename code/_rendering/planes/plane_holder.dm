@@ -42,6 +42,8 @@
 
 /datum/plane_holder/proc/ApplyToClient(client/C)
 	C.screen |= planes
+	for(var/atom/movable/screen/plane_master/P in planes)
+		P.backdrop(C.mob)
 	clients |= C
 	RegisterSignal(C, COMSIG_PARENT_QDELETING, .proc/RemoveFromClient)
 
@@ -64,6 +66,38 @@
 	if(override)
 		LAZYSET(override_colors, "[plane]", color)
 	P.color = color
+
+/**
+ * Gets the plane master object of a plane
+ */
+/datum/plane_holder/proc/GetPlane(plane)
+	RETURN_TYPE(/atom/movable/screen/plane_master)
+	return plane_lookup["[plane]"]
+
+/**
+ * Gets relevant game planes, usually used for effects like eyeblur
+ */
+/datum/plane_holder/proc/GetGamePlanes()
+	. = list(
+		GetPlane(GAME_PLANE),
+		GetPlane(FLOOR_PLANE),
+		GetPlane(WALL_PLANE),
+		GetPlane(ABOVE_WAL_PLANE)
+	)
+	listclearnulls(.)
+
+/**
+ * Gets relevant transform game planes for when you're doing something crazy like rotating them
+ */
+/datum/plane_holder/proc/GetTransformPlanes()
+	. = list(
+		GetPlane(GAME_PLANE),
+		GetPlane(FLOOR_PLANE),
+		GetPlane(WALL_PLANE),
+		GetPlane(ABOVE_WAL_PLANE),
+		GetPlane(LIGHTING_PLANE)
+	)
+	listclearnulls(.)
 
 /**
  * Used for secondary screens

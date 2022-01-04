@@ -10,7 +10,7 @@
 	ASSERT(type)
 	if(!category)
 		cateogry = type
-	var/atom/movable/screen/fullscreen/screen = screens[category]
+	var/atom/movable/screen/fullscreen/screen = fullscreens[category]
 	if (!screen || screen.type != type)
 		// needs to be recreated
 		clear_fullscreen(category, 0)
@@ -48,7 +48,7 @@
  * Wipes all fullscreens
  */
 /mob/proc/wipe_fullscreens()
-	for(var/category in screens)
+	for(var/category in fullscreens)
 		clear_fullscreen(category)
 
 /**
@@ -56,8 +56,8 @@
  */
 /mob/proc/hide_fullscreens()
 	if(client)
-		for(var/category in screens)
-			client.screen -= screens[category]
+		for(var/category in fullscreens)
+			client.screen -= fullscreens[category]
 
 /**
  * Ensures all fullscreens are on client.
@@ -65,8 +65,8 @@
 /mob/proc/reload_fullscreen()
 	if(client)
 		var/atom/movable/screen/fullscreen/screen
-		for(var/category in screens)
-			screen = screens[category]
+		for(var/category in fullscreens)
+			screen = fullscreens[category]
 			if(screen.ShouldShow(src))
 				screen.SetView(client.view)
 				client.screen |= screen

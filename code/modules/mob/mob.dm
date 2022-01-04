@@ -46,9 +46,6 @@
 	update_config_movespeed()
 	update_movespeed(TRUE)
 	initialize_actionspeed()
-	if(innate_atom_huds)
-		innate_atom_huds = typelist(NAMEOF(src, innate_atom_huds), innate_atom_huds)
-		initialize_innate_atom_huds()
 	hook_vr("mob_new",list(src))
 
 /mob/GenerateTag()
