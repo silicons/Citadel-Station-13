@@ -2,6 +2,10 @@
  * Base type of rig components.
  */
 /obj/item/rig_component
+	/// name shown in rig - defaults to name
+	var/component_name
+	/// desc shown in rig - defaults to desc
+	var/component_desc
 	/// Currently attached rig. Set by rig attach/detach procs.
 	var/obj/item/rig/host
 	/// Rig component type
@@ -16,6 +20,8 @@
 	var/size = 0
 	/// Prevent the **exact** same type of component from being mounted if one's already in ANY of the sections this occupies
 	var/prevent_duplicates = TRUE
+	/// Automatically allow changing attachment side of this component for arms/legs
+	var/allow_changing_side = TRUE
 	/// Prevent anything with these conflict types from being mounted if there's one in any sections that this occupies
 	var/conflicts_with_locally = RIG_CONFLICT_NONE
 	/// Prevent anything with these conflict types from being mounted if there's any in the entire rigsuit
@@ -89,8 +95,8 @@
 /obj/item/rig_component/proc/rig_ui_static_data(mob/user)
 	. = list()
 	.["ui"] = ui_name
-	.["name"] = name
-	.["desc"] = desc
+	.["name"] = component_name || name
+	.["desc"] = component_desc || desc
 	.["options"] = rig_options_static()
 
 /**
@@ -132,7 +138,7 @@
  * UI options
  *
  * Returns a list of action type = list(params), see __DEFINES/rigsuits/ui.dm
- * This should hold **normal** data only. Params go in here, list[RIG_UI_OPTION_TYPE_DEFINE] = list(params)
+ * This should hold **normal** data only. Params go in here, list(list(params), list(params), ...). Same order as rig_options_static for each option.
  *
  * The reason this is a proc is because no admin in their right mind should ever try to varedit this.
  */
@@ -149,3 +155,19 @@
  */
 /obj/item/rig_component/proc/update_ui_static()
 	host?.queue_ui_static_update()
+
+#warn impl all of this
+/obj/item/rig_component/attackby(obj/item/I, mob/living/user, params)
+	. = ..()
+	// welder check
+
+	// cable coil check
+
+	// screwdriver check
+
+/obj/item/rig_component/proc/auto_change_side(mob/living/user)
+
+/obj/item/rig_component/proc/considered_side_mounted()
+
+/obj/item/rig_component/proc/is_left_side()
+

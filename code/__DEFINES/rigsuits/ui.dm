@@ -11,8 +11,10 @@
  * Read code/modules/rigsuits/_component.dm for how to handle these. Do not attempt to handle this manually in rig_ui_act()! Not snowflaking this is crucial for hotbind functionality.
  */
 
-/// Display static text. Params: "text"
+/// Display text. Params: "text"
 #define RIG_UI_OPTION_TEXT_DISPLAY			"text"
+/// Display static text. Static params: "text"
+#define RIG_UI_OPTION_STATIC_TEXT			"static_text"
 /// List of named buttons. Static params: "button1", "button2", ... ; Params: None
 #define RIG_UI_OPTION_BUTTON_LIST			"buttons"
 /// List of named toggles. Static params: list("activetext", "inactivetext", "key"), ..., ... ; Params: list("key1", "key2", ...) = keys that are **on**
