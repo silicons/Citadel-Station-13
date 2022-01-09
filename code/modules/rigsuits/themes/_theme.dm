@@ -27,7 +27,7 @@ GLOBAL_LIST_EMPTY(rig_themes)
 	/// override "[name] suit control module" default naming style
 	var/name_is_literal = FALSE
 	/// name - renders as "[name]" suit control module
-	var/name = "Unknown"
+	var/name = "unknown"
 	/// Description - literal string
 	var/desc = "An unknown brand of suit."
 
@@ -75,6 +75,13 @@ GLOBAL_LIST_EMPTY(rig_themes)
 		"gloves",
 		"shoes"
 	)
+	/// rig piece base names
+	var/list/piece_names = list(
+		"helmet",
+		"chassis",
+		"gauntlets",
+		"boots"
+	)
 
 	// integral components
 	/// starting armor
@@ -92,7 +99,11 @@ GLOBAL_LIST_EMPTY(rig_themes)
 	/// starting magboots/traction boots
 	var/integral_magboots = /obj/item/rig_component/integral/magboots
 	/// magboots fixed? won't take slots if so, can't be removed
-	var/integrla_magboots_fixed = FALSE
+	var/integral_magboots_fixed = FALSE
+	/// starting storage component
+	var/integral_storage = /obj/item/rig_component/integral/storage
+	/// storage component fixed? won't take slots if so, can't be removed
+	var/integral_storage_fixed = FALSE
 
 	// components
 	/// starting components - typepath list
