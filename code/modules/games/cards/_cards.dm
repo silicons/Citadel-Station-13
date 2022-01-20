@@ -1,20 +1,132 @@
-/*
-|| A Deck of Cards for playing various games of chance ||
-*/
+/**
+ * Represents the concept of a playing card
+ */
+/datum/card
+	/// name
+	var/name = "card"
+	/// desc
+	var/desc = "A nondescript card."
+	/// default icon - don't use this
+	var/icon
+	/// default icon state - don't use this
+	var/icon_state
+	/// hitsound
+	var/card_hitsound
+	/// card resistance flags
+	var/card_resistance_flags = FLAMMABLE
+	/// attack verbs
+	var/list/card_attack_verbs = list(
+		"tapped"
+	)
+	/// force
+	var/card_force = 0
+	/// throwforce
+	var/card_throw_force = 0
+	/// throwspeed
+	var/card_throw_speed = 3
+	/// throwrange
+	var/card_throw_range = 7
+	/// can flip
+	var/can_flip = FALSE
+	/// can card be used for harm intent advanced throwing?
+	var/can_hurl = FALSE
+	/// advanced throw force
+	var/card_hurl_force = 0
+	/// advanced throw range
+	var/card_hurl_range = 14
+	/// advanced throw speed (projectile speed, so pixels per second!)
+	var/card_hurl_speed = TILES_TO_PIXELS(15)
 
-/obj/item/toy/cards
+/datum/card/proc/constrct_name(down)
+	return name
+
+/datum/card/proc/construct_desc(down)
+	return desc
+
+/datum/card/proc/construct_icon(down)
+	return icon
+
+/datum/card/proc/construct_icon_state(down)
+	return icon_state
+
+/datum/card/proc/ApplyTo(obj/item/toy/card/card)
+	UpdateVariables(card)
+
+/datum/card/proc/UpdateVariables(obj/item/toy/card/card)
+	if(!can_flip)
+		card.flipped = FALSE
+
+	card.name = construct_name(card.flipped)
+	card.desc = construct_desc(card.flipped)
+	card.icon = construct_icon(card.flipped)
+	card.icon = construct_icon_state(card.flipped)
+	card.hitsound = card_hitsound
+	card.force = card_force
+	card.throwforce = card_throw_force
+	card.attack_verbs = card_attack_verbs
+	card.throw_range = card_throw_range
+	card.throw_speed = card_throw_speed
+	card.resistance_flags = card_resistance_flags
+
+/datum/card/proc/RemoveFrom(obj/item/toy/card/card)
+	card.attack_verbs = list(
+		"tapped"
+	)
+	card.resistance_flags = FLAMMABLE
+
+/datum/card/proc/InterceptThrow(obj/item/toy/card/card, mob/thrower, params, atom/target)
+	#warn hurling
+
+/datum/card/proc/Hurl(obj/item/toy/card/card, mob/thrower, params, atom/target)
+
+/datum/card/proc/ThrowImpact(obj/item/toy/card/card, atom/impacted, hurled = FALSE)
+
+/obj/item/toy/card
+	name = "card"
+	desc = "A nondescript card."
+	#warn icon icon state
+	icon = ""
+	icon_state = ""
+	/// card data
+	var/datum/card/card
+	/// flipped down?
+	var/flipped = FALSE
+
+/obj/item/toy/card/Initialize(mapload, datum/card/card)
+	if(card)
+		SetCard(card)
+	return ..()
+
+/obj/item/toy/card/Destroy()
+	SetCard(null)
+	return ..()
+
+/obj/item/toy/card/proc/SetCard(datum/card/card)
+	src.card?.RemoveFrom(src)
+	src.card = card
+	src.card?.ApplyTo(src)
+
+/obj/item/toy/card/proc/Update()
+	card?.UpdateVariables(src)
+
+/obj/item/toy/card/suicide_act(mob/living/carbon/user)
+	user.visible_message("<span class='suicide'>[user] is slitting [user.p_their()] wrists with \the [src]! It looks like [user.p_they()] [user.p_have()] a crummy hand!</span>")
+	playsound(src, 'sound/items/cardshuffle.ogg', 50, 1)
+	return BRUTELOSS
+
+#warn throw hooks
+
+/obj/item/toy/deck
+	name = "deck of cards"
+	desc = "A nondescript deck of cards""
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
+
+
 	var/parentdeck = null
 	var/deckstyle = "nanotrasen"
-	var/card_hitsound = null
-	var/card_force = 0
-	var/card_throwforce = 0
-	var/card_throw_speed = 3
-	var/card_throw_range = 7
-	var/list/card_attack_verb = list("attacked")
 
-/obj/item/toy/cards/suicide_act(mob/living/carbon/user)
+/obj/item/toy/deck/suicide_act(mob/living/carbon/user)
 	user.visible_message("<span class='suicide'>[user] is slitting [user.p_their()] wrists with \the [src]! It looks like [user.p_they()] [user.p_have()] a crummy hand!</span>")
 	playsound(src, 'sound/items/cardshuffle.ogg', 50, 1)
 	return BRUTELOSS
@@ -226,7 +338,7 @@
 	newobj.resistance_flags = sourceobj.resistance_flags
 
 /**
-  * check_menu: Checks if we are allowed to interact with a radial menu
+  * check_menu: Checks if we are allowed to interact with a radial men
   *
   * Arguments:
   * * user The mob interacting with a menu
