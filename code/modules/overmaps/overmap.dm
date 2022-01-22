@@ -23,7 +23,7 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	/// processing objects
 	var/list/atom/movable/overmap_object/processing
 
-	/* tgen */
+	/* asteroid tgen */
 	/// terrain gen data
 	var/string_gen
 	///Chance of cells starting closed - we want more open cells
@@ -34,8 +34,9 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	var/birth_limit = 5
 	///How little neighbours does a alive cell need to die - ditto
 	var/death_limit = 2
-	///prob of spawning a station
-	var/station_prob = 20
+
+	/// How many POI should we place?
+	var/poi_count = 100
 
 	/// unique id
 	var/id
@@ -80,7 +81,7 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	z_datum = SSmapping.add_new_zlevel("Overmap_[id]", list(ZTRAIT_LINKAGE = UNAFFECTED))
 	z = z_datum.z_value
 
-	// BEGIN generation (SPACE ASTEROID TGEN)
+	// "TERRAIN" PHASE - ASTEROIDS & ION STORMS (TO BE IMPLEMENTED)
 	string_gen = rustg_cnoise_generate("[initial_closed_chance]", "[smoothing_iterations]", "[birth_limit]", "[death_limit]", "[world.maxx]", "[world.maxy]") //Generate the raw CA data
 	var/turf/A = get_turf(locate(0, 0, z))
 	var/turf/B = get_turf(locate(world.maxx, world.maxx, z))
@@ -89,16 +90,22 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 		var/turf/T = t
 		var/closed = text2num(string_gen[world.maxx * (T.y - 1) + T.x])
 		if (closed)
-			if(prob(80))
-				InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
-			else
-				InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
-		else
-			// station
-			if(prob(20))
-				InstantiateObject(/atom/movable/overmap_object/preset/generated, T.loc.x, T.loc.y)
-			continue
+			InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
 
+	CHECK_TICK
+
+	// POI(1) PHASE - STATIONS & PLANETS
+	// for (var/i in max_ruins) => place POIs at random places.
+
+	// POI(2) PHASE - SHIPS
+	// for (var/i in max_ruins) => place POIs at random places.
+
+	CHECK_TICK
+
+	// DECORATE PHASE
+	// then finally place the ship & other static things
+	// place it on center: we have to do some check to see if it a: issn't stuck in rocks or b: isn't trapped in rocks (pocketed)
+	// place somewhre on the map: random, if rock then we go againe, probably will not place the ship in rock pockets right? <- clueless
 
 /**
  * processing tick
@@ -129,6 +136,13 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	processing -= O
 
 /**
+ * Creates a new POI with respect on it's banned spawn places
+ */
+/datum/overmap/proc/InstantiatePOIObject(atom/movable/overmap_object/thing, x, y, angle, list/alist)
+	// implement me
+	return InstantiateObject(thing, x, y, angle, alist)
+
+/**
  * Instantiates an object in us
  */
 /datum/overmap/proc/InstantiateObject(path, x, y, angle, list/alist)
@@ -141,6 +155,7 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	O.real_y = y
 	O.angle = angle
 	O.MoveToOffsets()
+	return O
 
 /**
  * Resolves the turf a given real x/y value is on
