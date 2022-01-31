@@ -34,6 +34,9 @@
 	var/last_move = 0
 	var/area			= null
 
+	/// Timers are now handled by clients, not by doing a mess on the item and multiple people overwriting a single timer on the object, have fun.
+	var/tip_timer = null
+
 	/// Last time we Click()ed. No clicking twice in one tick!
 	var/last_click = 0
 
@@ -187,3 +190,6 @@
 	var/list/block_parry_hinted = list()
 	/// moused over objects, currently capped at 7. this is awful, and should be replaced with a component to track it using signals for parrying at some point.
 	var/list/moused_over_objects = list()
+
+	/// AFK tracking
+	var/last_activity = 0

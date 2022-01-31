@@ -184,7 +184,7 @@
 	hitcost = 75 //Costs more than a standard cyborg esword
 	w_class = WEIGHT_CLASS_NORMAL
 	sharpness = SHARP_EDGED
-	light_color = "#40ceff"
+	light_color = LIGHT_COLOR_RED
 	tool_behaviour = TOOL_SAW
 	toolspeed = 0.7
 
@@ -193,7 +193,7 @@
 
 /obj/item/melee/transforming/energy/sword/saber
 	possible_colors = list("red" = LIGHT_COLOR_RED, "blue" = LIGHT_COLOR_LIGHT_CYAN, "green" = LIGHT_COLOR_GREEN, "purple" = LIGHT_COLOR_LAVENDER)
-	unique_reskin = list("Sword" = "sword0", "saber" = "esaber0")
+	unique_reskin = list("Sword" = "sword0", "Saber" = "esaber0")
 	var/hacked = FALSE
 	var/saber = FALSE
 

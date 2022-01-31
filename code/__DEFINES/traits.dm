@@ -121,6 +121,7 @@
 #define TRAIT_ROBOTIC_ORGANISM	"robotic_organism"
 #define TRAIT_ROBOT_RADSHIELDING	"robot_radshielding"
 #define TRAIT_NOBREATH			"no_breath"
+#define TRAIT_AUXILIARY_LUNGS	"auxiliary_lungs"	//Lungs not neccessary required due to nobreath, but provides some other helpful function.
 #define TRAIT_ANTIMAGIC			"anti_magic"
 #define TRAIT_HOLY				"holy"
 #define TRAIT_DEPRESSION		"depression"
@@ -222,6 +223,8 @@
 /// forces us to not render our overlays
 #define TRAIT_HUMAN_NO_RENDER			"human_no_render"
 #define TRAIT_TRASHCAN					"trashcan"
+///Used for fireman carry to have mobe not be dropped when passing by a prone individual.
+#define TRAIT_BEING_CARRIED "being_carried"	
 
 // mobility flag traits
 // IN THE FUTURE, IT WOULD BE NICE TO DO SOMETHING SIMILAR TO https://github.com/tgstation/tgstation/pull/48923/files (ofcourse not nearly the same because I have my.. thoughts on it)
@@ -343,3 +346,9 @@
 #define STICKY_NODROP "sticky-nodrop" //sticky nodrop sounds like a bad soundcloud rapper's name
 #define TRAIT_SACRIFICED "sacrificed" //Makes sure that people cant be cult sacrificed twice.
 #define TRAIT_SPACEWALK "spacewalk"
+
+
+/// obtained from mapping helper
+#define MAPPING_HELPER_TRAIT "mapping-helper"
+/// Trait associated with mafia
+#define MAFIA_TRAIT "mafia"

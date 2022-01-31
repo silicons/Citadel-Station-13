@@ -62,6 +62,7 @@
 	var/fermiIsReacting = FALSE //that prevents multiple reactions from occurring (i.e. add_reagent calls to process_reactions(), this stops any extra reactions.)
 	var/fermiReactID //instance of the chem reaction used during a fermireaction, kept here so it's cache isn't lost between loops/procs.
 	var/value_multiplier = DEFAULT_REAGENTS_VALUE //used for cargo reagents selling.
+	var/force_alt_taste = FALSE
 
 /datum/reagents/New(maximum=100, new_flags = NONE, new_value = DEFAULT_REAGENTS_VALUE)
 	maximum_volume = maximum
@@ -344,6 +345,8 @@
 	if(owner && reagent)
 		if(!owner.reagent_check(reagent, delta_time, times_fired) != TRUE)
 			return
+		if(is_reagent_processing_invalid(reagent, owner))
+			return reagent.on_invalid_process(owner, delta_time, times_fired)
 		if(liverless && !reagent.self_consuming) //need to be metabolized
 			return
 		if(!reagent.metabolizing)
@@ -822,7 +825,7 @@
 	pH = REAGENT_NORMAL_PH
 	return 0
 
-/datum/reagents/proc/reaction(atom/A, method = TOUCH, volume_modifier = 1, show_message = 1)
+/datum/reagents/proc/reaction(atom/A, method = TOUCH, volume_modifier = 1, show_message = 1, from_gas = 0)
 	var/react_type
 	if(isliving(A))
 		react_type = "LIVING"
@@ -846,7 +849,7 @@
 					touch_protection = L.get_permeability_protection()
 				R.reaction_mob(A, method, R.volume * volume_modifier, show_message, touch_protection)
 			if("TURF")
-				R.reaction_turf(A, R.volume * volume_modifier, show_message)
+				R.reaction_turf(A, R.volume * volume_modifier, show_message, from_gas)
 			if("OBJ")
 				R.reaction_obj(A, R.volume * volume_modifier, show_message)
 
@@ -856,17 +859,16 @@
 	return FALSE
 
 //Returns the average specific heat for all reagents currently in this holder.
-/datum/reagents/proc/specific_heat()
+/datum/reagents/proc/heat_capacity()
 	. = 0
-	var/cached_amount = total_volume		//cache amount
 	var/list/cached_reagents = reagent_list		//cache reagents
 	for(var/I in cached_reagents)
 		var/datum/reagent/R = I
-		. += R.specific_heat * (R.volume / cached_amount)
+		. += R.specific_heat * R.volume
 
 /datum/reagents/proc/adjust_thermal_energy(J, min_temp = 2.7, max_temp = 1000)
-	var/S = specific_heat()
-	chem_temp = clamp(chem_temp + (J / (S * total_volume)), min_temp, max_temp)
+	var/S = heat_capacity()
+	chem_temp = clamp(chem_temp + (J / S), min_temp, max_temp)
 	if(istype(my_atom, /obj/item/reagent_containers))
 		var/obj/item/reagent_containers/RC = my_atom
 		RC.temp_check()
@@ -1120,47 +1122,54 @@
 	. = locate(type) in cached_reagents
 
 /datum/reagents/proc/generate_taste_message(minimum_percent=15)
-	// the lower the minimum percent, the more sensitive the message is.
 	var/list/out = list()
-	var/list/tastes = list() //descriptor = strength
-	if(minimum_percent <= 100)
-		for(var/datum/reagent/R in reagent_list)
-			if(!R.taste_mult)
-				continue
-
-			if(istype(R, /datum/reagent/consumable/nutriment))
-				var/list/taste_data = R.data
-				for(var/taste in taste_data)
-					var/ratio = taste_data[taste]
-					var/amount = ratio * R.taste_mult * R.volume
-					if(taste in tastes)
-						tastes[taste] += amount
-					else
-						tastes[taste] = amount
-			else
-				var/taste_desc = R.taste_description
-				var/taste_amount = R.volume * R.taste_mult
-				if(taste_desc in tastes)
-					tastes[taste_desc] += taste_amount
-				else
-					tastes[taste_desc] = taste_amount
-		//deal with percentages
-		// TODO it would be great if we could sort these from strong to weak
-		var/total_taste = counterlist_sum(tastes)
-		if(total_taste > 0)
-			for(var/taste_desc in tastes)
-				var/percent = tastes[taste_desc]/total_taste * 100
-				if(percent < minimum_percent)
+	if(!force_alt_taste)
+		// the lower the minimum percent, the more sensitive the message is.
+		var/list/tastes = list() //descriptor = strength
+		if(minimum_percent <= 100)
+			for(var/datum/reagent/R in reagent_list)
+				if(!R.taste_mult)
 					continue
-				var/intensity_desc = "a hint of"
-				if(ISINRANGE(percent, minimum_percent * 2, minimum_percent * 3)|| percent == 100)
-					intensity_desc = ""
-				else if(percent > minimum_percent * 3)
-					intensity_desc = "the strong flavor of"
-				if(intensity_desc != "")
-					out += "[intensity_desc] [taste_desc]"
+
+				if(istype(R, /datum/reagent/consumable/nutriment))
+					var/list/taste_data = R.data
+					for(var/taste in taste_data)
+						var/ratio = taste_data[taste]
+						var/amount = ratio * R.taste_mult * R.volume
+						if(taste in tastes)
+							tastes[taste] += amount
+						else
+							tastes[taste] = amount
 				else
-					out += "[taste_desc]"
+					var/taste_desc = R.taste_description
+					var/taste_amount = R.volume * R.taste_mult
+					if(taste_desc in tastes)
+						tastes[taste_desc] += taste_amount
+					else
+						tastes[taste_desc] = taste_amount
+			//deal with percentages
+			// TODO it would be great if we could sort these from strong to weak
+			var/total_taste = counterlist_sum(tastes)
+			if(total_taste > 0)
+				for(var/taste_desc in tastes)
+					var/percent = tastes[taste_desc]/total_taste * 100
+					if(percent < minimum_percent)
+						continue
+					var/intensity_desc = "a hint of"
+					if(ISINRANGE(percent, minimum_percent * 2, minimum_percent * 3)|| percent == 100)
+						intensity_desc = ""
+					else if(percent > minimum_percent * 3)
+						intensity_desc = "the strong flavor of"
+					if(intensity_desc != "")
+						out += "[intensity_desc] [taste_desc]"
+					else
+						out += "[taste_desc]"
+
+	else
+		// alternate taste is to force the taste of the atom if its a food item
+		if(my_atom && isfood(my_atom))
+			var/obj/item/reagent_containers/food/snacks/F = my_atom
+			out = F.tastes
 
 	return english_list(out, "something indescribable")
 

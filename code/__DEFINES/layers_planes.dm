@@ -38,6 +38,9 @@
 
 #define CHAT_PLANE -1 //We don't want heard messages to be hidden by FoV.
 
+/// Plane for balloon text (text that fades up)
+#define BALLOON_CHAT_PLANE -1.2
+
 #define CHAT_LAYER 12.0001 // Do not insert layers between these two values
 #define CHAT_LAYER_MAX 12.9999
 
@@ -64,8 +67,9 @@
 #define GAS_PIPE_VISIBLE_LAYER 2.47
 #define GAS_FILTER_LAYER 2.48
 #define GAS_PUMP_LAYER 2.49
-
 #define LOW_OBJ_LAYER 2.5
+///catwalk overlay of /turf/open/floor/plating/plating_catwalk
+#define CATWALK_LAYER 2.51
 #define LOW_SIGIL_LAYER 2.52
 #define SIGIL_LAYER 2.54
 #define HIGH_SIGIL_LAYER 2.56

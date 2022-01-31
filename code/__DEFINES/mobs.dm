@@ -295,7 +295,7 @@
 #define APPRENTICE_AGE_MIN		29	// youngest an apprentice can be
 #define SHOES_SLOWDOWN			 0	// How much shoes slow you down by default. Negative values speed you up
 #define SHOES_SPEED_SLIGHT	SHOES_SLOWDOWN - 1 // slightest speed boost to movement
-#define POCKET_STRIP_DELAY		40	// time taken (in deciseconds) to search somebody's pockets
+#define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE		15	// the amount of damage that airlocks deal when they crush you
 
 #define	HUNGER_FACTOR			 0.1	// factor at which mob nutrition decreases
@@ -347,3 +347,13 @@
 // / Breathing types. Lungs can access either by these or by a string, which will be considered a gas ID.
 #define BREATH_OXY		/datum/breathing_class/oxygen
 #define BREATH_PLASMA	/datum/breathing_class/plasma
+
+//Gremlins
+#define NPC_TAMPER_ACT_FORGET 1 //Don't try to tamper with this again
+#define NPC_TAMPER_ACT_NOMSG  2 //Don't produce a visible message
+
+//Game mode list indexes
+#define CURRENT_LIVING_PLAYERS	"living_players_list"
+#define CURRENT_LIVING_ANTAGS	"living_antags_list"
+#define CURRENT_DEAD_PLAYERS	"dead_players_list"
+#define CURRENT_OBSERVERS		"current_observers_list"

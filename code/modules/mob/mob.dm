@@ -1,9 +1,8 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
-	GLOB.mob_list -= src
-	GLOB.dead_mob_list -= src
-	GLOB.alive_mob_list -= src
+	remove_from_mob_list()
+	remove_from_dead_mob_list()
+	remove_from_alive_mob_list()
 	GLOB.all_clockwork_mobs -= src
-	GLOB.mob_directory -= tag
 	focus = null
 	LAssailant = null
 	movespeed_modification = null
@@ -22,12 +21,11 @@
 	return QDEL_HINT_HARDDEL
 
 /mob/Initialize()
-	GLOB.mob_list += src
-	GLOB.mob_directory[tag] = src
+	add_to_mob_list()
 	if(stat == DEAD)
-		GLOB.dead_mob_list += src
+		add_to_dead_mob_list()
 	else
-		GLOB.alive_mob_list += src
+		add_to_alive_mob_list()
 	set_focus(src)
 	prepare_huds()
 	for(var/v in GLOB.active_alternate_appearances)
@@ -238,6 +236,7 @@
 
 	if(istype(W))
 		if(equip_to_slot_if_possible(W, slot, FALSE, FALSE, FALSE, FALSE, TRUE))
+			W.apply_outline()
 			return TRUE
 
 	if(!W)
@@ -289,9 +288,6 @@
 			client.eye = loc
 	SEND_SIGNAL(src, COMSIG_MOB_RESET_PERSPECTIVE, A)
 	return TRUE
-
-/mob/proc/show_inv(mob/user)
-	return
 
 //view() but with a signal, to allow blacklisting some of the otherwise visible atoms.
 /mob/proc/fov_view(dist = world.view)
@@ -509,10 +505,6 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 		unset_machine()
 		src << browse(null, t1)
 
-	if(href_list["refresh"])
-		if(machine && in_range(src, usr))
-			show_inv(machine)
-
 	if(usr.canUseTopic(src, BE_CLOSE, NO_DEXTERY))
 		if(href_list["item"])
 			var/slot = text2num(href_list["item"])
@@ -528,12 +520,6 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 					usr.stripPanelUnequip(what,src,slot)
 			else
 				usr.stripPanelEquip(what,src,slot)
-
-	if(usr.machine == src)
-		if(Adjacent(usr))
-			show_inv(usr)
-		else
-			usr << browse(null,"window=mob[REF(src)]")
 
 // The src mob is trying to strip an item from someone
 // Defined in living.dm
@@ -555,12 +541,6 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 		return
 	if(isAI(M))
 		return
-
-/mob/MouseDrop_T(atom/dropping, atom/user)
-	. = ..()
-	if(ismob(dropping) && dropping != user)
-		var/mob/M = dropping
-		M.show_inv(user)
 
 /mob/proc/is_muzzled()
 	return FALSE

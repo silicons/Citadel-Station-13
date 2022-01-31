@@ -2,8 +2,6 @@
 
 GLOBAL_VAR(restart_counter)
 
-GLOBAL_VAR_INIT(tgs_initialized, FALSE)
-
 GLOBAL_VAR(topic_status_lastcache)
 GLOBAL_LIST(topic_status_cache)
 
@@ -16,7 +14,7 @@ GLOBAL_LIST(topic_status_cache)
 		call(debug_server, "auxtools_init")()
 		enable_debugging()
 	AUXTOOLS_CHECK(AUXMOS)
-#ifdef REFERENCE_TRACKING
+#ifdef EXTOOLS_REFERENCE_TRACKING
 	enable_reference_tracking()
 #endif
 	world.Profile(PROFILE_START)
@@ -76,7 +74,6 @@ GLOBAL_LIST(topic_status_cache)
 /world/proc/InitTgs()
 	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED)
 	GLOB.revdata.load_tgs_info()
-	GLOB.tgs_initialized = TRUE
 
 /world/proc/HandleTestRun()
 	//trigger things to run the whole process
@@ -114,6 +111,7 @@ GLOBAL_LIST(topic_status_cache)
 		GLOB.picture_log_directory = "data/picture_logs/[override_dir]"
 
 	GLOB.world_game_log = "[GLOB.log_directory]/game.log"
+	GLOB.world_suspicious_login_log = "[GLOB.log_directory]/suspicious_logins.log"
 	GLOB.world_virus_log = "[GLOB.log_directory]/virus.log"
 	GLOB.world_asset_log = "[GLOB.log_directory]/asset.log"
 	GLOB.world_attack_log = "[GLOB.log_directory]/attack.log"

@@ -6,6 +6,7 @@ GLOBAL_LIST_EMPTY(hair_styles_female_list)	//stores only hair names
 GLOBAL_LIST_EMPTY(facial_hair_styles_list)	//stores /datum/sprite_accessory/facial_hair indexed by name
 GLOBAL_LIST_EMPTY(facial_hair_styles_male_list)	//stores only hair names
 GLOBAL_LIST_EMPTY(facial_hair_styles_female_list)	//stores only hair names
+GLOBAL_LIST_EMPTY(hair_gradients_list) //stores /datum/sprite_accessory/hair_gradient indexed by name
 	//Underwear
 GLOBAL_LIST_EMPTY_TYPED(underwear_list, /datum/sprite_accessory/underwear/bottom)		//stores bottoms indexed by name
 GLOBAL_LIST_EMPTY(underwear_m)	//stores only underwear name
@@ -215,7 +216,13 @@ GLOBAL_LIST_INIT(jumpsuitlist, list(PREF_SUIT, PREF_SKIRT))
 #define UPLINK_PDA		"PDA"
 #define UPLINK_RADIO	"Radio"
 #define UPLINK_PEN		"Pen" //like a real spy!
-GLOBAL_LIST_INIT(uplink_spawn_loc_list, list(UPLINK_PDA, UPLINK_RADIO, UPLINK_PEN))
+#define UPLINK_IMPLANT "Implant"
+#define UPLINK_IMPLANT_WITH_PRICE "[UPLINK_IMPLANT] (-[UPLINK_IMPLANT_TELECRYSTAL_COST] TC)"
+// What we show to the user
+GLOBAL_LIST_INIT(uplink_spawn_loc_list, list(UPLINK_PDA, UPLINK_RADIO, UPLINK_PEN, UPLINK_IMPLANT_WITH_PRICE))
+// What is actually saved; if the uplink implant price changes, it won't affect save files then
+GLOBAL_LIST_INIT(uplink_spawn_loc_list_save, list(UPLINK_PDA, UPLINK_RADIO, UPLINK_PEN, UPLINK_IMPLANT))
+
 
 //List of cached alpha masked icons.
 GLOBAL_LIST_EMPTY(alpha_masked_worn_icons)
@@ -367,6 +374,7 @@ GLOBAL_LIST_INIT(job_heirlooms, list(
 	"Janitor" = list(/obj/item/mop),
 	"Scientist" = list(/obj/item/toy/plush/slimeplushie),
 	"Assistant" = list(/obj/item/clothing/gloves/cut/family),
+	"Prisoner" = list (/obj/item/pen/blue),
 	"Chaplain" = list(/obj/item/camera/spooky/family),
 	"Head of Personnel" = list(/obj/item/pinpointer/ian)
 	))
