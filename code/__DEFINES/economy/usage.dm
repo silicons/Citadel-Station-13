@@ -1,0 +1,5 @@
+#define CHARGE_FAILED_NO_ACCOUNT			"No account linked"
+#define CHARGE_FAILED_UNKONWN				"Unknown"
+#define CHARGE_FAILED_NOT_CURRENCY			"Not currency"
+#define CHARGE_FAILED_INSUFFICIENT_FUNDS	"Insufficient funds"
+#define CHARGE_FAILED_ACCESS_ERROR			"Access error"

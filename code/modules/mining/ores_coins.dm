@@ -364,6 +364,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 
 /*****************************Coin********************************/
 
+#warn refactor and move
 // The coin's value is a value of it's materials.
 // Yes, the gold standard makes a come-back!
 // This is the only way to make coins that are possible to produce on station actually worth anything.
@@ -438,17 +439,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		else
 			to_chat(user, "<span class='warning'>You need one length of cable to attach a string to the coin!</span>")
 			return
-	else if(istype(W, /obj/item/card/id))
-		var/obj/item/card/id/ID = W
-		if(!ID.registered_account)
-			to_chat(user, "<span class='warning'>[ID] doesn't have a linked account to deposit into!</span>")
-			return
-		for(var/obj/item/holochip/money in src.loc.contents)
-			ID.attackby(money, user)
-		for(var/obj/item/stack/spacecash/money in src.loc.contents)
-			ID.attackby(money, user)
-		for(var/obj/item/coin/money in src.loc.contents)
-			ID.attackby(money, user)
 	else
 		..()
 
