@@ -35,8 +35,7 @@
 	uid = ++uid_next
 
 /datum/bank_transaction/proc/Timestamp()
-	#warn impl - station time and date
 	if(!date)
-
+		date = CurrentEconomicDatestamp()
 	if(!time)
-		time = STATION_TIME_TIMESTAMP
+		time = CurrentEconomicTimestamp()

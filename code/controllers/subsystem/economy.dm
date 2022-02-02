@@ -4,6 +4,29 @@ SUBSYSTEM_DEF(economy)
 	init_order = INIT_ORDER_ECONOMY
 	runlevels = RUNLEVEL_GAME
 
+	/// all accounts
+	var/static/list/datum/bank_account/accounts = list()
+	/// all accounts associated from id as text
+	var/static/list/account_by_id = list()
+	/// next uid for economic machinery - icly this is some kind of UUID for devices that makes them identifiable
+	var/static/next_machine_uid = 0
+	/// payroll systems to tick every wait seconds
+	var/static/list/datum/payroll_system/payrolls = list()
+
+/datum/controller/subsystem/economy/Initialize()
+
+	return ..()
+
+/datum/controller/subsystem/economy/proc/CreateAccount(owner, faction, starting_cash, initiator, creation_date_override, creation_time_override)
+	#warn impl
+
+/datum/controller/subsystem/economy/proc/GetDepartmentAccount(department)
+
+/datum/controller/subsystem/economy/proc/GetDepartmentPayroll(department)
+
+/datum/controller/subsystem/economy/proc/GetFactionAccount(faction)
+
+/datum/controller/subsystem/economy/proc/GetFactionPayroll(faction)
 
 /*
 	var/roundstart_paychecks = 5

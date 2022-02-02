@@ -23,6 +23,9 @@
 	return constructed
 
 #warn timestamp proc here? use SSworld.in_game_year?
+/proc/CurrentEconomicDatestamp()
+
+/proc/CurrentEconomicTimestamp()
 
 /proc/render_economic_date(day, month, year)
 	if(!isnum(day) || !isnum(month) || !ISINRANGE(day, 1, 32) || !ISINRANGE(month, 1, 12) || !isnum(year))
