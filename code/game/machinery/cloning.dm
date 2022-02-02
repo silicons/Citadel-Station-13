@@ -39,8 +39,6 @@
 	var/list/unattached_flesh
 	var/flesh_number = 0
 	var/datum/bank_account/current_insurance
-	fair_market_price = 5 // He nodded, because he knew I was right. Then he swiped his credit card to pay me for arresting him.
-	payment_department = ACCOUNT_MED
 
 /obj/machinery/clonepod/Initialize()
 	. = ..()
@@ -221,21 +219,6 @@
 			connected_message("Clone Ejected: Loss of power.")
 
 	else if(mob_occupant && (mob_occupant.loc == src))
-		if(SSeconomy.full_ancap)
-			if(!current_insurance)
-				go_out()
-				connected_message("Clone Ejected: No bank account.")
-				if(internal_radio)
-					SPEAK("The cloning of [mob_occupant.real_name] has been terminated due to no bank account to draw payment from.")
-			else if(!current_insurance.adjust_money(-fair_market_price))
-				go_out()
-				connected_message("Clone Ejected: Out of Money.")
-				if(internal_radio)
-					SPEAK("The cloning of [mob_occupant.real_name] has been ended prematurely due to being unable to pay.")
-			else
-				var/datum/bank_account/D = SSeconomy.get_dep_account(payment_department)
-				if(D)
-					D.adjust_money(fair_market_price)
 		if(mob_occupant && (mob_occupant.stat == DEAD) || (mob_occupant.suiciding) || mob_occupant.hellbound)  //Autoeject corpses and suiciding dudes.			connected_message("Clone Rejected: Deceased.")
 			if(internal_radio)
 				SPEAK("The cloning has been \

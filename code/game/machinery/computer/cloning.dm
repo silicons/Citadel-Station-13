@@ -524,10 +524,6 @@
 			scantemp = "Subject already in database."
 			playsound(src, 'sound/machines/terminal_prompt_deny.ogg', 50, 0)
 			return
-		if(SSeconomy.full_ancap && !account)
-			scantemp = "Subject is either missing an ID card with a bank account on it, or does not have an account to begin with. Please ensure the ID card is on the body before attempting to scan."
-			playsound(src, 'sound/machines/terminal_prompt_deny.ogg', 50, 0)
-			return
 	return TRUE
 
 //Prototype cloning console, much more rudimental and lacks modern functions such as saving records, autocloning, or safety checks.

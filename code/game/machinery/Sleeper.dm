@@ -26,8 +26,6 @@
 	var/list/chem_buttons	//Used when emagged to scramble which chem is used, eg: antitoxin -> morphine
 	var/scrambled_chems = FALSE //Are chem buttons scrambled? used as a warning
 	var/enter_message = "<span class='notice'><b>You feel cool air surround you. You go numb as your senses turn inward.</b></span>"
-	payment_department = ACCOUNT_MED
-	fair_market_price = 5
 
 /obj/machinery/sleeper/Initialize()
 	. = ..()
@@ -166,13 +164,6 @@
 	. = ..()
 	. += "<span class='notice'>Alt-click [src] to [state_open ? "close" : "open"] it.</span>"
 
-/obj/machinery/sleeper/process()
-	..()
-	check_nap_violations()
-
-/obj/machinery/sleeper/nap_violation(mob/violator)
-	open_machine()
-
 /obj/machinery/sleeper/ui_data()
 	var/list/data = list()
 	data["occupied"] = occupant ? 1 : 0
@@ -220,7 +211,6 @@
 	if(..())
 		return
 	var/mob/living/mob_occupant = occupant
-	check_nap_violations()
 	switch(action)
 		if("door")
 			if(state_open)
@@ -351,7 +341,6 @@
 	possible_chems = list(
 		list(/datum/reagent/medicine/epinephrine, /datum/reagent/medicine/salbutamol, /datum/reagent/medicine/bicaridine, /datum/reagent/medicine/kelotane, /datum/reagent/medicine/oculine, /datum/reagent/medicine/inacusiate, /datum/reagent/medicine/mannitol)
 	) //everything is available at start
-	fair_market_price = 0 //it's free
 
 /obj/machinery/sleeper/clockwork/process()
 	..()
