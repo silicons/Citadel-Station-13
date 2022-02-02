@@ -10,7 +10,7 @@ SUBSYSTEM_DEF(economy)
 	var/static/list/account_by_id = list()
 	/// next uid for economic machinery - icly this is some kind of UUID for devices that makes them identifiable
 	var/static/next_machine_uid = 0
-	/// payroll systems to tick every wait seconds
+	/// root payroll systems to tick every wait seconds
 	var/static/list/datum/payroll_system/payrolls = list()
 
 /datum/controller/subsystem/economy/Initialize()

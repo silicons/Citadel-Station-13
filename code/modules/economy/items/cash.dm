@@ -89,11 +89,118 @@
 	singular_name = "one thousand credit bill"
 	value = 1000
 
-/obj/item/stack/spacecash/c10000
-	icon_state = "spacecash10000"
-	singular_name = "ten thousand credit bill"
-	value = 10000
+/obj/item/cash
+	name = "cash"
+	desc = "It's somehow uninitialized cash. Uh oh."
+	icon = 'icons/modules/economy/cash.dmi'
+	icon_state = "spacecash1"
+	force = 0
+	throwforce = 0
+	throw_speed = 1
+	#warn impl throwing cash is a bad idea lmfao (split stack)
+	throw_range = 5
+	w_class = WEIGHT_CLASS_TINY
+	// drop_sound = 'sound/items/drop/paper.ogg'
+	// pickup_sound = 'sound/items/pickup/paper.ogg'
+	/// total worth - cached
+	var/worth = 0
+	/// stored cash - i don't know why i'm being a dumbass and bothering to simulate this but uh ok
+	var/list/stored
+	/// valid denominators
+	var/static/list/valid_denominators = _valid_denominators()
 
+/obj/item/cash/Initialize()
+	set_worth(worth)
+	return ..()
+
+// incase admins break shit
+/obj/item/cash/proc/_valid_denominators()
+	. = list(
+		1,
+		10,
+		20,
+		50,
+		100,
+		200,
+		500,
+		1000
+	)
+	. = sortTim(., /proc/cmp_numeric_dsc)
+
+/obj/item/cash/update_name()
+	. = ..()
+	name = "[render_currency(worth)]"
+
+/obj/item/cash/update_desc()
+	. = ..()
+	desc = "A stack of [render_currency(worth)]."
+
+/obj/item/cash/update_icon_state()
+	. = ..()
+	for(var/i in valid_denominators)
+		if(i < worth)
+			icon_state = "spacecash[i]"
+			break
+
+/obj/item/cash/update_overlays()
+	. = ..()
+	var/left = worth
+	for(var/i in valid_denominators)
+		if(i < left)
+			left -= i
+			break
+	// took out the one we set in icon state, let's go do the rest
+	var/limit = 15
+	for(var/i in valid_denominators)
+		while(left < i)
+		#warn finish
+
+/obj/item/cash/proc/set_worth(amount)
+	// set stored list as needed
+	if(amount <= 0)
+		amount = 0
+		worth = 0
+		stored = null
+		update_appearance()
+		return
+	worth = amount
+	stored = list()
+	var/left = worth
+	for(var/i in valid_denominators)
+		while(left > i)
+			left -= i
+			if(stored["[i]"])
+				stored["[i]"]++
+			else
+				stored["[i]"] = 1
+	update_appearance()
+
+/obj/item/cash/proc/combine(obj/item/cash/other)
+	LAZYINITLIST(stored)
+	for(var/amt_txt in other.stored)
+		if(!stored[amt_txt])
+			stored[amt_txt] = other.stored[amt_txt]
+		else
+			stored[amt_txt] += other.stored[amt_txt]
+	LAZYCLEARLIST(stored)
+	other.stored = null
+	qdel(other)
+	update_appearance()
+
+/obj/item/cash/update_appearance()
+	update_worth()
+	return ..()
+
+/obj/item/cash/proc/update_worth()
+	. = 0
+	for(var/amt_txt in stored)
+		var/amt = text2num(amt_txt)
+		if(!(amt in valid_denominators) || !stored[amt_txt])
+			// auto sanitize out
+			stored -= amt
+			continue
+		. += amt * stored[amt_txt]
+	worth = .
 /obj/item/spacecash
 	name = "0 Thaler"
 	desc = "It's worth 0 Thalers."
@@ -157,22 +264,6 @@
 		banknote.transform = M
 		src.overlays += banknote
 	src.desc = "They are worth [worth] Thalers."
-
-/obj/item/spacecash/proc/adjust_worth(var/adjust_worth = 0, var/update = 1)
-	worth += adjust_worth
-	if(worth > 0)
-		if(update)
-			update_icon()
-		return worth
-	else
-		qdel(src)
-		return 0
-
-/obj/item/spacecash/proc/set_worth(var/new_worth = 0, var/update = 1)
-	worth = max(0, new_worth)
-	if(update)
-		update_icon()
-	return worth
 
 /obj/item/spacecash/attack_self()
 	var/amount = input(usr, "How many Thalers do you want to take? (0 to [src.worth])", "Take Money", 20) as num
