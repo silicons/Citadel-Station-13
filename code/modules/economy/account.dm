@@ -16,8 +16,10 @@
 	var/security_mode_locked = FALSE
 	/// security mode
 	var/security_mode = ACCOUNT_SECURITY_NONE
-	/// PIN
-	var/passkey
+	/// account modification passkey
+	var/password
+	/// payment passkey PIN
+	var/pin
 	/// faction this belongs to - this determines if, say, NT accounts managers can fuck with it
 	var/faction = /datum/world_faction/nanotrasen
 	/// linked bank card components
@@ -29,7 +31,7 @@
 /datum/bank_account/proc/CreateTransactionLog(type, initiator, amount, desc)
 	transaction_log += new /datum/bank_transaction(type, initiator, amount, desc)
 
-/datum/bank_account/proc/Transfer(datum/bank_account/other, type = TRANSACTION_TRANSFER, initiator = "Unknown", amount, desc = "%AMOUNT% transferred from [GetName()] to [other.GetName()]")
+/datum/bank_account/proc/Transfer(datum/bank_account/other, amount, log = TRUE, type = TRANSACTION_TRANSFER, initiator = "Unknown", desc = "%AMOUNT% transferred from [GetName()] to [other.GetName()]")
 	if(amount < 0)
 		return FALSE
 	if(amount > balance)
@@ -38,13 +40,13 @@
 	balance -= amount
 	CreateTransactionLog(type, initiator, amount, desc)
 
-/datum/bank_account/proc/Deposit(datum/bank_account/other, type = TRANSACTION_DEPOSIT, initiator = "Unknown", amount, desc = "%AMOUNT% deposited.")
+/datum/bank_account/proc/Deposit(datum/bank_account/other, amount, log = TRUE, type = TRANSACTION_DEPOSIT, initiator = "Unknown", desc = "%AMOUNT% deposited.")
 	if(amount < 0)
 		return FALSE
 	balance += amount
 	CreateTransactionLog(type, initiator, amount, desc)
 
-/datum/bank_account/proc/Withdraw(datum/bank_account/other, type = TRANSACTION_WITHDRAW, initiator = "Unknown", amount, desc = "%AMOUNT% withdrawn.")
+/datum/bank_account/proc/Withdraw(datum/bank_account/other, amount, log = TRUE, type = TRANSACTION_WITHDRAW, initiator = "Unknown", desc = "%AMOUNT% withdrawn.")
 	if(amount < 0)
 		return FALSE
 	balance -= amount
