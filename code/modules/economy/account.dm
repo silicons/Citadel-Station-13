@@ -8,6 +8,8 @@
 	var/owner
 	/// balance
 	var/balance = 0
+	/// account frozen?
+	var/suspended = FALSE
 	/// transaction log
 	var/list/datum/bank_transaction/transaction_log = list()
 	/// locked security mode
