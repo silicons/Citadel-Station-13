@@ -1,3 +1,4 @@
+#warn refactor
 /obj/item/suspiciousphone
 	name = "suspicious phone"
 	desc = "This device raises pink levels to unknown highs."

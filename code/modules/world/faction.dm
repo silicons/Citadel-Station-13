@@ -10,6 +10,8 @@
 	var/name = "Unknown"
 	/// short player-facing lore description
 	var/desc = "What is this?"
+	/// faction types
+	var/faction_types = NONE
 	/// id
 	var/id
 

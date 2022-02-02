@@ -17,7 +17,9 @@
 	/// PIN
 	var/passkey
 	/// faction this belongs to - this determines if, say, NT accounts managers can fuck with it
-	var/faction
+	var/faction = /datum/world_faction/nanotrasen
+	/// linked bank card components
+	var/list/datum/component/bank_card/linked_cards = list()
 
 /datum/bank_account/proc/GetName()
 	return "Account #[id]"
@@ -46,5 +48,15 @@
 	balance -= amount
 	CreateTransactionLog(type, initiator, amount, desc)
 
+/datum/bank_account/proc/MakeBankCard(obj/item/I, component_type = /datum/component/bank_card)
+	ASSERT(isptah(component_type, /datum/component/bank_card))
+	linked_cards += I.AddComponent(component_type)
+
+/datum/bank_account/proc/RemoveBankCard(obj/item/I)
+	#warn sigh how do we do this with components or do i just go back to id cards jesus christ
 
 
+/datum/bank_account/proc/RemoveCardComponent(datum/component/bank_card)
+	if(bank_card.account == src)
+		bank_card.account = null
+	linked_cards -= bank_card
