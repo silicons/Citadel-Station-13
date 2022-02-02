@@ -1,9 +1,7 @@
-#warn refactor
-
 /obj/item/holochip
 	name = "credit holochip"
-	desc = "A hard-light chip encoded with an amount of credits. It is a modern replacement for physical money that can be directly converted to virtual currency and viceversa. Keep away from magnets."
-	icon = 'icons/obj/economy.dmi'
+	desc = "A hardened hard-light chip encoded with an amount of credits. It is a modern replacement for physical money that can be directly converted to virtual currency and viceversa."
+	icon = 'icons/modules/economy/holochips.dmi'
 	icon_state = "holochip"
 	throwforce = 0
 	force = 0
@@ -13,33 +11,43 @@
 /obj/item/holochip/Initialize(mapload, amount)
 	. = ..()
 	credits = amount
-	update_icon()
+	update_appearance()
 
 /obj/item/holochip/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>It's loaded with [credits] credit[( credits > 1 ) ? "s" : ""]</span>\n"+\
+	. += "<span class='notice'>It's loaded with [render_currency(credits)]</span>\n"+\
 	"<span class='notice'>Alt-Click to split.</span>"
 
-/obj/item/holochip/get_item_credit_value()
-	return credits
-
-/obj/item/holochip/update_icon()
+/obj/item/holochip/update_name()
+	. = ..()
 	name = "\improper [credits] credit holochip"
-	var/rounded_credits = credits
+
+/obj/item/holochip/update_icon_state()
+	. = ..()
 	switch(credits)
 		if(1 to 999)
 			icon_state = "holochip"
 		if(1000 to 999999)
 			icon_state = "holochip_kilo"
-			rounded_credits = round(rounded_credits * 0.001)
 		if(1000000 to 999999999)
 			icon_state = "holochip_mega"
-			rounded_credits = round(rounded_credits * 0.000001)
 		if(1000000000 to INFINITY)
 			icon_state = "holochip_giga"
-			rounded_credits = round(rounded_credits * 0.000000001)
+
+/obj/item/holochip/update_overlays()
+	. = ..()
+	var/rounded
+	switch(credits)
+		if(1 to 999)
+			rounded = credits
+		if(1000 to 999999)
+			rounded = credits * 0.001
+		if(1000000 to 999999999)
+			rounded = credits * 0.000001
+		if(1000000000 to INFINITY)
+			rounded = credits * 0.000000001
 	var/overlay_color = "#914792"
-	switch(rounded_credits)
+	switch(rounded)
 		if(0 to 4)
 			overlay_color = "#8E2E38"
 		if(5 to 9)
@@ -56,17 +64,16 @@
 			overlay_color = "#0153C1"
 		if(500 to INFINITY)
 			overlay_color = "#2C2C2C"
-	cut_overlays()
 	var/mutable_appearance/holochip_overlay = mutable_appearance('icons/obj/economy.dmi', "[icon_state]-color")
 	holochip_overlay.color = overlay_color
-	add_overlay(holochip_overlay)
+	. += holochip_overlay
 
 /obj/item/holochip/proc/spend(amount, pay_anyway = FALSE)
 	if(credits >= amount)
 		credits -= amount
 		if(credits == 0)
 			qdel(src)
-		update_icon()
+		update_appearance()
 		return amount
 	else if(pay_anyway)
 		qdel(src)
@@ -75,24 +82,13 @@
 		return 0
 
 /obj/item/holochip/attackby(obj/item/I, mob/user, params)
-	..()
+	. = ..()
 	if(istype(I, /obj/item/holochip))
 		var/obj/item/holochip/H = I
 		credits += H.credits
 		to_chat(user, "<span class='notice'>You insert the credits into [src].</span>")
-		update_icon()
+		update_appearance()
 		qdel(H)
-	if(istype(I, /obj/item/card/id))
-		var/obj/item/card/id/ID = I
-		if(!ID.registered_account)
-			to_chat(user, "<span class='warning'>[ID] doesn't have a linked account to deposit into!</span>")
-			return
-		for(var/obj/item/holochip/money in src.loc.contents)
-			ID.attackby(money, user)
-		for(var/obj/item/stack/spacecash/money in src.loc.contents)
-			ID.attackby(money, user)
-		for(var/obj/item/coin/money in src.loc.contents)
-			ID.attackby(money, user)
 
 /obj/item/holochip/AltClick(mob/user)
 	if(!istype(user) || !user.canUseTopic(src, BE_CLOSE, ismonkey(user)))
@@ -109,12 +105,3 @@
 			add_fingerprint(user)
 		H.add_fingerprint(user)
 		to_chat(user, "<span class='notice'>You extract [split_amount] credits into a new holochip.</span>")
-
-/obj/item/holochip/emp_act(severity)
-	. = ..()
-	if(. & EMP_PROTECT_SELF)
-		return
-	var/wipe_chance = severity/1.5
-	if(prob(wipe_chance))
-		visible_message("<span class='warning'>[src] fizzles and disappears!</span>")
-		qdel(src) //rip cash

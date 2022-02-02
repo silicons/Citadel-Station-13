@@ -55,6 +55,15 @@
 					"<span class='notice'>You show \the [src.name].</span>")
 		add_fingerprint(user)
 
+
+/obj/item/card/id/proc/alt_click_can_use_id(mob/living/user)
+	if(!isliving(user))
+		return
+	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
+		return
+
+	return TRUE
+
 /obj/item/card/id/attackby(obj/item/W, mob/user, params)
 	if(!bank_support)
 		return ..()
@@ -107,14 +116,6 @@
 	QDEL_LIST(money)
 
 	return total
-
-/obj/item/card/id/proc/alt_click_can_use_id(mob/living/user)
-	if(!isliving(user))
-		return
-	if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
-		return
-
-	return TRUE
 
 // Returns true if new account was set.
 /obj/item/card/id/proc/set_new_account(mob/living/user)
