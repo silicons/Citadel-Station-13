@@ -381,6 +381,12 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	if(!(interaction_flags_item & INTERACT_ITEM_ATTACK_HAND_PICKUP))		//See if we're supposed to auto pickup.
 		return
 
+	attempt_pickup(user)
+
+/**
+ * Called to have a user attempt to pick this up. DOES NOT LOC CHECK.
+ */
+/obj/item/proc/attempt_pickup(mob/user)
 	//Heavy gravity makes picking up things very slow.
 	var/grav = user.has_gravity()
 	if(grav > STANDARD_GRAVITY)

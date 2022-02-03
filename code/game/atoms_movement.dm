@@ -181,7 +181,6 @@
 
 	return TRUE
 
-
 // Make sure you know what you're doing if you call this, this is intended to only be called by byond directly.
 // You probably want CanPass()
 /atom/movable/Cross(atom/movable/AM)
@@ -332,3 +331,9 @@
 	inertia_last_loc = loc
 	SSspacedrift.processing[src] = src
 	return TRUE
+
+/**
+ * Called to call Move() on throwing
+ */
+/atom/movable/proc/ThrowMove(atom/newloc, dir, forced_glide_size)
+	return Move(newloc, dir, forced_glide_size)
