@@ -23,4 +23,4 @@
  *
  * either returns amount used (number), or fail reason (string)
  */
-/proc/use_economic_currency(obj/item/I, amount, fail_on_insufficient = TRUE)
+/proc/use_economic_currency(obj/item/I, amount, fail_on_insufficient = TRUE, initiator = "Unknown", reason = "Payment of %AMOUNT%", type = TRANSACTION_PAYMENT)
