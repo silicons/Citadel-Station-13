@@ -10,6 +10,12 @@ GLOBAL_DATUM_INIT(join_menu, /datum/join_menu, new)
 /datum/join_menu/proc/queue_update()
 	addtimer(CALLBACK(src, /datum/proc/update_static_data), 0, TIMER_UNIQUE | TIMER_OVERRIDE)
 
+/datum/join_menu/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "JoinMenu")
+		ui.open()
+
 /datum/join_menu/ui_state(mob/user)
 	return GLOB.new_player_state
 
@@ -62,7 +68,7 @@ GLOBAL_DATUM_INIT(join_menu, /datum/join_menu, new)
 			"slots" = J.SlotsRemaining(),
 			"real_name" = J.title
 		)
-		department += list(data)	// wrap list
+		department[J.title] = data	// wrap list
 
 	// generate ghostrole list
 	var/list/ghostroles = list()
@@ -78,7 +84,7 @@ GLOBAL_DATUM_INIT(join_menu, /datum/join_menu, new)
 			"desc" = R.desc,
 			"slots" = R.SpawnsLeft(user.client)
 		)
-		ghostroles += list(data)	// wrap list
+		ghostroles[R.name] = data	// wrap list
 
 
 /datum/join_menu/ui_data(mob/user)
