@@ -11,21 +11,28 @@
 	max_integrity = 300
 
 	var/mag_ammo = 0
-	var/mag_max = 0
+	var/mag_max = 3
+	var/internal_ammo = 100
 	var/rate_of_fire = 2 // delay/fire
 	COOLDOWN_DECLARE(fire_cd)
 
 	var/reload_delay = 5 SECONDS
-	COOLDOWN_DECLARE(reload_cd)
+	var/is_reloading = FALSE
 
 	var/list/damage_type = list()
 
 /obj/machinery/ship/weapon/simple/proc/reload()
-	if(COOLDOWN_FINISHED(src, reload_cd))
+	if(is_reloading)
 		return FALSE
-	COOLDOWN_START(src, reload_cd, reload_delay)
-
+	is_reloading = TRUE
+	INVOKE_ASYNC(src, .proc/async_reload)
 	return TRUE
+
+/obj/machinery/ship/weapon/simple/proc/async_reload()
+	sleep(reload_delay)
+	var/n_to_reload = mag_max - mag_ammo
+	var/thing_we_took = internal_ammo - n_to_reload
+	mag_ammo = n_to_reload - (thing_we_took < 0 ? thing_we_took : 0)
 
 /**
  * cool modular guns
