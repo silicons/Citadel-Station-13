@@ -6,9 +6,9 @@
 
 /obj/item/rig_component/item_deploy/baton
 
-/obj/item/rig_component/click_intercept/gun
+/obj/item/rig_component/mouse_intercept/gun
 
-/obj/item/rig_component/click_intercept/stungloves
+/obj/item/rig_component/mouse_intercept/stungloves
 
 /obj/item/rig_component/simple/tackle
 
