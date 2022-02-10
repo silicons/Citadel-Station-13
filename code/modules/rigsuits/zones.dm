@@ -37,3 +37,6 @@
 /obj/item/rig/proc/fix_all_zones(brute = INFINITY, burn = INFINITY)
 
 /obj/item/rig/proc/fix_zone(zone, brute = INFINITY, burn = INFINITY)
+
+/obj/item/rig/proc/update_damage()
+	SEND_SIGNAL(src, COMSIG_RIG_UPDATE_DAMAGE)

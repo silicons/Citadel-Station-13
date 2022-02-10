@@ -36,6 +36,7 @@
 	users += M
 	set_control_flags(M, control_flags)
 	initialize_user(M)
+	SEND_SIGNAL(src, COMSIG_RIG_USER_ADD, M, flags)
 
 /**
  * remove user
@@ -44,6 +45,7 @@
 	set_control_flags(M, NONE)
 	users -= M
 	cleanup_user(M)
+	SEND_SIGNAL(src, COMSIG_RIG_USER_DEL, M)
 
 
 /**
@@ -53,6 +55,7 @@
 	if(!(M in users))
 		return
 	users[M] = flags
+	SEND_SIGNAL(src, COMSIG_RIG_CONTROL_FLAGS_SET, M, flags)
 
 /**
  * check user control flags for any
