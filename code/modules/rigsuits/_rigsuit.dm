@@ -53,6 +53,12 @@
 	/// users associatied to control flags
 	var/list/users
 
+	// Power
+	/// core
+	var/obj/item/rig_core/core
+	/// cell
+	var/obj/item/stock_parts/cell/cell
+
 	// Actions, hotbinds
 	/// rig ui action datums
 	var/list/datum/action/rigsuit/ui/actions_ui
