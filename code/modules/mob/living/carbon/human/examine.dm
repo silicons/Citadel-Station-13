@@ -113,11 +113,11 @@
 		. += effects_exam
 
 	//CIT CHANGES START HERE - adds genital details to examine text
-	if(LAZYLEN(internal_organs) && CHECK_BITFIELD(user.client?.prefs.cit_toggles, GENITAL_EXAMINE))
+	if(LAZYLEN(internal_organs) && (user.client?.prefs.cit_toggles & GENITAL_EXAMINE))
 		for(var/obj/item/organ/genital/dicc in internal_organs)
 			if(istype(dicc) && dicc.is_exposed())
 				. += "[dicc.desc]"
-	if(CHECK_BITFIELD(user.client?.prefs.cit_toggles, VORE_EXAMINE))
+	if(user.client?.prefs.cit_toggles & VORE_EXAMINE)
 		var/cursed_stuff = attempt_vr(src,"examine_bellies",args) //vore Code
 		if(cursed_stuff)
 			. += cursed_stuff
@@ -249,16 +249,17 @@
 		if(DISGUST_LEVEL_DISGUSTED to INFINITY)
 			msg += "[t_He] look[p_s()] extremely disgusted.\n"
 
-	var/apparent_blood_volume = blood_volume
-	if(dna.species.use_skintones && skin_tone == "albino")
-		apparent_blood_volume -= 150 // enough to knock you down one tier
-	switch(apparent_blood_volume)
-		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
-			msg += "[t_He] [t_has] pale skin.\n"
-		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-			msg += "<b>[t_He] look[p_s()] like pale death.</b>\n"
-		if(-INFINITY to BLOOD_VOLUME_BAD)
-			msg += "<span class='deadsay'><b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b></span>\n"
+	if(!HAS_TRAIT(src, TRAIT_ROBOTIC_ORGANISM))
+		var/apparent_blood_volume = blood_volume
+		if(dna.species.use_skintones && skin_tone == "albino")
+			apparent_blood_volume -= 150 // enough to knock you down one tier
+		switch(apparent_blood_volume)
+			if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
+				msg += "[t_He] [t_has] pale skin.\n"
+			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
+				msg += "<b>[t_He] look[p_s()] like pale death.</b>\n"
+			if(-INFINITY to BLOOD_VOLUME_BAD)
+				msg += "<span class='deadsay'><b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b></span>\n"
 
 	if(bleedsuppress)
 		msg += "[t_He] [t_is] embued with a power that defies bleeding.\n" // only statues and highlander sword can cause this so whatever
