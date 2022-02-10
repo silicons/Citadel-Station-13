@@ -174,3 +174,7 @@ GLOBAL_LIST_EMPTY(rig_themes)
 	var/carry_weight = 50
 	/// divide extra weight by this for slowdown
 	var/extra_weight_divisor = 30
+
+/datum/rig_part_meta
+
+/datum/rig_zone_meta
