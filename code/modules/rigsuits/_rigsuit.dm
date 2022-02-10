@@ -10,6 +10,8 @@
 	// Basics
 	/// Active theme
 	var/datum/rig_theme/theme = /datum/rig_theme
+	/// current wearer
+	var/mob/wearer
 
 	// Pieces
 	/// all pieces
@@ -44,10 +46,16 @@
 	var/cached_weight
 
 	// Control
-	/// users - associated to control flag
+	/// users associatied to control flags
 	var/list/users
-	/// master user - effectively can do everything - usually the pilot, if it isn't, they're probably being hijacked
-	var/mob/living/owner
+
+	// Actions, hotbinds
+	/// rig ui action datums
+	var/list/datum/action/rigsuit/ui/actions_ui
+	/// rig hotbind action datums
+	var/list/datum/action/rigsuit/hotbind/actions_hotbind
+	/// hotbind datums
+	var/list/datum/rig_hotbind/hotbinds
 
 	// Maintenance
 	/// debug log - up to 20 entries, output by debug interface
