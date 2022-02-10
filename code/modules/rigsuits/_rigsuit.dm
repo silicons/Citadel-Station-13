@@ -8,7 +8,7 @@
 	icon_state = ""
 
 	// Basics
-	/// Active theme
+	/// Active theme - if this is a path, instances on initialize.
 	var/datum/rig_theme/theme = /datum/rig_theme
 	/// current wearer
 	var/mob/wearer
@@ -44,6 +44,10 @@
 	var/list/cached_sizes
 	/// Cached weight
 	var/cached_weight
+
+	// Zones
+	/// zone associated to /datum/rig_zone_meta
+	var/list/zones
 
 	// Control
 	/// users associatied to control flags

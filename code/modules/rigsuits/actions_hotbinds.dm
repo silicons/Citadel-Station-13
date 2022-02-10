@@ -5,7 +5,7 @@
 /**
  * fully reloads hotbinds and actions
  */
-/obj/item/rig/proc/reload_action_system()
+/obj/item/rig/proc/rebuild_action_system()
 	for(var/mob/M in users)
 		reload_actions(M)
 
@@ -48,15 +48,17 @@
 	var/act
 	/// params
 	var/list/params
-	/// component target, for quick lookup/cleanup
-	var/obj/item/rig_component/component
+	/// object target, for quick lookup/cleanup
+	var/obj/item/component
+	/// static hotbind, shouldn't be deletable by users
+	var/system = FALSE
 
 /obj/item/rig/proc/hotbind_create(act, list/params, obj/item/rig_component/component)
 
-/obj/item/rig/proc/hotbind_delete(datum/rig_hotbind/hotbind)
+/obj/item/rig/proc/hotbind_delete(datum/rig_hotbind/hotbind, force = FALSE)
 
 /obj/item/rig/proc/cleanup_all_hotbinds()
 
-/obj/item/rig/proc/cleanup_component_hotbinds(obj/item/rig_component/component)
+/obj/item/rig/proc/cleanup_component_hotbinds(obj/item/component)
 
 /obj/item/rig/proc/hotbind_act(mob/user, datum/rig_hotbind/bind)

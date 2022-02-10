@@ -7,7 +7,7 @@
 /**
  * reinitializes all users
  */
-/obj/item/rig/proc/reload_control_system()
+/obj/item/rig/proc/rebuild_control_system()
 	for(var/mob/M in users)
 		set_control_flags(i, isnum(users[i])? users[i] : NONE)
 		initialize_user(M)

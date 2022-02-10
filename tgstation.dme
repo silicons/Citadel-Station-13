@@ -3429,6 +3429,7 @@
 #include "code\modules\rigsuits\remote.dm"
 #include "code\modules\rigsuits\ui.dm"
 #include "code\modules\rigsuits\unmanned.dm"
+#include "code\modules\rigsuits\zones.dm"
 #include "code\modules\rigsuits\components\_item_deploy.dm"
 #include "code\modules\rigsuits\components\_mouse_intercept.dm"
 #include "code\modules\rigsuits\components\_pouch.dm"
