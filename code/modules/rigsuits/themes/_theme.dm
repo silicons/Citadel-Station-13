@@ -175,6 +175,10 @@ GLOBAL_LIST_EMPTY(rig_themes)
 	/// divide extra weight by this for slowdown
 	var/extra_weight_divisor = 30
 
+<<<<<<< HEAD
 /datum/rig_part_meta
 
 /datum/rig_zone_meta
+=======
+
+>>>>>>> d310597a04a3b642f598070f9161d592bc5ff7c3

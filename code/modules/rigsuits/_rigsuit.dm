@@ -8,8 +8,10 @@
 	icon_state = ""
 
 	// Basics
-	/// Active theme
+	/// Active theme - if this is a path, instances on initialize.
 	var/datum/rig_theme/theme = /datum/rig_theme
+	/// current wearer
+	var/mob/wearer
 
 	// Pieces
 	/// all pieces
@@ -43,11 +45,27 @@
 	/// Cached weight
 	var/cached_weight
 
+	// Zones
+	/// zone associated to /datum/rig_zone_meta
+	var/list/zones
+
 	// Control
-	/// users - associated to control flag
+	/// users associatied to control flags
 	var/list/users
-	/// master user - effectively can do everything - usually the pilot, if it isn't, they're probably being hijacked
-	var/mob/living/owner
+
+	// Power
+	/// core
+	var/obj/item/rig_core/core
+	/// cell
+	var/obj/item/stock_parts/cell/cell
+
+	// Actions, hotbinds
+	/// rig ui action datums
+	var/list/datum/action/rigsuit/ui/actions_ui
+	/// rig hotbind action datums
+	var/list/datum/action/rigsuit/hotbind/actions_hotbind
+	/// hotbind datums
+	var/list/datum/rig_hotbind/hotbinds
 
 	// Maintenance
 	/// debug log - up to 20 entries, output by debug interface
