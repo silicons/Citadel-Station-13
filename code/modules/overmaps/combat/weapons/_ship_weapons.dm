@@ -17,22 +17,59 @@
 	COOLDOWN_DECLARE(fire_cd)
 
 	var/reload_delay = 5 SECONDS
+	/// Are we reloading?
 	var/is_reloading = FALSE
+	/// Do we reload the entire mag or only 1/reload_delay
+	var/burst_reload = FALSE
 
 	var/list/damage_type = list()
+
+	var/projectile = /obj/item/projectile/overmap_projectile
 
 /obj/machinery/ship/weapon/simple/proc/reload()
 	if(is_reloading)
 		return FALSE
 	is_reloading = TRUE
-	INVOKE_ASYNC(src, .proc/async_reload)
+	INVOKE_ASYNC(src, .proc/reload_entirely)
 	return TRUE
 
-/obj/machinery/ship/weapon/simple/proc/async_reload()
+/obj/machinery/ship/weapon/simple/proc/reload_until(how_much)
+	if (!how_much)
+		is_reloading = FALSE
+		return
+
+	if ((mag_ammo + 1) > mag_max || !internal_ammo)
+		is_reloading = FALSE
+		return
+
 	sleep(reload_delay)
+
+	if (QDELETED(src))
+		is_reloading = FALSE // dont need to set this kek
+		return
+
+	mag_ammo += 1
+	internal_ammo =- 1
+	reload_until(how_much - 1)
+
+/obj/machinery/ship/weapon/simple/proc/reload_entirely()
+	if (!internal_ammo)
+		is_reloading = FALSE
+		return
+
+	sleep(reload_delay)
+
+	if (QDELETED(src))
+		is_reloading = FALSE // dont need to set this kek
+		return
+
 	var/n_to_reload = mag_max - mag_ammo
 	var/thing_we_took = internal_ammo - n_to_reload
 	mag_ammo = n_to_reload - (thing_we_took < 0 ? thing_we_took : 0)
+	internal_ammo -= thing_we_took
+
+
+/obj/machinery/ship/weapon/simple/proc/fire()
 
 /**
  * cool modular guns
@@ -43,6 +80,9 @@
 
 /obj/machinery/ship/weapon/modular/parent
 	name = "parent piece of a modular weapon"
+
+	var/projectile = /obj/item/projectile/overmap_projectile
+
 
 /obj/machinery/ship/weapon/modular/parent/proc/connect_nearby()
     var/list/things_to_add = list()
