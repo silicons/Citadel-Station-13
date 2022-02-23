@@ -463,6 +463,7 @@
 #include "code\datums\mutable_appearance.dm"
 #include "code\datums\numbered_display.dm"
 #include "code\datums\outfit.dm"
+#include "code\datums\perspective.dm"
 #include "code\datums\position_point_vector.dm"
 #include "code\datums\profiling.dm"
 #include "code\datums\progressbar.dm"
