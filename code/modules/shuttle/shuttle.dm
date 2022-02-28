@@ -10,6 +10,8 @@
 /atom/movable/shuttle
 	name = "shuttle"
 	invisibility = INVISIBILITY_ABSTRACT
+	/// see dock.dm for why
+	dir = NORTH
 	/// unique id
 	var/id
 	/// next unique id
