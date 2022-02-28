@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY(typecaches)
 
 /**
  * Makes a typecache of a single typecache
- * 
+ *
  * Obviously in BYOND we don't have the efficiency around here to have proper enforcement so
  * If you use this you better know what you're doing. The list you get back is globally cached and if it's modified, you might break multiple things.
  */
