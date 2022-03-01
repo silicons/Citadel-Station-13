@@ -11,7 +11,7 @@
  */
 /datum/ship
 	/// our object
-	var/atom/movable/overmap_object/parent
+	var/atom/movable/overmap_object/entity/parent
 	/// subsystems by type
 	var/list/datum/ship_system/systems
 	/// all machinery in us

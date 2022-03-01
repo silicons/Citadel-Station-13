@@ -6,22 +6,51 @@ SUBSYSTEM_DEF(overmaps)
 
 	/// all overmaps
 	var/static/list/datum/overmap/overmaps = list()
+	/// primary overmap
+	var/static/datum/overmap/world_overmap
+	/// hazards by id
+	var/static/hazards_by_id = list()
 
 /datum/controller/subsystem/overmaps/Initialize()
-	if(SSmapping.use_overmap)
-		// yes, we aren't using BuildOvermap
-		if(GLOB.overmap)
-			to_chat(world, "<span class='danger'>Overmaps failed to initialize as it already exists.</span>")
-			return ..()
-		GLOB.overmap = new
-		#warn impl - generation parameters
-		GLOB.overmap.Initialize()
-	for(var/atom/movable/overmap_object/O in world)
-		O.OvermapInitialize()
+	InstantiateHazards()
+	InstantiateWorldOvermap()
+	InstantiateOvermapObjects()
+	InitializeOvermapObjects()
+
 	return ..()
 
 /datum/controller/subsystem/overmaps/Recover()
 	HardReset()
+
+/datum/controller/subsystem/overmaps/proc/InstantiateHazards()
+	for(var/datum/overmap_hazard/H in subtypesof(/datum/overmap_hazard))
+		if(initial(H.abstract_type) == H)
+			continue
+		H = new H
+		if(hazards_by_id[H.id])
+			stack_trace("Duplicate id [H.id] [H] [H.type].")
+			continue
+		hazards_by_id[H.id] = H
+
+/datum/controller/subsystem/overmaps/proc/GetHazardID(id)
+	return hazards_by_id[id]
+
+/datum/controller/subsystem/overmaps/proc/InstantiateWorldOvermap()
+	#warn check if we should use overmap
+
+	if(world_overmap)
+		CRASH("World overmap already exists")
+	world_overmap = new
+	world_overmap.Initialize()
+
+/datum/controller/subsystem/overmaps/proc/InstantiateOvermapObjects()
+	#warn here is the part where the main map, existing shuttles, etc, get created and put into their proper locations/seeded
+
+/datum/controller/subsystem/overmaps/proc/InitializeOvermapObjects()
+	#warn oh fuck
+
+	for(var/atom/movable/overmap_object/O in world)
+		O.OvermapInitialize()
 
 /datum/controller/subsystem/overmaps/proc/HardReset()
 	can_fire = FALSE
@@ -32,12 +61,12 @@ SUBSYSTEM_DEF(overmaps)
 	for(var/datum/overmap/O as anything in overmaps)
 		if(!istype(O))
 			overmaps -= O
-		for(var/atom/movable/overmap_object/OO in O.objects)
-			O.RemoveObject(OO)
-		O.objects = list()
+		for(var/atom/movable/overmap_object/OO in O.entites)
+			O.RemoveEntity(OO)
+		O.entities = list()
 		O.processing = list()
 
-	for(var/atom/movable/overmap_object/O in world)
+	for(var/atom/movable/overmap_object/entity/O in world)
 		#warn put into overmap
 
 	// recover all overmaps
@@ -45,9 +74,8 @@ SUBSYSTEM_DEF(overmaps)
 		O.Recover()
 
 		// recover all objects
-		for(var/atom/movable/overmap_object/OO as anything in O.objects)
+		for(var/atom/movable/overmap_object/entity/OO as anything in O.entities)
 			OO.Recover()
-
 
 	cost = REALTIMEOFDAY - cost
 	to_chat(world, span_danger("Overmaps hard reset in [cost * 0.1] seconds."))

@@ -26,14 +26,12 @@
 	/// primary lighting
 	var/atom/movable/overmap_hud/light/circle/static_vision
 	/// static vision range
-	var/static_vision_range = OVERMAP_STATIC_VISION
-	/// lighting darkifier
-	var/atom/movable/overmap_hud/darkifier/darkness
+	var/static_vision_range = 3
 
 	/// the object we are the view for
 	var/atom/movable/overmap_object/object
 
-	/// images to show to users
+	/// images to show to usersw
 	var/list/images
 	/// showing
 	var/list/client/showing
@@ -55,7 +53,6 @@
 		Hide(showing)
 	QDEL_NULL(master)
 	QDEL_NULL(background)
-	QDEL_NULL(darkness)
 	QDEL_LIST(plane_masters)
 	QDEL_LIST(parallax_layers)
 	object = null

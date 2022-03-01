@@ -9,9 +9,9 @@
 	/// current user
 	var/mob/user
 	/// exit action
-	var/datum/action/innate/camera_off/exit_action
+	var/datum/action/innate/freelook/camera_off/exit_action
 	/// jump action
-	var/datum/action/innate/camera_jump/jump_action
+	var/datum/action/innate/freelook/camera_jump/jump_action
 	/// actions
 	var/list/actions
 
@@ -45,6 +45,7 @@
  */
 /datum/freelook/proc/JumpTo(name)
 
+#warn oh boy
 
 /obj/machinery/computer/camera_advanced
 	name = "advanced camera console"
@@ -275,12 +276,15 @@
 	else
 		sprint = initial
 
-/datum/action/innate/camera_off
+/datum/action/innate/freelook
+	var/datum/freelook/origin
+
+/datum/action/innate/freelook/camera_off
 	name = "End Camera View"
 	icon_icon = 'icons/mob/actions/actions_silicon.dmi'
 	button_icon_state = "camera_off"
 
-/datum/action/innate/camera_off/Activate()
+/datum/action/innate/freelook/camera_off/Activate()
 	if(!target || !isliving(target))
 		return
 	var/mob/living/C = target
@@ -288,12 +292,12 @@
 	var/obj/machinery/computer/camera_advanced/console = remote_eye.origin
 	console.remove_eye_control(target)
 
-/datum/action/innate/camera_jump
+/datum/action/innate/freelook/camera_jump
 	name = "Jump To Camera"
 	icon_icon = 'icons/mob/actions/actions_silicon.dmi'
 	button_icon_state = "camera_jump"
 
-/datum/action/innate/camera_jump/Activate()
+/datum/action/innate/freelook/camera_jump/Activate()
 	if(!target || !isliving(target))
 		return
 	var/mob/living/C = target
