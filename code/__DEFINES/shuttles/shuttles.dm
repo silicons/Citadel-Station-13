@@ -1,3 +1,26 @@
+// CheckDock and CanDock values.
+/// we can dock
+#define SHUTTLE_CAN_DOCK			"can dock"
+
+// shuttle_mode
+/// in realspace/docked somewhere on the map
+#define SHUTTLE_MODE_DOCKED			"docked"
+/// in dynamic transit/short jump
+#define SHUTTLE_MODE_TRANSIT		"transit"
+/// in long jump/in its own zlevel for overmaps
+#define SHUTTLE_MODE_LONG_JUMP		"long_jump"
+
+// shuttle_state
+/// not doing anything, don't need ticking
+#define SHUTTLE_STATE_IDLE					"idle"
+/// preparing to go into transit
+#define SHUTTLE_STATE_IGNITING				"igniting"
+/// in transit
+#define SHUTTLE_STATE_TRANSIT				"transit"
+/// preparing to exit transit to destinatio
+#define SHUTTLE_STATE_DOCKING				"docking"
+
+
 //shuttle mode defines
 #define SHUTTLE_IDLE		"idle"
 #define SHUTTLE_IGNITING	"igniting"

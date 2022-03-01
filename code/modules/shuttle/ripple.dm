@@ -18,3 +18,5 @@
 
 /obj/effect/abstract/ripple/proc/stop_animation()
 	icon_state = "medi_holo_no_anim"
+
+/atom/movable/shuttle/proc/HyperspaceRipples()

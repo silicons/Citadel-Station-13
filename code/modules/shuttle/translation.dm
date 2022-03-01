@@ -1,11 +1,50 @@
-
-
 // common helpers
 /proc/_shuttle_bounding_box(_x, _y, _dir, width, height, dwidth, dheight)
 
 /proc/_shuttle_bounding_turfs(list/bounding_box)
 
 /proc/_shuttle_ordered_turfs(list/bounding_box)
+
+
+	///size of covered area, perpendicular to dir. You shouldn't modify this for mobile dockingports, set automatically.
+	var/width = 0
+	///size of covered area, parallel to dir. You shouldn't modify this for mobile dockingports, set automatically.
+	var/height = 0
+	///position relative to covered area, perpendicular to dir. You shouldn't modify this for mobile dockingports, set automatically.
+	var/dwidth = 0
+	///position relative to covered area, parallel to dir. You shouldn't modify this for mobile dockingports, set automatically.
+	var/dheight = 0
+
+/**
+ * gets area instances in us
+ */
+/atom/movable/shuttle/proc/GetAreas()
+
+/**
+ * Gets ordered turfs to translate from
+ */
+/atom/movable/shuttle/proc/GetTurfs()
+
+/**
+ * Get ordered turfs to translate to
+ */
+/atom/movable/shuttle/proc/GetDestinationTurfs(atom/movable/shuttle_dock/dock)
+
+/**
+ * Get an estimated list of turfs that would be affected at a destination
+ */
+/atom/movable/shuttle/proc/EstimateDestinationIntersection(atom/moable/shuttle_dock/dock)
+	. = list()
+	var/list/L1 = GetTurfs()
+	var/list/L2 = GetDestinationTurfs(dock)
+	for(var/i in 1 to L1.len)
+		var/turf/T = L1[i]
+		if(!(T.loc in areas))
+			continue
+		if(T.baseturfs = T.type)
+			continue	// bottom of transit, we don't care
+		. += L2[i]
+
 
 ///returns a list(x0,y0, x1,y1) where points 0 and 1 are bounding corners of the projected rectangle
 /obj/docking_port/proc/return_coords(_x, _y, _dir)
