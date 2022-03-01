@@ -10,4 +10,5 @@
 	var/home_id
 	/// docked state id - for emergency shuttle, this is the station
 	var/docked_id
-	///
+	/// can we be controlled by a console?
+	var/controllable = TRUE

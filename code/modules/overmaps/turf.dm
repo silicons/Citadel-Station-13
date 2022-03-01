@@ -19,3 +19,9 @@
 
 /turf/overmap/ChangeTurf(path, list/new_baseturfs, flags)
 	return allow_destroy? ..() : FALSE
+
+/turf/overmap/proc/UpdateLighting()
+	if(length(lit_by))
+		luminosity = 1
+	else
+		luminosity =

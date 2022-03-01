@@ -15,3 +15,6 @@
  * represents the location an overmap object corrosponds to
  */
 /datum/overmap_location
+	/// parent object
+	var/atom/movable/overmap_object/parent
+

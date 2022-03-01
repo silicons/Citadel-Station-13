@@ -62,7 +62,7 @@
 	if(!force)
 		return QDEL_HINT_LETMELIVE
 	QDEL_NULL(controller)
-	#warn handle the 3 docks we can be on
+	#warn handle the docks/whatnot
 	if(registered)
 		Unregister()
 	return ..()

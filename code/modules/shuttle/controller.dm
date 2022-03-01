@@ -10,6 +10,7 @@
 
 /datum/shuttle_controller/New(atom/movable/shuttle/shuttle)
 
-
-
-/datum/shuttle_controller/proc/RequestGracefulDock()
+/**
+ * source can be null, destination can be null
+ */
+/datum/shuttle_controller/proc/OnMove(atom/movable/shuttle_dock/source, atom/movable/shuttle_dock/destination)

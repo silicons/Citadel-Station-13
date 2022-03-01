@@ -38,7 +38,7 @@
 	var/datum/map_template/shuttle/roundstart_template
 	/// template key to load from map config.shuttles json
 	var/json_key
-	/// roundstart loaded?
+	/// roundstart loaded?w
 	var/roundstart_loaded = FALSE
 	/// roundstart load even if not at mapload?
 	var/roundstart_load_requires_mapload = TRUE

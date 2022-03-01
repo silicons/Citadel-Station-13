@@ -19,4 +19,12 @@
 	 * i'd rather save the memory!
 	 */
 	dynamic_lighting = DYNAMIC_LIGHTING_DISABLED
-	luminosity = 1
+	luminosity = 0
+
+/area/overmap/Initialize()
+	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/area/overmap/LateInitialize()
+	. = ..()
+	remove_overlays()		// NO.
