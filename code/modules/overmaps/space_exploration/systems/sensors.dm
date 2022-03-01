@@ -46,7 +46,7 @@
 /datum/ship_system/radar/proc/ping()
 	stillboggingthestack = TRUE
 	var/list/bogeys = range(range, ship.parent)
-	for (var/atom/movable/overmap_object/OM in bogeys)
+	for (var/atom/movable/overmap_object/entity/OM in bogeys)
 		if (!OM.ship)
 			continue
 

@@ -124,7 +124,6 @@
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE are the only things that should be in here
 	var/nodamage = 0 //Determines if the projectile will skip any damage inflictions
 	var/flag = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb
-	var/projectile_type = /obj/item/projectile
 	/// Range of the projectile, de-incrementing every step. The projectile deletes itself at 0. This is in tiles.
 	var/range = 50
 	var/decayedRange			//stores original range

@@ -25,5 +25,5 @@
 
 /obj/machinery/ship/interface/proc/AllowedControlFlags()
 	. = NONE
-	for(var/obj/machinery/ship/host/host as anything in hosts)
-		. |= host.AllowControlFlags(src, ship)
+	// for(var/obj/machinery/ship/host/host as anything in hosts)
+		// . |= host.AllowControlFlags(src, ship)

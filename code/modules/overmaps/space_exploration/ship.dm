@@ -52,8 +52,8 @@
 	return ..()
 
 /datum/ship/proc/InitializeSystems()
-	for (var/datum/ship_system/ship_sys in GLOB.default_ship_systems)
-		systems.Add(new ship_sys(src))
+	// for (var/datum/ship_system/ship_sys in GLOB.default_ship_systems)
+		// systems.Add(new ship_sys(src))
 
 /datum/ship/proc/LinkMachinery()
 

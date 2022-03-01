@@ -8,7 +8,6 @@
 	ricochet_chance = 0
 	damage = 0
 	nodamage = TRUE
-	projectile_type = /obj/item/projectile/hallucination
 	log_override = TRUE
 	var/hal_icon_state
 	var/image/fake_icon

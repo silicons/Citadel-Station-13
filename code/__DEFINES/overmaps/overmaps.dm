@@ -63,14 +63,8 @@
 #define OVERMAP_LAYER_EFFECTS					4
 */
 
-/// overmap unit ratio to pixel ratio - don't change this
-#define OVERMAPS_UNIT_PIXELS			1
 /// overmap view range
 #define OVERMAPS_VIEW_RANGE			7
-/// max speed in pixels per second
-#define OVERMAPS_MAX_SPEED_PIXELS	64
-/// max speed in units per second
-#define OVERMAPS_MAX_SPEED			(OVERMAPS_MAX_SPEED_PIXELS * OVERMAPS_UNIT_PIXELS)
 
 // helpers
 /// quantize velocity

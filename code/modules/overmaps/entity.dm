@@ -4,6 +4,7 @@
  * goal: subtype this as little as possible, use composition vs inheritance (i.e. locations, etc)
  */
 /atom/movable/overmap_object/entity
+	icon = 'icons/modules/overmaps/entity.dmi'
 	/* PIXEL MOVEMENT BABY */
 	appearance_flags = NONE
 	bound_width = 32
@@ -53,8 +54,7 @@
 	// IFF's are only on the ship datums!
 
 /atom/movable/overmap_object/entity/New()
-	id = ++id_next
-	CheckOvermap()
+	id = "[++id_next]"
 	return ..()
 
 /atom/movable/overmap_object/entity/Destroy(force = FALSE)
@@ -76,34 +76,38 @@
 		OvermapInitialize(mapload)
 
 /atom/movable/overmap_object/entity/proc/OvermapInitialize(mapload)
-	view_holder = new(src)
-	LocationInitialize(mapload)
-	ShipInitialize(mapload)
+	CheckOvermap()
+// 	view_holder = new(src)
+// 	LocationInitialize(mapload)
+// 	ShipInitialize(mapload)
 
-/atom/movable/overmap_object/entity/proc/LocationInitialize(mapload)
-	if(ispath(location_data, /datum/overmap_location_data))
-		location_data = new location_data
-		if(location_data.lazyload)
-			return
-		if(!(flags_1 & ADMIN_SPAWNED_1) && !IsAdminAdvancedProcCall())
-			location_data.generate(src)
-		else
-			log_overmap("Skipping location instantiation of [id] [location_data.type]")
-			message_admins("Overmaps: [id] location instantiation skipped due to being admin-spawned (safety). If you mean to instantiate it, call the proc manually.")
+// /atom/movable/overmap_object/entity/proc/LocationInitialize(mapload)
+// 	if(ispath(location_data, /datum/overmap_location_data))
+// 		location_data = new location_data
+// 		if(location_data.lazyload)
+// 			return
+// 		if(!(flags_1 & ADMIN_SPAWNED_1) && !IsAdminAdvancedProcCall())
+// 			location_data.generate(src)
+// 		else
+// 			log_overmap("Skipping location instantiation of [id] [location_data.type]")
+// 			message_admins("Overmaps: [id] location instantiation skipped due to being admin-spawned (safety). If you mean to instantiate it, call the proc manually.")
 
-/atom/movable/overmap_object/entity/proc/ShipInitialize(mapload)
-	if(ispath(ship))
-		ship = new ship(src)
+// /atom/movable/overmap_object/entity/proc/ShipInitialize(mapload)
+// 	if(ispath(ship))
+// 		ship = new ship(src)
 
 /atom/movable/overmap_object/entity/proc/Recover()
 
 #warn impl
 
-/atom/movable/overmap_object/entity/proc/AddHazard(atom/movable/overmap_object/hazard/source, hazard_id, strength)
+/atom/movable/overmap_object/entity/proc/AddHazard(atom/movable/overmap_object/tile/hazard/source, hazard_id, strength)
 
-/atom/movable/overmap_object/entity/proc/RemoveHazard(atom/movable/overmap_object/hazard/source)
+/atom/movable/overmap_object/entity/proc/RemoveHazard(atom/movable/overmap_object/tile/hazard/source)
 
 /atom/movable/overmap_object/entity/proc/TickHazards(seconds)
+
+/atom/movable/overmap_object/entity/proc/PlaceIntoOvermap()
+
 
 /**
  * resets our transform

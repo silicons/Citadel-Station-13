@@ -18,3 +18,8 @@
 
 /turf/overmap/ChangeTurf(path, list/new_baseturfs, flags)
 	return allow_destroy? ..() : FALSE
+
+/atom/movable/overmap_transition_holder
+	vis_flags = VIS_HIDE
+	icon = null
+	icon_state = ""

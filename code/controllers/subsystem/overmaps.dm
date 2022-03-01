@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(overmaps)
 	name = "Overmaps"
 	wait = 0.5
 	init_order = INIT_ORDER_OVERMAPS
-	fire_priority = FIRE_PRIORITY_OVERMAPS
+	priority = FIRE_PRIORITY_OVERMAPS
 
 	/// all overmaps
 	var/static/list/datum/overmap/overmaps = list()
@@ -33,15 +33,16 @@ SUBSYSTEM_DEF(overmaps)
 		hazards_by_id[H.id] = H
 
 /datum/controller/subsystem/overmaps/proc/GetHazardID(id)
-	return hazards_by_id[id]
+	return hazards_by_id["[id]"]
 
 /datum/controller/subsystem/overmaps/proc/InstantiateWorldOvermap()
-	#warn check if we should use overmap
+	#warn check if we should use overmap, get overmap size, etc.
 
 	if(world_overmap)
 		CRASH("World overmap already exists")
 	world_overmap = new
-	world_overmap.Initialize()
+	#warn for now it's just making max size.
+	world_overmap.Initialize(world.maxx, world.maxy, "abcd")
 
 /datum/controller/subsystem/overmaps/proc/InstantiateOvermapObjects()
 	#warn here is the part where the main map, existing shuttles, etc, get created and put into their proper locations/seeded
@@ -49,7 +50,7 @@ SUBSYSTEM_DEF(overmaps)
 /datum/controller/subsystem/overmaps/proc/InitializeOvermapObjects()
 	#warn oh fuck
 
-	for(var/atom/movable/overmap_object/O in world)
+	for(var/atom/movable/overmap_object/entity/O in world)
 		O.OvermapInitialize()
 
 /datum/controller/subsystem/overmaps/proc/HardReset()
@@ -61,7 +62,7 @@ SUBSYSTEM_DEF(overmaps)
 	for(var/datum/overmap/O as anything in overmaps)
 		if(!istype(O))
 			overmaps -= O
-		for(var/atom/movable/overmap_object/OO in O.entites)
+		for(var/atom/movable/overmap_object/OO in O.entities)
 			O.RemoveEntity(OO)
 		O.entities = list()
 		O.processing = list()

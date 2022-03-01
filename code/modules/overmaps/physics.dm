@@ -3,41 +3,39 @@
  */
 /atom/movable/overmap_object/entity/proc/Tick(ds, times_fired)
 	if(!ShouldProcess())
-		StopProcessing()
+		return FALSE
+	. = TRUE
 	// movement
-	if(moving && !isturf(loc))
+	if(!isturf(loc))
 		velocity_x = 0
 		velocity_y = 0
 		angle = 0
-		moving = FALSE
-	if(moving)
+	else
 		if(velocity_angle)
 			Turn(velocity_angle)
 		if(velocity_x || velocity_y)
 			real_x += velocity_x
 			real_y += velocity_y
 			MoveToOffsets()
-	// other processes
-
-	// check if we need to keep going
-	if(ship?.Tick(ds, times_fired))
-		// we know we need to
-		return
+	ship?.Tick(ds, times_fired)
 
 /atom/movable/overmap_object/entity/Cross(atom/movable/AM)
 	// No rigidbody collisions implemented yet
 	// yes, this means we don't send a signal, sue me
+	log_overmap("[src] crossed [AM]")
 	return TRUE
 
 /atom/movable/overmap_object/entity/Uncross(atom/movable/AM, atom/newloc)
 	// No rigidbody collisions implemented yet
 	// yes, this means we don't send a signal, sue me
+	log_overmap("[src] uncrossed [AM]")
 	return TRUE
 
 /// forcemove wrapper - admins can literally pull shuttles up from orbit with this
 /atom/movable/overmap_object/entity/forceMove(atom/destination)
 	var/oldloc = loc
 	. = ..()
+	log_overmap("[src] forceMoved from [oldloc] ([COORD(oldloc)]) to [loc] ([COORD(loc)])")
 	OnForceMove(oldloc)
 
 /**
@@ -59,13 +57,17 @@
  * Automatically puts us in and takes us out of an overmap if we're in/out of the zlevel
  */
 /atom/movable/overmap_object/entity/proc/CheckOvermap()
-	// var/turf/T = get_turf(src)
-	// if(!overmap)
-	// 	if(T && (T.z == GLOB.overmap?.z))
-	// 		GLOB.overmap.AddObject(src)
-	// else if(overmap)
-	// 	if(!T || (T.z != GLOB.overmap?.z))
-			// GLOB.overmap.RemoveObject(src)
+	var/turf/T = get_turf(src)
+	if(!T)
+		return
+	var/datum/overmap/wanted = SSovermaps.overmap_lookup["[T.z]"]
+	if(!wanted)
+		if(overmap)
+			overmap.RemoveEntity(src)
+	else if(!(src in wanted.entities))
+		if(overmap)
+			overmap.RemoveEntity(src)
+		wanted.AddEntity(src)
 
 /**
  * resets our real step offset tracking to our loc
@@ -78,13 +80,22 @@
  * move to our real loc
  */
 /atom/movable/overmap_object/entity/proc/MoveToOffsets(forcemove = FALSE)
-	Move(locate(1,1,z), NONE, real_x - 32, real_y - 32)
+	// wraparound
+	if(real_x <= -OVERMAPS_TILE_STEPS)
+		real_x = overmap.width * world.icon_size - (OVERMAPS_TILE_STEPS + real_x) - 1
+	else if(real_x >= (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS))
+		real_x = -OVERMAPS_TILE_STEPS + (real_x - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
+	if(real_y <= -OVERMAPS_TILE_STEPS)
+		real_y = overmap.height * world.icon_size - (OVEMRAPS_TILE_STEPS + real_y) - 1
+	else if(real_y >= (overmap.height * world.icon_size + OVERMAPS_TILE_STEPS))
+		real_y = -OVERMAPS_TILE_STEPS + (real_y - (overmap.height * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
+	Move(locate(1,1,overmap.z), NONE, real_x, real_y)
 
 /**
  * checks if we need processing
  */
 /atom/movable/overmap_object/entity/proc/ShouldProcess()
-	return IsMoving() || ship?.ShouldProcess()
+	return ship || IsMoving() || (datum_flags & DF_ISPROCESSING)
 
 /**
  * checks if we're moving
@@ -99,7 +110,6 @@
 	angle += amt
 	transform.Turn(amt)
 
-
 /**
  * adjust velocities relative to map.
  * angle is entirely detached from velocity on overmaps physics sim to optimize for standard case
@@ -109,9 +119,7 @@
 	velocity_x = clamp(velocity_x + x, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
 	velocity_y = clamp(velocity_y + y, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
 	velocity_angle = MODULUS(velocity_angle + angle, 360)
-	if(!moving)
-		moving = TRUE
-		StartProcessing()
+	StartProcessing()
 
 /**
  * adjusts velocity relative to self, rather than map
@@ -152,9 +160,7 @@
 		velocity_y = clamp(y, -OVERMAPS_MAX_SPEED, OVERMAPS_MAX_SPEED)
 	if(!isnull(angle))
 		velocity_angle = MODULUS(angle, 360)
-	if(!moving)
-		moving = TRUE
-		StartProcessing()
+	StartProcessing()
 
 /**
  * stops processing
@@ -162,6 +168,7 @@
 /atom/movable/overmap_object/entity/proc/StopProcessing()
 	if(!(datum_flags & DF_ISPROCESSING))
 		return
+	datum_flags &= ~DF_ISPROCESSING
 	overmap?.processing -= src
 
 /**
@@ -170,4 +177,5 @@
 /atom/movable/overmap_object/entity/proc/StartProcessing()
 	if(datum_flags & DF_ISPROCESSING)
 		return
+	datum_flags |= DF_ISPROCESSING
 	overmap?.processing += src

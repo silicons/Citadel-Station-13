@@ -1,7 +1,7 @@
 /**
  * Requests a view datum be made if not already
  */
-/atom/movable/overmap_object/proc/AssertViewInitialized()
+/atom/movable/overmap_object/entity/proc/AssertViewInitialized()
 	if(!view_holder)
 		view_holder = new(src)
 
@@ -14,7 +14,7 @@
 	/// id for screen locs
 	var/screen
 	/// view range
-	var/view_range = OVERMAP_VIEW_RANGE
+	var/view_range = 7
 	/// holds plane masters
 	var/list/atom/movable/overmap_hud/plane/plane_masters
 	/// holds parallax
@@ -29,18 +29,18 @@
 	var/static_vision_range = 3
 
 	/// the object we are the view for
-	var/atom/movable/overmap_object/object
+	var/atom/movable/overmap_object/entity/object
 
 	/// images to show to usersw
 	var/list/images
 	/// showing
 	var/list/client/showing
 
-/datum/overmap_view/New(atom/movable/overmap_object/object)
+/datum/overmap_view/New(atom/movable/overmap_object/entity/object)
 	if(!object)
 		CRASH("Invalid object")
 	screen = "map_[object.id]"
-	object.AssertStaticVision()
+	// object.AssertStaticVision()
 	initialize_planes()
 	initialize_parallax()
 	initialize_images()
@@ -88,7 +88,7 @@
  * Gets the screen objects to apply to a client
  */
 /datum/overmap_view/proc/GetScreen()
-	. = list(master, darkness, background)
+	. = list(master, background)
 	. |= plane_masters
 	. |= parallax_layers
 
@@ -105,7 +105,8 @@
 
 /datum/overmap_view/proc/Show(client/user, datum/source)
 	if(ismob(user))
-		user = user.client
+		var/mob/M = user
+		user = M.client
 	if(!user)
 		return
 	user.screen |= GetScreen()
@@ -120,7 +121,8 @@
 
 /datum/overmap_view/proc/Hide(client/user, datum/source)
 	if(ismob(user))
-		user = user.client
+		var/mob/M = user
+		user = M.client
 	if(!user)
 		return
 	showing[user] -= source
@@ -153,4 +155,4 @@
 	if(static_vision_range == newrange)
 		return
 	static_vision_range = newrange
-	UpdateStaticVision()
+	// UpdateStaticVision()
