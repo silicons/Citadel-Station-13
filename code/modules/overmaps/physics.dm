@@ -59,13 +59,13 @@
  * Automatically puts us in and takes us out of an overmap if we're in/out of the zlevel
  */
 /atom/movable/overmap_object/entity/proc/CheckOvermap()
-	var/turf/T = get_turf(src)
-	if(!overmap)
-		if(T && (T.z == GLOB.overmap?.z))
-			GLOB.overmap.AddObject(src)
-	else if(overmap)
-		if(!T || (T.z != GLOB.overmap?.z))
-			GLOB.overmap.RemoveObject(src)
+	// var/turf/T = get_turf(src)
+	// if(!overmap)
+	// 	if(T && (T.z == GLOB.overmap?.z))
+	// 		GLOB.overmap.AddObject(src)
+	// else if(overmap)
+	// 	if(!T || (T.z != GLOB.overmap?.z))
+			// GLOB.overmap.RemoveObject(src)
 
 /**
  * resets our real step offset tracking to our loc

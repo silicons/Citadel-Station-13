@@ -43,7 +43,7 @@
 	/// tiles penetration max before detonating
 	var/e_on_tiles = 20
 
-/obj/item/projectile/overmap_projectile/Initialize(mapload, atom/movable/overmap_object/projectile/P)
+/obj/item/projectile/overmap_projectile/Initialize(mapload, atom/movable/overmap_object/entity/projectile/P)
 	. = ..()
 	#warn grab properties from projectile
 	k_energy_original = k_energy

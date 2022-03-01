@@ -53,7 +53,7 @@
 /**
  * Add an object
  */
-/datum/overmap/proc/AddObject(atom/movable/overmap_object/O)
+/datum/overmap/proc/AddObject(atom/movable/overmap_object/entity/O)
 	if(O.overmap != null)
 		CRASH("Wrong overmap")
 	O.overmap = src
@@ -64,7 +64,7 @@
 /**
  * Removes an object
  */
-/datum/overmap/proc/RemoveObject(atom/movable/overmap_object/O)
+/datum/overmap/proc/RemoveObject(atom/movable/overmap_object/entity/O)
 	if(O.overmap != src)
 		CRASH("Wrong overmap")
 	O.overmap = null
@@ -77,7 +77,7 @@
 /datum/overmap/proc/InstantiateObject(path, x, y, angle, list/alist)
 	if(!ispath(path, /atom/movable/overmap_object))
 		CRASH("Wrong path")
-	var/atom/movable/overmap_object/O = path
+	var/atom/movable/overmap_object/entity/O = path
 	var/turf/where = GetTurf(x, y, initial(O.bound_height), initial(O.bound_width), initial(O.bound_x), initial(O.bound_y))
 	O = new O(alist? where : arglist(list(where) + alist))
 	O.real_x = x

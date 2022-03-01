@@ -3,7 +3,7 @@
  *
  * Separate from actual projectiles for modularity
  */
-/atom/movable/overmap_object/projectile
+/atom/movable/overmap_object/entity/projectile
 	name = "generic projectile"
 
 	/// firer
@@ -41,15 +41,15 @@
 	var/fuel = 0
 	var/time_to_live = INFINITY
 
-/atom/movable/overmap_object/projectile/proc/CheckImpact(atom/movable/overmap_object/O)
+/atom/movable/overmap_object/entity/projectile/proc/CheckImpact(atom/movable/overmap_object/O)
 	if(O == firer)
 		return FALSE
-	if(istype(O, /atom/movable/overmap_object/projectile))
+	if(istype(O, /atom/movable/overmap_object/entity/projectile))
 		#warn complicated checks here for intercept
 	#warn IFF checks here
 	return TRUE
 
-/atom/movable/overmap_object/projectile/Crossed(atom/movable/AM, oldloc)
+/atom/movable/overmap_object/entity/projectile/Crossed(atom/movable/AM, oldloc)
 	. = ..()
 	if(istype(AM, /atom/movable/overmap_object))
 		if(CheckImpact(AM))
@@ -62,7 +62,7 @@
  * selfguided_target - self target for missiles
  * fuel - fuel count before the self guidance dies
  */
-/atom/movable/overmap_object/projectile/Initialize(mapload, ix, iy, iangle, atom/movable/selfguided_target = null, fuel = null)
+/atom/movable/overmap_object/entity/projectile/Initialize(mapload, ix, iy, iangle, atom/movable/selfguided_target = null, fuel = null)
 	. = ..()
 	SetVelocity(ix, iy, iangle) // todo: get parent ship angle
 	target = selfguided_target
@@ -70,7 +70,7 @@
 		src.fuel = fuel
 	time_to_live = INFINITY
 
-/atom/movable/overmap_object/projectile/Tick(ds, times_fired)
+/atom/movable/overmap_object/entity/projectile/Tick(ds, times_fired)
 	. = ..()
 	// dumb bombs
 	if (!target || time_to_live == INFINITY)
@@ -95,28 +95,28 @@
 	// https://www.desmos.com/calculator/l2ck3boo7m
 	fuel = clamp(abs(fuel * 1.1) - dangle, 0, initial(fuel))
 
-/atom/movable/overmap_object/projectile/Destroy()
+/atom/movable/overmap_object/entity/projectile/Destroy()
 	target = null
 	return ..()
 
 /// man i wonder what this is
-/atom/movable/overmap_object/projectile/railgun
+/atom/movable/overmap_object/entity/projectile/railgun
 	name = "railgun bullet"
 
 /// see FTL for tomfoolery about loading clown in the magetically accelerated cannon (railgun)
-/atom/movable/overmap_object/projectile/railgun/clown
+/atom/movable/overmap_object/entity/projectile/railgun/clown
 	name = "railgun tomfoolery"
 
 /// missile
-/atom/movable/overmap_object/projectile/torp
+/atom/movable/overmap_object/entity/projectile/torp
 	name = "torpedo tube"
 	fuel = 300 // can turn like, 3 times when the ship causes src to do sharp 360
 
 /// pew pew
-/atom/movable/overmap_object/projectile/laser
+/atom/movable/overmap_object/entity/projectile/laser
 	name = "laser"
 
 
-/atom/movable/overmap_object/projectile/laser/Initialize(mapload)
+/atom/movable/overmap_object/entity/projectile/laser/Initialize(mapload)
 	. = ..()
 	time_to_live = world.time + (30 SECONDS)
