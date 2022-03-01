@@ -28,6 +28,26 @@ SUBSYSTEM_DEF(overmaps)
 	to_chat(world, span_danger("Hard resetting overmaps; This will cause some lag."))
 	var/cost = REALTIMEOFDAY
 
+	// wipe all overmaps
+	for(var/datum/overmap/O as anything in overmaps)
+		if(!istype(O))
+			overmaps -= O
+		for(var/atom/movable/overmap_object/OO in O.objects)
+			O.RemoveObject(OO)
+		O.objects = list()
+		O.processing = list()
+
+	for(var/atom/movable/overmap_object/O in world)
+
+	// recover all overmaps
+	for(var/datum/overmap/O as anything in overmaps)
+		O.Recover()
+
+	// recover all objects
+	for(var/atom/movable/overmap_object/OO as anything in O.objects)
+		OO.Recover()
+
+
 	cost = REALTIMEOFDAY - cost
 	to_chat(world, span_danger("Overmaps hard reset in [cost * 0.1] seconds."))
 	can_fire = TRUE
