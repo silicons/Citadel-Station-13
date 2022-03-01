@@ -38,14 +38,15 @@ SUBSYSTEM_DEF(overmaps)
 		O.processing = list()
 
 	for(var/atom/movable/overmap_object/O in world)
+		#warn put into overmap
 
 	// recover all overmaps
 	for(var/datum/overmap/O as anything in overmaps)
 		O.Recover()
 
-	// recover all objects
-	for(var/atom/movable/overmap_object/OO as anything in O.objects)
-		OO.Recover()
+		// recover all objects
+		for(var/atom/movable/overmap_object/OO as anything in O.objects)
+			OO.Recover()
 
 
 	cost = REALTIMEOFDAY - cost
