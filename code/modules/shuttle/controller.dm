@@ -10,3 +10,6 @@
 
 /datum/shuttle_controller/New(atom/movable/shuttle/shuttle)
 
+
+
+/datum/shuttle_controller/proc/RequestGracefulDock()

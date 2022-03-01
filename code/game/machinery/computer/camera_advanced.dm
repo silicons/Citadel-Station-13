@@ -1,3 +1,51 @@
+/**
+ * freelook datums:
+ *
+ * allows a user to browse around using an eyeobj, freely.
+ */
+/datum/freelook
+	/// allowed jump destinations: name = atom or list of coords
+	var/list/jumps
+	/// current user
+	var/mob/user
+	/// exit action
+	var/datum/action/innate/camera_off/exit_action
+	/// jump action
+	var/datum/action/innate/camera_jump/jump_action
+	/// actions
+	var/list/actions
+
+/datum/freelook/New()
+	actions = InitActions()
+
+/datum/freelook/proc/InitActions()
+	. = list()
+	exit_action = new
+	exit_action.origin = src
+	. += exit_action
+	jump_action = new
+	jump_action.origin = src
+	. += jump_action
+
+/datum/freelook/proc/GrantActions(mob/user)
+
+/datum/freelook/proc/RemoveActions(mob/user)
+
+/datum/freelook/proc/Enter(mob/user)
+
+/datum/freelook/proc/Exit(mob/user)
+
+/**
+ * get list of jump names
+ */
+/datum/freelook/proc/GetJumpNames()
+
+/**
+ * jump to jump name
+ */
+/datum/freelook/proc/JumpTo(name)
+
+
 /obj/machinery/computer/camera_advanced
 	name = "advanced camera console"
 	desc = "Used to access the various cameras on the station."

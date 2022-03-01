@@ -1,24 +1,34 @@
 // CheckDock and CanDock values.
 /// we can dock
-#define SHUTTLE_CAN_DOCK			"can dock"
+#define SHUTTLE_CAN_DOCK					"can dock"
+// things that force can't ignore
+/// out of world bounds
+#define SHUTTLE_FATAL_OUT_OF_WORLD			"out of bounds of world"
+/// this isn't even a docking port
+#define SHUTTLE_FATAL_NOT_DOCK				"not a docking port"
+/// already has a shuttle docked, if we dock we would smash it
+#define SHUTTLE_FATAL_COLLISION				"would collide with existing shuttle"
 
-// shuttle_mode
-/// in realspace/docked somewhere on the map
-#define SHUTTLE_MODE_DOCKED			"docked"
-/// in dynamic transit/short jump
-#define SHUTTLE_MODE_TRANSIT		"transit"
-/// in long jump/in its own zlevel for overmaps
-#define SHUTTLE_MODE_LONG_JUMP		"long_jump"
+// things that force can ignore
+/// obstructing turf
+#define SHUTTLE_OBSTRUCTED_BY_TURF			"obstructed by dense wall"
+/// obstructing object
+#define SHUTTLE_OBSTRUCTED_BY_OBJ			"obstructed by dense object"
+/// we are already docked
+#define SHUTTLE_OBSTRUCTED_DOCKED			"we are already docked"
+/// shuttle wouldn't fit in bounds of dock
+#define SHUTTLE_OBSTRUCTED_OUT_OF_BOUNDS	"we don't fit in dock"
 
 // shuttle_state
-/// not doing anything, don't need ticking
-#define SHUTTLE_STATE_IDLE					"idle"
-/// preparing to go into transit
-#define SHUTTLE_STATE_IGNITING				"igniting"
-/// in transit
-#define SHUTTLE_STATE_TRANSIT				"transit"
-/// preparing to exit transit to destinatio
-#define SHUTTLE_STATE_DOCKING				"docking"
+/// in realspace/docked somewhere on the map
+#define SHUTTLE_STATE_DOCKED			"docked"
+/// in dynamic transit/short jump
+#define SHUTTLE_STATE_TRANSIT			"transit"
+/// in long jump/in its own zlevel for overmaps
+#define SHUTTLE_STATE_LONG_JUMP			"long_jump"
+
+// /datum/shuttle_controller/standard
+
 
 
 //shuttle mode defines
@@ -36,16 +46,6 @@
 #define EMERGENCY_IDLE_OR_RECALLED (SSshuttle.emergency && ((SSshuttle.emergency.mode == SHUTTLE_IDLE) || (SSshuttle.emergency.mode == SHUTTLE_RECALL)))
 #define EMERGENCY_ESCAPED_OR_ENDGAMED (SSshuttle.emergency && ((SSshuttle.emergency.mode == SHUTTLE_ESCAPE) || (SSshuttle.emergency.mode == SHUTTLE_ENDGAME)))
 #define EMERGENCY_AT_LEAST_DOCKED (SSshuttle.emergency && SSshuttle.emergency.mode != SHUTTLE_IDLE && SSshuttle.emergency.mode != SHUTTLE_RECALL && SSshuttle.emergency.mode != SHUTTLE_CALL)
-
-// Shuttle return values
-#define SHUTTLE_CAN_DOCK "can_dock"
-#define SHUTTLE_NOT_A_DOCKING_PORT "not a docking port"
-#define SHUTTLE_DWIDTH_TOO_LARGE "docking width too large"
-#define SHUTTLE_WIDTH_TOO_LARGE "width too large"
-#define SHUTTLE_DHEIGHT_TOO_LARGE "docking height too large"
-#define SHUTTLE_HEIGHT_TOO_LARGE "height too large"
-#define SHUTTLE_ALREADY_DOCKED "we are already docked"
-#define SHUTTLE_SOMEONE_ELSE_DOCKED "someone else docked"
 
 //Launching Shuttles to CentCom
 #define NOLAUNCH -1

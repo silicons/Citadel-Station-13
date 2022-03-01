@@ -85,6 +85,8 @@
 	RETURN_TYPE(atom/movable/shuttle)
 	return docked || inbound
 
+
+
 /**
  * can a shuttle **physically** dock on us?
  *
@@ -102,6 +104,9 @@
  * check if we're obstructed for a certain shuttle
  */
 /atom/movable/shuttle_dock/proc/CheckObstructions(atom/movable/shuttle/shuttle, force)
+	var/atom/movable/shuttle/existing = IsOccupied()
+	if(existing && existing != shuttle)
+		return SHUTTLE_OBSTRUCTED_
 
 /**
  * Checks if a shuttle fits in our bounding box

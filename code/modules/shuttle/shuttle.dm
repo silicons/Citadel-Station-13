@@ -42,20 +42,10 @@
 	// docking
 	/// the dock we're docked at
 	var/atom/movable/shuttle_dock/docked
-	/// the dock we're currently going towards
-	var/atom/movable/shuttle_dock/destination
-	/// the transit dock we go through to get to the destination
-	var/atom/movable/shuttle_dock/transit
 	/// only active during maploading - shuttle template loader will handle setting this - if we're template loaded, where do we move to? clear after moving.
 	var/atom/movable/shuttle_dock/roundstart
-
-	// ticking/processing
-	/// mode - where we physically are
-	var/mode = SHUTTLE_MODE_DOCKED
-	/// state - used for processing
-	var/state = SHUTTLE_STATE_IDLE
-	/// world.time where we should finish this processing stage
-	var/timer
+	/// state
+	var/state = SHUTTLE_STATE_DOCKED
 
 
 /atom/movable/shuttle/Initialize(mapload)

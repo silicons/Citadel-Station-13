@@ -8,6 +8,7 @@
 /area/GetOvermapObject()
 
 /turf/GetOvermapObject()
+	return loc.GetOvermapObject() ||
 
 
 /**
