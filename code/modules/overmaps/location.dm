@@ -3,7 +3,9 @@
  */
 /atom/proc/GetOvermapObject()
 	if(!isturf(src))
-		return get_turf(src).GetOvermapObject()
+		var/turf/T = get_turf(src)
+		return T?.GetOvermapObject()
+	CRASH("Why did root atom get called on a turf??")
 
 /area/GetOvermapObject()
 

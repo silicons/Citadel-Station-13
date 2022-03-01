@@ -58,8 +58,8 @@
  */
 /datum/proc/update_static_data(mob/user, datum/tgui/ui)
 	if(!user)
-		for(var/datum/tgui/ui as anything in SStgui.open_uis_by_src[src])
-			ui.send_full_update()
+		for(var/datum/tgui/_ui as anything in SStgui.open_uis_by_src[src])
+			_ui.send_full_update()
 		return
 	if(!ui)
 		ui = SStgui.get_open_ui(user, src)

@@ -5,7 +5,7 @@
 /obj/machinery/ship
 	name = "ship machinery"
 	desc = "This is bugged."
-	icon = 'icons/overmap/machinery.dmi'
+	// icon = 'icons/modules/overmap/machinery.dmi'
 
 // standard ui static data
 /obj/machinery/ship/ui_static_data(mob/user)

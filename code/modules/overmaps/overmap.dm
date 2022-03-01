@@ -49,6 +49,7 @@
 	SSovermaps.overmap_lookup["[z]"] = src
 
 /datum/overmap/proc/Unregister()
+	SSovermaps.overmaps -= src
 	SSovermaps.overmap_lookup -= "[z]"
 
 /**
@@ -109,7 +110,11 @@
 		CRASH("Wrong path")
 	var/atom/movable/overmap_object/entity/O = path
 	var/turf/where = GetTurf(x, y, initial(O.bound_height), initial(O.bound_width), initial(O.bound_x), initial(O.bound_y))
-	O = new O(alist? where : arglist(list(where) + alist))
+	if(alist)
+		alist.Insert(1, where)
+		O = new O(arglist(alist))
+	else
+		O = new(where)
 	O.real_x = x
 	O.real_y = y
 	O.angle = angle

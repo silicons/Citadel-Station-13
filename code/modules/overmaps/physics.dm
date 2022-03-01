@@ -33,9 +33,9 @@
 
 /// forcemove wrapper - admins can literally pull shuttles up from orbit with this
 /atom/movable/overmap_object/entity/forceMove(atom/destination)
-	var/oldloc = loc
+	var/atom/oldloc = loc
 	. = ..()
-	log_overmap("[src] forceMoved from [oldloc] ([COORD(oldloc)]) to [loc] ([COORD(loc)])")
+	log_overmap("[src] forceMoved from [oldloc] ([oldloc && COORD(oldloc)]) to [loc] ([loc && COORD(loc)])")
 	OnForceMove(oldloc)
 
 /**

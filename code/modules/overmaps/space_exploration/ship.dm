@@ -64,8 +64,8 @@
 /datum/ship/proc/UnlinkMachinery()
 
 
-/// In degrees.
-/datum/ship/set_desired_angle(rudder_angle)
-	if (target_angle == rudder_angle)
-		return FALSE
-	target_angle = rudder_angle
+// /// In degrees.
+// /datum/ship/set_desired_angle(rudder_angle)
+// 	if (target_angle == rudder_angle)
+// 		return FALSE
+// 	target_angle = rudder_angle

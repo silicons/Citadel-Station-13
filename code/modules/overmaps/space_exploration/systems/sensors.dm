@@ -14,7 +14,7 @@
 	/// range of the radar.
 	var/range = 9
 	/// range where the IFF detects FOF
-	var/IFFrange = (range / 2) + 1
+	var/IFFrange = 7
 	/// power usage of the radar. (active)
 	var/power_usage = 500
 	/// ping delay

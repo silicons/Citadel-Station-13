@@ -6,6 +6,8 @@ SUBSYSTEM_DEF(overmaps)
 
 	/// all overmaps
 	var/static/list/datum/overmap/overmaps = list()
+	/// overmap lookup
+	var/static/list/overmap_lookup = list()
 	/// primary overmap
 	var/static/datum/overmap/world_overmap
 	/// hazards by id

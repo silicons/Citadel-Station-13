@@ -3,7 +3,7 @@
  */
 /atom/movable/overmap_hud/background
 	name = "helm holographics"
-	icon = 'icons/overmaps/turfs.dmi'
+	// icon = 'icons/overmaps/turfs.dmi'
 	icon_state = "background"
 	plane = OVERMAP_BACKGROUND_PLANE
 
