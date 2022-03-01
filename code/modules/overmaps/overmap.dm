@@ -49,20 +49,6 @@ GLOBAL_DATUM(overmap, /datum/overmap)
 	processing = list()
 
 /**
- * when an admin fucks up
- */
-/datum/overmap/proc/Recover()
-	if(!z)
-		CRASH("No Z")
-	objects = list()
-	processing = list()
-	for(var/atom/movable/overmap_object/O in Z_TURFS(z))
-		objects += O
-		O.overmap = src
-		// if(O.IsMoving())
-		// 	O.moving +=  O
-
-/**
  * initialize
  */
 /datum/overmap/proc/Initialize()

@@ -55,7 +55,7 @@
 		for(var/y in 1 to world.maxy)
 			if(check_tick)
 				CHECK_TICK
-			potential = locate(x, y, zlevel)	
+			potential = locate(x, y, zlevel)
 			p_area = potential.loc
 			if(!p_area.considered_hull_exterior)
 				continue

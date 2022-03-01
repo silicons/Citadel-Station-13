@@ -7,8 +7,14 @@ SUBSYSTEM_DEF(shuttle)
 	flags = SS_KEEP_TIMING|SS_NO_TICK_CHECK
 	runlevels = RUNLEVEL_SETUP | RUNLEVEL_GAME
 
+	var/list/mobile = list()
+	var/list/stationary = list()
 	var/list/beacons = list()
 	var/list/transit = list()
+
+	//Now it only for ID generation
+	var/list/assoc_mobile = list()
+	var/list/assoc_stationary = list()
 
 	var/list/transit_requesters = list()
 	var/list/transit_request_failures = list()
@@ -167,6 +173,18 @@ SUBSYSTEM_DEF(shuttle)
 
 /datum/controller/subsystem/shuttle/proc/unblock_recall()
 	emergencyNoRecall = FALSE
+
+/datum/controller/subsystem/shuttle/proc/getShuttle(id)
+	for(var/obj/docking_port/mobile/M in mobile)
+		if(M.id == id)
+			return M
+	WARNING("couldn't find shuttle with id: [id]")
+
+/datum/controller/subsystem/shuttle/proc/getDock(id)
+	for(var/obj/docking_port/stationary/S in stationary)
+		if(S.id == id)
+			return S
+	WARNING("couldn't find dock with id: [id]")
 
 /// Check if we can call the evac shuttle.
 /// Returns TRUE if we can. Otherwise, returns a string detailing the problem.

@@ -2,14 +2,7 @@
  * CORE PROC: Gets the ship we're on
  */
 /atom/proc/GetShip()
-	var/atom/movable/overmap_object/O = GetOvermapObject()
-	if(!O)
-		return
-	return O.ship
-
-GLOBAL_LIST_INIT(default_ship_systems, list(
-	/datum/ship_system/radar
-))
+	return GetOvermapObject()?.ship
 
 /**
  * ships
