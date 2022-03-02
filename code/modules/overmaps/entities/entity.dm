@@ -9,7 +9,7 @@
 	appearance_flags = NONE
 	bound_width = 32
 	bound_height = 32
-	step_size = OVERMAPS_MAX_SPEED_PIXELS
+	step_size = 16
 
 	/* instance */
 	/// unique id
@@ -34,10 +34,6 @@
 	var/angle = 0
 	/// current transform angle
 	var/transform_angle = 0
-	/// real step x
-	var/real_x
-	/// real step y
-	var/real_y
 	/// velocity x in overmap units/second
 	var/velocity_x = 0
 	/// velocity y in overmap units/second

@@ -3,7 +3,14 @@
 	glide_size = 8
 	bound_width = 32
 	bound_height = 32
+	step_size = 32
 	SET_APPEARANCE_FLAGS(TILE_BOUND | PIXEL_SCALE | TILE_MOVER)
+	/* pixel movement */
+	/// partial step x
+	var/partial_step_x = 0
+	/// partial step y
+	var/partial_step_y = 0
+
 	var/last_move = null
 	var/last_move_time = 0
 	var/anchored = FALSE
@@ -286,7 +293,7 @@
 	var/move_dir = get_dir(pulling.loc, A)
 	if(!Process_Spacemove(move_dir))
 		return FALSE
-	pulling.Move(get_step(pulling.loc, move_dir), move_dir, glide_size)
+	pulling.Move(get_step(pulling.loc, move_dir), move_dir, null, null, glide_size)
 	return TRUE
 
 /**

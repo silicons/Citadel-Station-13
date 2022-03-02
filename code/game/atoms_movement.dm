@@ -5,9 +5,9 @@
 // Here's where we rewrite how byond handles movement except slightly different
 // To be removed on step_ conversion
 // All this work to prevent a second bump
-/atom/movable/Move(atom/newloc, direct=0, glide_size_override = 0)
+/atom/movable/Move(atom/newloc, direct=0, step_x, step_y, glide_size_override = 0)
 	if(!(appearance_flags & TILE_MOVER))
-		return ..()
+		return ..(newloc, direct, step_x, step_y)
 	. = FALSE
 	if(!newloc || newloc == loc)
 		return
@@ -62,12 +62,12 @@
 	loc = new_loc
 	Moved(old_loc)
 
-/atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
+/atom/movable/Move(atom/newloc, direct, step_x, step_y, glide_size_override = 0)
 	if(!(appearance_flags & TILE_MOVER))
 		// pixel movement
 		// monkeypatched for overmaps, currently doesn't work with literally anything but moved().
 		var/l = loc
-		. = ..()
+		. = ..(newloc, direct, step_x, step_y)
 		if(l != loc)
 			Moved(l, direct || dir)
 		return
@@ -154,7 +154,7 @@
 			//puller and pullee more than one tile away or in diagonal position
 			if(get_dist(src, pulling) > 1 || (moving_diagonally != SECOND_DIAG_STEP && ((pull_dir - 1) & pull_dir)))
 				pulling.moving_from_pull = src
-				pulling.Move(T, get_dir(pulling, T), glide_size) //the pullee tries to reach our previous position
+				pulling.Move(T, get_dir(pulling, T), null, null, glide_size) //the pullee tries to reach our previous position
 				pulling.moving_from_pull = null
 			check_pulling()
 
@@ -171,7 +171,7 @@
 /atom/movable/proc/handle_buckled_mob_movement(newloc, direct, glide_size_override)
 	for(var/m in buckled_mobs)
 		var/mob/living/buckled_mob = m
-		if(!buckled_mob.Move(newloc, direct, glide_size_override))
+		if(!buckled_mob.Move(newloc, direct, null, null, glide_size_override))
 			forceMove(buckled_mob.loc)
 			last_move = buckled_mob.last_move
 			inertia_dir = last_move
@@ -282,6 +282,8 @@
 		var/newZ = newturf?.z || null
 		if(oldZ != newZ)
 			onTransitZ(oldZ, newZ)
+		partial_step_x = 0
+		partial_step_y = 0
 		Moved(oldLoc, NONE, TRUE)
 		return
 	if(destination)
@@ -372,3 +374,18 @@
 	inertia_last_loc = loc
 	SSspacedrift.processing[src] = src
 	return TRUE
+
+/**
+ * pixel move a certain amount in each dir
+ */
+/atom/movable/proc/step_in_x_y(x, y)
+	x += partial_step_x
+	y += partial_step_y
+	partial_step_x = MODULUS(x, 1)
+	partial_step_y = MODULUS(y, 1)
+	x = round(x, 1)
+	y = round(y, 1)
+	if(x)
+		step(src, x > 0? EAST : WEST, abs(x))
+	if(y)
+		step(src, y > 0? NORTH : SOUTH, abs(y))

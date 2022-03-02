@@ -14,48 +14,41 @@
 		if(velocity_angle)
 			Turn(velocity_angle)
 		if(velocity_x || velocity_y)
-			real_x += velocity_x
-			real_y += velocity_y
-			if(CheckWraparound())
-				JumpToOffsets()
-			else
-				var/actual_x = x * OVERMAPS_TILE_SIZE - 16 + step_x
-				var/actual_y = y * OVERMAPS_TILE_SIZE - 16 + step_y
-				var/move_x = round(real_x - actual_x, 1)
-				var/move_y = round(real_y - actual_y, 1)
-				if(move_x > step_size || move_y > step_size)
-					JumpToOffsets()
-				else
-					step(src, NORTH, move_x)
-					step(src, EAST, move_y)
+			#warn enforce speed limit
+			step_in_x_y(velocity_x, velocity_y)
+			CheckWraparound()
 
 	ship?.Tick(ds, times_fired)
 
 /atom/movable/overmap_object/entity/proc/CheckWraparound()
 	. = FALSE
+	var/list/new_coords
 	// wraparound is the first tile on the border to the second tile on the other side
 	// we could avoid even the 1 border if byond wasn't a POS that hard crashes when vis contents loops :/
 	// fuck non recursive vis_flags.
-	if(real_x <= (OVERMAPS_TILE_SIZE * 1.5))
-		real_x = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_x) - 1
+	if(x < 2)
 		. = TRUE
-	else if(real_x >= ((overmap.width - 1.5) * OVERMAPS_TILE_SIZE))
-		real_x = -OVERMAPS_TILE_STEPS + (real_x - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
+		new_coords = list(overmap.width - 1, y, z)
+	else if(x > (overmap.width - 1))
 		. = TRUE
-	if(real_y <= (OVERMAPS_TILE_SIZE * 1.5))
-		real_y = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_y) - 1
+		new_coords = list(2, y, z)
+	if(.)
+		jumping = TRUE
+		forceMove(locate(new_coords[1], new_coords[2], z), step_x, step_y)
+		jumping = FALSE
+		CheckWraparound()
+		return
+	if(y < 2)
 		. = TRUE
-	else if(real_y >= ((overmap.height - 1.5) * OVERMAPS_TILE_SIZE))
-		real_y = -OVERMAPS_TILE_STEPS + (real_y - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
+		new_coords = list(x, overmap.height - 1, z)
+	else if(y > (overmap.height  - 1))
 		. = TRUE
-
-/atom/movable/overmap_object/entity/proc/JumpToOffsets()
-	var/turf/T = locate(round(real_x / 32) + 1, round(real_y / 32) + 1, z)
-	jumping = TRUE
-	forceMove(T)
-	jumping = FALSE
-	step(src, NORTH, (real_x - 16) % 32)
-	step(src, EAST, (real_y - 16) % 32)
+		new_coords = list(x, 2, z)
+	if(.)
+		jumping = TRUE
+		forceMove(locate(new_coords[1], new_coords[2], z), step_x, step_y)
+		jumping = FALSE
+		return
 
 /atom/movable/overmap_object/entity/Cross(atom/movable/AM)
 	// No rigidbody collisions implemented yet
@@ -76,6 +69,9 @@
 	log_overmap("[src] forceMoved from [oldloc] ([oldloc && COORD(oldloc)]) to [loc] ([loc && COORD(loc)])")
 	OnForceMove(oldloc)
 
+/atom/movable/overmap_object/entity/newtonian_move(direction)
+	return	// H E L L NO.
+
 /**
  * Triggered by forcemove
  *
@@ -90,7 +86,6 @@
 	velocity_x = 0
 	velocity_y = 0
 	velocity_angle = 0
-	ResetStepOffsets()
 	CheckOvermap()
 
 /**
@@ -108,13 +103,6 @@
 		if(overmap)
 			overmap.RemoveEntity(src)
 		wanted.AddEntity(src)
-
-/**
- * resets our real step offset tracking to our loc
- */
-/atom/movable/overmap_object/entity/proc/ResetStepOffsets()
-	real_x = (x - 1) * 32 + 16 + step_x
-	real_y = (y - 1) * 32 + 16 + step_y
 
 /**
  * checks if we need processing

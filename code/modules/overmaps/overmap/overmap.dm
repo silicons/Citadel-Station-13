@@ -108,7 +108,7 @@
 /**
  * Instantiates an object in us
  */
-/datum/overmap/proc/InstantiateObject(path, x, y, angle, list/alist)
+/datum/overmap/proc/InstantiateObject(path, x, y, step_x, step_y, angle, list/alist)
 	if(!ispath(path, /atom/movable/overmap_object))
 		CRASH("Wrong path")
 	var/atom/movable/overmap_object/entity/O = path
@@ -118,10 +118,8 @@
 		O = new O(arglist(alist))
 	else
 		O = new(where)
-	O.real_x = x
-	O.real_y = y
 	O.angle = angle
-	O.JumpToOffsets()
+	O.forceMove(O.loc, step_x, step_y)
 	return O
 
 /**
