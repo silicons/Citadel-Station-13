@@ -12,6 +12,7 @@
 	opacity = FALSE
 	plane = OVERMAP_BASE_PLANE
 	baseturfs = /turf/baseturf_bottom
+	vis_flags = NONE
 
 	/// don't yell at me please - for if someone in the future thinks reallocating overmaps is necessary
 	var/allow_destroy = FALSE

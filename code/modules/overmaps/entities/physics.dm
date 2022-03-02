@@ -16,8 +16,46 @@
 		if(velocity_x || velocity_y)
 			real_x += velocity_x
 			real_y += velocity_y
-			MoveToOffsets()
+			if(CheckWraparound())
+				JumpToOffsets()
+			else
+				var/actual_x = x * OVERMAPS_TILE_SIZE - 16 + step_x
+				var/actual_y = y * OVERMAPS_TILE_SIZE - 16 + step_y
+				var/move_x = round(real_x - actual_x, 1)
+				var/move_y = round(real_y - actual_y, 1)
+				if(move_x > step_size || move_y > step_size)
+					JumpToOffsets()
+				else
+					step(src, NORTH, move_x)
+					step(src, EAST, move_y)
+
 	ship?.Tick(ds, times_fired)
+
+/atom/movable/overmap_object/entity/proc/CheckWraparound()
+	. = FALSE
+	// wraparound is the first tile on the border to the second tile on the other side
+	// we could avoid even the 1 border if byond wasn't a POS that hard crashes when vis contents loops :/
+	// fuck non recursive vis_flags.
+	if(real_x <= (OVERMAPS_TILE_SIZE * 1.5))
+		real_x = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_x) - 1
+		. = TRUE
+	else if(real_x >= ((overmap.width - 1.5) * OVERMAPS_TILE_SIZE))
+		real_x = -OVERMAPS_TILE_STEPS + (real_x - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
+		. = TRUE
+	if(real_y <= (OVERMAPS_TILE_SIZE * 1.5))
+		real_y = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_y) - 1
+		. = TRUE
+	else if(real_y >= ((overmap.height - 1.5) * OVERMAPS_TILE_SIZE))
+		real_y = -OVERMAPS_TILE_STEPS + (real_y - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
+		. = TRUE
+
+/atom/movable/overmap_object/entity/proc/JumpToOffsets()
+	var/turf/T = locate(round(real_x / 32) + 1, round(real_y / 32) + 1, z)
+	jumping = TRUE
+	forceMove(T)
+	jumping = FALSE
+	step(src, NORTH, (real_x - 16) % 32)
+	step(src, EAST, (real_y - 16) % 32)
 
 /atom/movable/overmap_object/entity/Cross(atom/movable/AM)
 	// No rigidbody collisions implemented yet
@@ -47,6 +85,8 @@
  * it will also nullify all velocity so you don't accidentally slam people into asteroids (tragic!)
  */
 /atom/movable/overmap_object/entity/proc/OnForceMove(atom/oldloc)
+	if(jumping)
+		return
 	velocity_x = 0
 	velocity_y = 0
 	velocity_angle = 0
@@ -73,25 +113,8 @@
  * resets our real step offset tracking to our loc
  */
 /atom/movable/overmap_object/entity/proc/ResetStepOffsets()
-	real_x = (x - 1) * 32 + step_x
-	real_y = (y - 1) * 32 + step_y
-
-/**
- * move to our real loc
- */
-/atom/movable/overmap_object/entity/proc/MoveToOffsets(forcemove = FALSE)
-	// wraparound is the first tile on the border to the second tile on the other side
-	// we could avoid even the 1 border if byond wasn't a POS that hard crashes when vis contents loops :/
-	// fuck non recursive vis_flags.
-	if(real_x <= (OVERMAPS_TILE_SIZE * 1.5))
-		real_x = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_x) - 1
-	else if(real_x >= ((overmap.width - 1.5) * OVERMAPS_TILE_SIZE))
-		real_x = -OVERMAPS_TILE_STEPS + (real_x - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
-	if(real_y <= (OVERMAPS_TILE_SIZE * 1.5))
-		real_y = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_y) - 1
-	else if(real_y >= ((overmap.height - 1.5) * OVERMAPS_TILE_SIZE))
-		real_y = -OVERMAPS_TILE_STEPS + (real_y - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
-	Move(locate(1,1,overmap.z), NONE, real_x, real_y)
+	real_x = (x - 1) * 32 + 16 + step_x
+	real_y = (y - 1) * 32 + 16 + step_y
 
 /**
  * checks if we need processing
@@ -110,7 +133,13 @@
  */
 /atom/movable/overmap_object/entity/proc/Turn(amt)
 	angle += amt
-	transform.Turn(amt)
+	if(angle < 0)
+		angle += 360
+	if(angle > 360)
+		angle -= 360
+	var/matrix/T = matrix(transform)
+	T.Turn(amt)
+	transform = T
 
 /**
  * adjust velocities relative to map.

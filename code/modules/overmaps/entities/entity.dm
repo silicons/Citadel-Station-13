@@ -46,6 +46,8 @@
 	var/velocity_angle = 0
 	/// we're moving
 	var/moving = FALSE
+	/// we're about to jump
+	var/jumping = FALSE
 
 	/* hazards */
 	/// active hazards

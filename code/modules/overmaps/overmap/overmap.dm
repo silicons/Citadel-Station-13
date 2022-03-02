@@ -67,9 +67,10 @@
 	height = size_y
 	// setup turfs
 	area = new OVERMAPS_AREA_TYPE(null)
-	for(var/turf/T as anything in block(locate(1, 1, z), locate(size_x, size_y, z)))
-		area.contents.Add(T)
-		T.ChangeTurf(OVERMAPS_TURF_TYPE)
+	var/list/turfs = block(locate(1, 1, z), locate(size_x, size_y, z))
+	for(var/turf/T as anything in turfs)
+		T.ChangeTurf(OVERMAPS_TURF_TYPE, flags = CHANGETURF_SKIP)
+	area.contents += turfs
 	// setup borders/etc
 	MakeVisuals()
 
@@ -120,7 +121,7 @@
 	O.real_x = x
 	O.real_y = y
 	O.angle = angle
-	O.MoveToOffsets()
+	O.JumpToOffsets()
 	return O
 
 /**
@@ -142,60 +143,52 @@
  * make visual transitions
  */
 /datum/overmap/proc/MakeVisuals()
-	if(width < 7 || height < 7)
+	if(width < 15 || height < 15)
 		// not worth bothering
 		return
 	// corners
-	var/turf/NE = locate(width, height, z)
-	var/turf/NW = locate(1, height, z)
-	var/turf/SE = locate(width, 1, z)
-	var/turf/SW = locate(1, 1, z)
+	var/turf/NE = locate(width - 1, height - 1, z)
+	var/turf/NW = locate(2, height - 1, z)
+	var/turf/SE = locate(width - 1, 2, z)
+	var/turf/SW = locate(2, 2, z)
 	var/atom/movable/overmap_transition_holder/holder
-	holder = new(null)
-	NE.vis_contents += holder
+	holder = new(NE)
 	holder.vis_contents = block(locate(2, 2, z), locate(8, 8, z))
-	holder = new(null)
-	NW.vis_contents += holder
+	holder = new(NW)
 	holder.vis_contents = block(locate(width - 1, 2, z), locate(width - 7, 8, z))
 	holder.pixel_x = world.icon_size * -6
 	holder.pixel_y = 0
-	holder = new(null)
-	SE.vis_contents += holder
+	holder = new(SE)
 	holder.vis_contents = block(locate(2, height - 1, z), locate(8, height - 7, z))
 	holder.pixel_x = 0
 	holder.pixel_y = world.icon_size * -6
-	holder = new(null)
-	SW.vis_contents += holder
+	holder = new(SW)
 	holder.vis_contents = block(locate(width - 1, height - 1, z), locate(width - 7, height - 7, z))
 	holder.pixel_x = world.icon_size * -6
 	holder.pixel_y = world.icon_size * -6
 
 	// cardinals
-	for(var/i in 1 to width)
-		var/turf/N = locate(i, height, z)
-		var/turf/S = locate(i, 1, z)
-		holder = new(null)
-		N.vis_contents += holder
+	for(var/i in 2 to width - 1)
+		var/turf/N = locate(i, height - 1, z)
+		var/turf/S = locate(i, 2, z)
+		holder = new(N)
 		holder.vis_contents = block(locate(i, 2, z), locate(i, 8, z))
 		holder.pixel_x = 0
 		holder.pixel_y = 0
-		holder = new(null)
-		S.vis_contents += holder
+		holder = new(S)
 		holder.vis_contents = block(locate(i, height - 1, z), locate(i, height - 7, z))
 		holder.pixel_x = 0
 		holder.pixel_y = world.icon_size * -6
 		CHECK_TICK
 
-	for(var/i in 1 to height)
-		var/turf/E = locate(width, i, z)
-		var/turf/W = locate(1, i, z)
-		holder = new(null)
-		E.vis_contents += holder
+	for(var/i in 2 to height - 1)
+		var/turf/E = locate(width - 1, i, z)
+		var/turf/W = locate(2, i, z)
+		holder = new(E)
 		holder.vis_contents = block(locate(2, i, z), locate(8, i, z))
 		holder.pixel_x = 0
 		holder.pixel_y = 0
-		holder = new(null)
-		W.vis_contents += holder
+		holder = new(W)
 		holder.vis_contents = block(locate(width - 7, i, z), locate(width - 1, i, z))
 		holder.pixel_x = world.icon_size * -6
 		holder.pixel_y = 0
