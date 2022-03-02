@@ -7,7 +7,7 @@
 	pixels_per_second = TILES_TO_PIXELS(20)
 
 	/// standard type
-	var/projectile_type = OVERMAP_PROJECTILE_KINETIC
+	// var/projectile_type = OVERMAP_PROJECTILE_KINETIC
 
 	/**
 	 * how this works:

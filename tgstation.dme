@@ -3070,6 +3070,8 @@
 #include "code\modules\overmaps\combat\projectile_impact.dm"
 #include "code\modules\overmaps\combat\projectile_onmap.dm"
 #include "code\modules\overmaps\combat\weapons\_ship_weapons.dm"
+#include "code\modules\overmaps\combat\weapons\simple\mac_cannon.dm"
+#include "code\modules\overmaps\combat\weapons\simple\phase_cannon.dm"
 #include "code\modules\overmaps\generation\location_data.dm"
 #include "code\modules\overmaps\generation\overmap_data.dm"
 #include "code\modules\overmaps\hazards\_hazard.dm"

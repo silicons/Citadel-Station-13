@@ -1,3 +1,6 @@
+#define DAMAGE_HULL "hull"
+#define DAMAGE_SHIELD "shield"
+
 
 /obj/machinery/ship/weapon
 	name = "basetype. does nothing"
@@ -21,6 +24,9 @@
 	var/is_reloading = FALSE
 	/// Do we reload the entire mag or only 1/reload_delay
 	var/burst_reload = FALSE
+
+	/// Firing soundeffect
+	var/fire_sfx
 
 	var/list/damage_type = list()
 
@@ -70,6 +76,9 @@
 
 
 /obj/machinery/ship/weapon/simple/proc/fire()
+	if (fire_sfx)
+		playsound(src, fire_sfx, 50, TRUE)
+	// todo add random crits
 
 /**
  * cool modular guns
