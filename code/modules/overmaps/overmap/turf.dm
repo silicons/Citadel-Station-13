@@ -3,7 +3,7 @@
  *
  * Special snowflake moment
  */
-/turf/overmap
+/turf/open/overmap
 	dynamic_lighting = DYNAMIC_LIGHTING_DISABLED
 	icon = 'icons/modules/overmaps/tile.dmi'
 	icon_state = "turf"
@@ -16,7 +16,7 @@
 	/// don't yell at me please - for if someone in the future thinks reallocating overmaps is necessary
 	var/allow_destroy = FALSE
 
-/turf/overmap/ChangeTurf(path, list/new_baseturfs, flags)
+/turf/open/overmap/ChangeTurf(path, list/new_baseturfs, flags)
 	return allow_destroy? ..() : FALSE
 
 /atom/movable/overmap_transition_holder

@@ -10,6 +10,12 @@
 	var/forced_lighting_alpha
 	/// if not null, see_in_dark is forced to this
 	var/forced_see_in_dark
+	/// list of screen objects to add
+	var/list/atom/movable/screens
+	/// list of images to add
+	var/list/image/images
+	/// clients using
+	var/list/client/attached
 
 #warn impl
 
@@ -32,11 +38,47 @@
 	C.perspective = isnull(forced_perspective_flags)? initial(C.perspective) : forced_perspective_flags
 
 /datum/perspective/proc/UpdateSight(client/C)
+	if(!isnull(forced_sight_flags))
+		C.mob.sight = forced_sight_flags
+	if(!isnull(forced_see_in_dark))
+		C.mob.see_in_dark = forced_see_in_dark
+	if(!isnull(forced_lighting_alpha))
+		#warn impl
 
 /datum/perspective/proc/UpdateMisc(client/C)
 
 /datum/perspective/proc/UpdateAll(client/C)
+	UpdateEye(C)
+	UpdateSight(C)
 
 /datum/perspective/proc/ApplyTo(client/C)
+	#warn oh i need to rethink this, mob default perspective needs to apply on client, client needs to keep track of stuff, etc.
+	UpdateAll(C)
+	C.screen |= screens
+	C.images |= images
 
 /datum/perspective/proc/RemoveFrom(client/C)
+	C.screen -= screens
+	C.images -= images
+	// if(src != C.mob.default_perspective)
+	// 	C.mob.default_perspective.ApplyTo(C)
+
+/datum/perspective/proc/AddScreen(atom/movable/AM)
+	for(var/client/C in attached)
+		C.screen |= AM
+	screens |= AM
+
+/datum/perspective/proc/RemoveScreen(atom/movable/AM)
+	for(var/client/C in attached)
+		C.screen -= AM
+	screens -= AM
+
+/datum/perspective/proc/AddImage(image/I)
+	for(var/client/C in attached)
+		C.images |= I
+	images |= I
+
+/datum/perspective/proc/RemoveImage(image/I)
+	for(var/client/C in attached)
+		C.images -= I
+	images -= I

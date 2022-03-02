@@ -86,7 +86,7 @@
 	else if(real_x >= (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS))
 		real_x = -OVERMAPS_TILE_STEPS + (real_x - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
 	if(real_y <= -OVERMAPS_TILE_STEPS)
-		real_y = overmap.height * world.icon_size - (OVEMRAPS_TILE_STEPS + real_y) - 1
+		real_y = overmap.height * world.icon_size - (OVERMAPS_TILE_STEPS + real_y) - 1
 	else if(real_y >= (overmap.height * world.icon_size + OVERMAPS_TILE_STEPS))
 		real_y = -OVERMAPS_TILE_STEPS + (real_y - (overmap.height * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
 	Move(locate(1,1,overmap.z), NONE, real_x, real_y)

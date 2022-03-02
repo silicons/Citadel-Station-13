@@ -11,20 +11,22 @@
 	bound_height = 32
 	step_size = OVERMAPS_MAX_SPEED_PIXELS
 
-	/// the location we corrospond to. if null, we are completely virtual.
-	var/datum/overmap_location/location
-	/// view datum, used for rendering.
-	var/datum/overmap_view/view_holder
-	/// location data - if a path, will be created and used to generate ourselves on init
-	var/datum/overmap_location_data/location_data
+	/* instance */
 	/// unique id
 	var/id
 	/// next id
 	var/static/id_next = 0
+
+	/// reference to master overmap
+	var/tmp/datum/overmap/overmap
+
+	/* physicality/ship/simulation holders */
 	/// associated ship datum, if any. if set to path, will be made on init.
 	var/datum/ship/ship
-	/// reference to master overmap
-	var/datum/overmap/overmap
+	/// the location we corrospond to. if null, we are completely virtual.
+	var/datum/overmap_location/location
+	/// location data - if a path, will be created and used to generate ourselves on init
+	var/datum/overmap_location_data/location_data
 
 	/* physics */
 
@@ -45,13 +47,15 @@
 	/// we're moving
 	var/moving = FALSE
 
+	/* hazards */
 	/// active hazards
+	var/list/active_hazards
 
-	/// static vision
-	var/static_vision_range = 1
-	/// static vision image - lazyloaded
-	var/atom/movable/overmap_hud/light/static_vision
-	// IFF's are only on the ship datums!
+	/* perspective, view */
+	/// our perspective. people are shunted to this when they try to view the overmap through a console connected to us.
+	var/datum/perspective/perspective
+	/// view holder
+	var/datum/overmap_view/view_holder
 
 /atom/movable/overmap_object/entity/New()
 	id = "[++id_next]"
@@ -106,7 +110,6 @@
 
 /atom/movable/overmap_object/entity/proc/TickHazards(seconds)
 
-/atom/movable/overmap_object/entity/proc/PlaceIntoOvermap()
 
 
 /**

@@ -64,10 +64,10 @@
 	size_x = min(size_x, world.maxx)
 	size_y = min(size_y, world.maxy)
 	// setup turfs
-	area = new /area/overmap(null)
+	area = new OVERMAPS_AREA_TYPE(null)
 	for(var/turf/T as anything in block(locate(1, 1, z), locate(size_x, size_y, z)))
 		area.contents.Add(T)
-		T.ChangeTurf(/turf/overmap)
+		T.ChangeTurf(OVERMAPS_TURF_TYPE)
 	// setup borders/etc
 	MakeVisuals()
 

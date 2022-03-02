@@ -2,6 +2,7 @@
  * CORE PROC: Returns the overmap object we're on, if any
  */
 /atom/proc/GetOvermapObject()
+	RETURN_TYPE(/atom/movable/overmap_object/entity)
 	if(!isturf(src))
 		var/turf/T = get_turf(src)
 		return T?.GetOvermapObject()

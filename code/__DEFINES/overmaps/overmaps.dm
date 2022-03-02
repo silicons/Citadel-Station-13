@@ -1,3 +1,8 @@
+/// overmaps turf type
+#define OVERMAPS_TURF_TYPE						/turf/open/overmap
+/// overmaps area type
+#define OVERMAPS_AREA_TYPE						/area/overmap
+
 // control flags for what a console can access
 /// control helm/pilot
 #define OVERMAP_CONTROL_HELM						(1<<0)
