@@ -80,15 +80,17 @@
  * move to our real loc
  */
 /atom/movable/overmap_object/entity/proc/MoveToOffsets(forcemove = FALSE)
-	// wraparound
-	if(real_x <= -OVERMAPS_TILE_STEPS)
-		real_x = overmap.width * world.icon_size - (OVERMAPS_TILE_STEPS + real_x) - 1
-	else if(real_x >= (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS))
+	// wraparound is the first tile on the border to the second tile on the other side
+	// we could avoid even the 1 border if byond wasn't a POS that hard crashes when vis contents loops :/
+	// fuck non recursive vis_flags.
+	if(real_x <= (OVERMAPS_TILE_SIZE * 1.5))
+		real_x = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_x) - 1
+	else if(real_x >= ((overmap.width - 1.5) * OVERMAPS_TILE_SIZE))
 		real_x = -OVERMAPS_TILE_STEPS + (real_x - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
-	if(real_y <= -OVERMAPS_TILE_STEPS)
-		real_y = overmap.height * world.icon_size - (OVERMAPS_TILE_STEPS + real_y) - 1
-	else if(real_y >= (overmap.height * world.icon_size + OVERMAPS_TILE_STEPS))
-		real_y = -OVERMAPS_TILE_STEPS + (real_y - (overmap.height * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
+	if(real_y <= (OVERMAPS_TILE_SIZE * 1.5))
+		real_y = (overmap.width - 1.5) * OVERMAPS_TILE_SIZE - (OVERMAPS_TILE_SIZE * 1.5 - real_y) - 1
+	else if(real_y >= ((overmap.height - 1.5) * OVERMAPS_TILE_SIZE))
+		real_y = -OVERMAPS_TILE_STEPS + (real_y - (overmap.width * world.icon_size + OVERMAPS_TILE_STEPS)) + 1
 	Move(locate(1,1,overmap.z), NONE, real_x, real_y)
 
 /**

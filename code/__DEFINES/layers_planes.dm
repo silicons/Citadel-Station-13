@@ -190,21 +190,21 @@
 // OVERMAPS
 
 /// background
-#define OVERMAP_BACKGROUND_PLANE			82
+#define OVERMAP_BACKGROUND_PLANE			-70
 /// turfs
-#define OVERMAP_BASE_PLANE					83
+#define OVERMAP_BASE_PLANE					-69
 /// parallax
-#define OVERMAP_PARALLAX_PLANE				84
+#define OVERMAP_PARALLAX_PLANE				-68
 /// objects
-#define OVERMAP_OBJECT_PLANE				85
+#define OVERMAP_OBJECT_PLANE				-67
 /// effect renders
-#define OVERMAP_EFFECT_PLANE				86
+#define OVERMAP_EFFECT_PLANE				-66
 /// Lighting
-#define OVERMAP_LIGHTING_PLANE				87
+#define OVERMAP_LIGHTING_PLANE				-65
 /// sensors
-#define OVERMAP_SENSOR_PLANE				88
+#define OVERMAP_SENSOR_PLANE				-64
 /// master
-#define OVERMAP_RENDER_PLANE				89
+#define OVERMAP_RENDER_PLANE				-63
 
 
 /// planets

@@ -7,7 +7,7 @@
 // All this work to prevent a second bump
 /atom/movable/Move(atom/newloc, direct=0, glide_size_override = 0)
 	if(!(appearance_flags & TILE_MOVER))
-		return ..()		// pixel movement
+		return ..()
 	. = FALSE
 	if(!newloc || newloc == loc)
 		return
@@ -64,7 +64,13 @@
 
 /atom/movable/Move(atom/newloc, direct, glide_size_override = 0)
 	if(!(appearance_flags & TILE_MOVER))
-		return ..()		// pixel movement
+		// pixel movement
+		// monkeypatched for overmaps, currently doesn't work with literally anything but moved().
+		var/l = loc
+		. = ..()
+		if(l != loc)
+			Moved(l, direct || dir)
+		return
 	var/atom/movable/pullee = pulling
 	var/turf/T = loc
 	if(!moving_from_pull)
@@ -259,7 +265,7 @@
 		src.step_x = step_x
 		src.step_y = step_y
 		if(!isturf(destination))
-			destination.Entered(src, oldLoc)
+			destination?.Entered(src, oldLoc)
 			for(var/atom/movable/AM in destination)
 				if(AM == src)
 					continue

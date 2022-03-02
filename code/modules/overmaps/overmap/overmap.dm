@@ -63,6 +63,8 @@
 	z = z_datum.z_value
 	size_x = min(size_x, world.maxx)
 	size_y = min(size_y, world.maxy)
+	width = size_x
+	height = size_y
 	// setup turfs
 	area = new OVERMAPS_AREA_TYPE(null)
 	for(var/turf/T as anything in block(locate(1, 1, z), locate(size_x, size_y, z)))
@@ -151,24 +153,22 @@
 	var/atom/movable/overmap_transition_holder/holder
 	holder = new(null)
 	NE.vis_contents += holder
-	holder.vis_contents = block(locate(1, 1, z), locate(7, 7, z))
-	holder.pixel_x = 32
-	holder.pixel_y = 32
+	holder.vis_contents = block(locate(2, 2, z), locate(8, 8, z))
 	holder = new(null)
 	NW.vis_contents += holder
-	holder.vis_contents = block(locate(width, 1, z), locate(width - 6, 7, z))
-	holder.pixel_x = world.icon_size * -7
-	holder.pixel_y = 32
+	holder.vis_contents = block(locate(width - 1, 2, z), locate(width - 7, 8, z))
+	holder.pixel_x = world.icon_size * -6
+	holder.pixel_y = 0
 	holder = new(null)
 	SE.vis_contents += holder
-	holder.vis_contents = block(locate(1, height, z), locate(7, height - 6, z))
-	holder.pixel_x = world.icon_size
-	holder.pixel_y = world.icon_size * -7
+	holder.vis_contents = block(locate(2, height - 1, z), locate(8, height - 7, z))
+	holder.pixel_x = 0
+	holder.pixel_y = world.icon_size * -6
 	holder = new(null)
 	SW.vis_contents += holder
-	holder.vis_contents = block(locate(width, height, z), locate(width - 6, height - 6, z))
-	holder.pixel_x = world.icon_size * -7
-	holder.pixel_y = world.icon_size * -7
+	holder.vis_contents = block(locate(width - 1, height - 1, z), locate(width - 7, height - 7, z))
+	holder.pixel_x = world.icon_size * -6
+	holder.pixel_y = world.icon_size * -6
 
 	// cardinals
 	for(var/i in 1 to width)
@@ -176,28 +176,30 @@
 		var/turf/S = locate(i, 1, z)
 		holder = new(null)
 		N.vis_contents += holder
-		holder.vis_contents = block(locate(i, 1, z), locate(i, 7, z))
+		holder.vis_contents = block(locate(i, 2, z), locate(i, 8, z))
 		holder.pixel_x = 0
-		holder.pixel_y = 32
+		holder.pixel_y = 0
 		holder = new(null)
 		S.vis_contents += holder
-		holder.vis_contents = block(locate(i, height, z), locate(i, height - 6, z))
+		holder.vis_contents = block(locate(i, height - 1, z), locate(i, height - 7, z))
 		holder.pixel_x = 0
-		holder.pixel_y = world.icon_size * -7
+		holder.pixel_y = world.icon_size * -6
+		CHECK_TICK
 
 	for(var/i in 1 to height)
 		var/turf/E = locate(width, i, z)
 		var/turf/W = locate(1, i, z)
 		holder = new(null)
 		E.vis_contents += holder
-		holder.vis_contents = block(locate(1, i, z), locate(7, i, z))
-		holder.pixel_x = 32
+		holder.vis_contents = block(locate(2, i, z), locate(8, i, z))
+		holder.pixel_x = 0
 		holder.pixel_y = 0
 		holder = new(null)
 		W.vis_contents += holder
-		holder.vis_contents = block(locate(width - 6, i, z), locate(width, i, z))
-		holder.pixel_x = world.icon_size * -7
+		holder.vis_contents = block(locate(width - 7, i, z), locate(width - 1, i, z))
+		holder.pixel_x = world.icon_size * -6
 		holder.pixel_y = 0
+		CHECK_TICK
 
 /**
  * teardown visuals

@@ -1,5 +1,7 @@
 /// steps in a tile - half the world icon size
 #define OVERMAPS_TILE_STEPS			16
+/// basically world icon size, defined for fast performance
+#define OVERMAPS_TILE_SIZE			32
 /// max speed in pixels per second
 #define OVERMAPS_MAX_SPEED_PIXELS	64
 /// max speed in units per second
