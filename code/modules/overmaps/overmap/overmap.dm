@@ -25,6 +25,9 @@
 	/// next id
 	var/static/id_next = 0
 
+	var/datum/overmap_data/asteroid/ast
+	var/datum/overmap_data/ion_storm/ios
+
 /datum/overmap/New()
 	id = ++id_next
 	entities = list()
@@ -65,14 +68,19 @@
 	size_y = min(size_y, world.maxy)
 	width = size_x
 	height = size_y
+
 	// setup turfs
 	area = new OVERMAPS_AREA_TYPE(null)
 	var/list/turfs = block(locate(1, 1, z), locate(size_x, size_y, z))
 	for(var/turf/T as anything in turfs)
 		T.ChangeTurf(OVERMAPS_TURF_TYPE, flags = CHANGETURF_SKIP)
 	area.contents += turfs
+
 	// setup borders/etc
 	MakeVisuals()
+
+	// generate
+	Generate()
 
 /**
  * processing tick

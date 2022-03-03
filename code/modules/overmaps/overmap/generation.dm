@@ -1,16 +1,12 @@
 /datum/overmap/proc/Generate()
-/*
-
 	// "TERRAIN" PHASE - ASTEROIDS & ION STORMS (TO BE IMPLEMENTED)
-	string_gen = rustg_cnoise_generate("[initial_closed_chance]", "[smoothing_iterations]", "[birth_limit]", "[death_limit]", "[world.maxx]", "[world.maxy]") //Generate the raw CA data
-	var/turf/A = get_turf(locate(0, 0, z))
-	var/turf/B = get_turf(locate(world.maxx, world.maxx, z))
-	var/block = block(A, B)
-	for(var/t in block)
-		var/turf/T = t
-		var/closed = text2num(string_gen[world.maxx * (T.y - 1) + T.x])
-		if (closed)
-			InstantiateObject(/atom/movable/overmap_object/hazard, T.loc.x, T.loc.y)
+	ast = new /datum/overmap_data/asteroid()
+	ast.generate(src)
+
+	CHECK_TICK
+
+	ios = new /datum/overmap_data/ion_storm()
+	ios.generate(src)
 
 	CHECK_TICK
 
@@ -26,11 +22,24 @@
 	// then finally place the ship & other static things
 	// place it on center: we have to do some check to see if it a: issn't stuck in rocks or b: isn't trapped in rocks (pocketed)
 	// place somewhre on the map: random, if rock then we go againe, probably will not place the ship in rock pockets right? <- clueless
-*/
 
 /**
  * Creates a new POI with respect on it's banned spawn places
  */
-/datum/overmap/proc/InstantiatePOIObject(atom/movable/overmap_object/thing, x, y, angle, list/alist)
+/datum/overmap/proc/InstantiatePOIObject(path, x, y, angle, step_x, step_y, list/alist)
 	// implement me
-	return InstantiateObject(thing, x, y, angle, alist)
+	var/turf/t = locate(x, y, z)
+	if (t.contents)
+		return; // n o
+
+	var/atom/movable/overmap_object/entity/O = path
+	var/turf/where = GetTurf(x, y, initial(O.bound_height), initial(O.bound_width), initial(O.bound_x), initial(O.bound_y))
+	if(alist)
+		alist.Insert(1, where)
+		O = new O(arglist(alist))
+	else
+		O = new(where)
+	O.angle = angle
+	O.forceMove(O.loc, step_x, step_y)
+	return O
+

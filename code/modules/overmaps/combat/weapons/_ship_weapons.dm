@@ -71,6 +71,10 @@
 
 /obj/machinery/ship/weapon/simple/proc/fire()
 
+/// Your own check to see if the weapon can fire or not.
+/obj/machinery/ship/weapon/simple/proc/can_fire()
+	return !!mag_ammo
+
 /**
  * cool modular guns
  */
