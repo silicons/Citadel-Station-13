@@ -2,7 +2,7 @@
  * Property datums
  *
  * Sometimes, mode + projection doesn't cut it
- * Example: psychic energy message to display
+ * Example: psionic energy message to display
  *
  * Much like particles, these are passed by reference. These must never be modified after creation by the thing creating it, so we do not corrupt the global cache.
  *

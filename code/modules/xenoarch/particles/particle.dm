@@ -40,3 +40,10 @@
 	/// supported projection methods
 	var/supported_methods = NONE
 
+
+/**
+ * acts on an atom
+ *
+ * nullifying effects/protections should be checked BEFORE this
+ */
+/datum/exotic_effect/proc/Act(atom/A, intensity, power, range, time, index)

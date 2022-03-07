@@ -184,6 +184,10 @@
 /// Called from orbit component: (atom/movable/orbiter, refreshing)
 #define COMSIG_ATOM_ORBIT_END "atom_orbit_end"
 
+// xenoarcheology
+/// called when an atom is affected by a particle with (datum/exotic_particle/particle, intensity, datum/exotic_projection/projection)
+#define COMSIG_ATOM_PARTICLE_ACT "atom_particle_act"
+
 #define COMSIG_ENTER_AREA "enter_area" 						//from base of area/Entered(): (/area)
 #define COMSIG_EXIT_AREA "exit_area" 							//from base of area/Exited(): (/area)
 

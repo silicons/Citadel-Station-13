@@ -31,3 +31,5 @@
  * * variables - list of exotic_property instances to values
  */
 /proc/get_exotic_nullify_atom(atom/A, datum/exotic_particle/P, power, intensity, mode, projection, properties, list/variables)
+
+/datum/component/particle_disruption
