@@ -805,6 +805,7 @@
 #include "code\datums\wounds\pierce.dm"
 #include "code\datums\wounds\slash.dm"
 #include "code\game\atoms.dm"
+#include "code\game\atoms_bounds.dm"
 #include "code\game\atoms_movable.dm"
 #include "code\game\atoms_movement.dm"
 #include "code\game\communications.dm"
