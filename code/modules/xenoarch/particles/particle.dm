@@ -25,6 +25,10 @@
 
 	)
 
+/datum/exotic_particle/New()
+	if(isnull(id))
+		id = "[++id_next]"
+
 /**
  * Represents one method of projecting a particle
  *
@@ -35,5 +39,4 @@
 	var/name = "Unkonwn Particle Emission"
 	/// supported projection methods
 	var/supported_methods = NONE
-
 
