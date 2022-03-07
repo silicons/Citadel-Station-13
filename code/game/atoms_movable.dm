@@ -63,6 +63,9 @@
 	///Internal holder for emissive blocker object, do not use directly use blocks_emissive
 	var/atom/movable/emissive_blocker/em_block
 
+	/// current bounding box overlay if any
+	var/mutable_appearance/bounding_box_overlay
+
 	/// Should we use tooltips, if the thing does not have the code implemented `get_tooltip_data()`, it will default to examine(src)
 	var/tooltips = FALSE
 	/// How loudly we yell
@@ -188,25 +191,25 @@
 			var/turf/T = locate(var_value, y, z)
 			if(T)
 				admin_teleport(T, !massedit)
-				return TRUE
-			return FALSE
+				. = TRUE
+			. = FALSE
 		if(NAMEOF(src, y))
 			var/turf/T = locate(x, var_value, z)
 			if(T)
 				admin_teleport(T, !massedit)
-				return TRUE
-			return FALSE
+				. = TRUE
+			. = FALSE
 		if(NAMEOF(src, z))
 			var/turf/T = locate(x, y, var_value)
 			if(T)
 				admin_teleport(T, !massedit)
-				return TRUE
-			return FALSE
+				. = TRUE
+			. = FALSE
 		if(NAMEOF(src, loc))
 			if(isatom(var_value) || isnull(var_value))
 				admin_teleport(var_value, !massedit)
-				return TRUE
-			return FALSE
+				. = TRUE
+			. = FALSE
 		if(NAMEOF(src, anchored))
 			set_anchored(var_value)
 			. = TRUE
@@ -216,9 +219,14 @@
 		if(NAMEOF(src, glide_size))
 			set_glide_size(var_value)
 			. = TRUE
+		if(NAMEOF(src, bound_x), NAMEOF(src, bound_y), NAMEOF(src, bound_width), NAMEOF(src, bound_height))
+			. = ..()
+			if(bounding_box_overlay)
+				add_bounding_box_overlay()
 
 	if(!isnull(.))
-		datum_flags |= DF_VAR_EDITED
+		if(.)
+			datum_flags |= DF_VAR_EDITED
 		return
 
 	return ..()

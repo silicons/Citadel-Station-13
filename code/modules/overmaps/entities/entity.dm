@@ -59,6 +59,10 @@
 	id = "[++id_next]"
 	return ..()
 
+/atom/movable/overmap_object/entity/Initialize(mapload)
+	. = ..()
+	add_bounding_box_overlay()
+
 /atom/movable/overmap_object/entity/Destroy(force = FALSE)
 	if (ship)
 		stack_trace("ALRIGHT WHICH FUCKER TRIED TO DELETE *MY* DVIEW?")
