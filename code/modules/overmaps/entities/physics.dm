@@ -53,13 +53,13 @@
 /atom/movable/overmap_object/entity/Cross(atom/movable/AM)
 	// No rigidbody collisions implemented yet
 	// yes, this means we don't send a signal, sue me
-	log_overmap("[src] crossed [AM]")
+	to_chat(world, "[src] crossed [AM]")
 	return TRUE
 
 /atom/movable/overmap_object/entity/Uncross(atom/movable/AM, atom/newloc)
 	// No rigidbody collisions implemented yet
 	// yes, this means we don't send a signal, sue me
-	log_overmap("[src] uncrossed [AM]")
+	to_chat(world, "[src] uncrossed [AM]")
 	return TRUE
 
 /// forcemove wrapper - admins can literally pull shuttles up from orbit with this

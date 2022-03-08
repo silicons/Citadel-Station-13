@@ -40,9 +40,10 @@ GLOBAL_LIST_EMPTY(bounds_icon_cache)
  * gets our bounding box overlay, there's 3 procs in this file chained like this for overrides
  */
 /atom/movable/proc/get_bounding_box_overlay()
-	var/mutable_appearance/MA = . = get_bounding_box_visual(bound_width, bound_height, bound_x, bound_y)
+	var/mutable_appearance/MA = get_bounding_box_visual(bound_width, bound_height, bound_x, bound_y)
 	MA.plane = FLOAT_PLANE
 	MA.layer = FLOAT_LAYER
+	return MA
 
 /**
  * adds/updates a bounding box overlay to ourselves
