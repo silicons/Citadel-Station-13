@@ -84,7 +84,7 @@
 	var/flush_module_refs = FALSE
 
 // WARNING: Quick deploy onto only supports humans with back slots for now!
-/obj/item/rig/Initializew(mapload, datum/rig_theme/theme_override, mob/living/carbon/human/quick_deploy_onto)
+/obj/item/rig/Initialize(mapload, datum/rig_theme/theme_override, mob/living/carbon/human/quick_deploy_onto)
 	. = ..()
 	apply_theme(theme_override || theme)
 	if(quick_deploy_onto)

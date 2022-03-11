@@ -17,7 +17,7 @@
 	/// Slots used - a section must have enough slots to support this module
 	var/slots = RIG_COMPONENT_SLOTS_NONE
 	/// Size used - a section must have enough free space to support this module
-	var/size = RIG_COMPONENT_SIZE_NONEw
+	var/size = RIG_COMPONENT_SIZE_NONE
 	/// Prevent the **exact** same type of component from being mounted if one's already in ANY of the sections this occupies
 	var/prevent_duplicates = TRUE
 	/// Automatically allow changing attachment side of this component for arms/legs

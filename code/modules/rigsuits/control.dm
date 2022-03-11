@@ -9,7 +9,7 @@
  */
 /obj/item/rig/proc/rebuild_control_system()
 	for(var/mob/M in users)
-		set_control_flags(M, isnum(users[i])? users[i] : NONE)
+		set_control_flags(M, isnum(users[M])? users[M] : NONE)
 		initialize_user(M)
 
 /**
@@ -36,7 +36,7 @@
 	users += M
 	set_control_flags(M, control_flags)
 	initialize_user(M)
-	SEND_SIGNAL(src, COMSIG_RIG_USER_ADD, M, flags)
+	SEND_SIGNAL(src, COMSIG_RIG_USER_ADD, M, control_flags)
 
 /**
  * remove user
@@ -75,7 +75,7 @@
 /obj/item/rig/proc/initialize_user(mob/M)
 
 /**
- * remove an user
+ * cleans up an user
  */
-/obj/item/rig/proc/remove_user(mob/M)
+/obj/item/rig/proc/cleanup_user(mob/M)
 

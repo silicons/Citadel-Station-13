@@ -1,6 +1,6 @@
 // Control flags
 /// Default control flags
-#define RIG_CONTROL_DEFAULT						ALL
+#define RIG_CONTROL_FLAGS_DEFAULT						ALL
 /// Default for observing users
 #define RIG_CONTROL_FLAGS_OBSERVER				(RIG_CONTROL_UI_VIEW | RIG_CONTROL_REMOTE)
 
