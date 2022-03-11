@@ -13,11 +13,11 @@
 	/// UI name
 	var/ui_name = "RigComponent"
 	/// Weight of this component - this affects stats like power usage and slowdown
-	var/weight = RIGSUIT_WEIGHT_NONE
+	var/weight = RIG_COMPONENT_WEIGHT_NONE
 	/// Slots used - a section must have enough slots to support this module
-	var/slots = 0
+	var/slots = RIG_COMPONENT_SLOTS_NONE
 	/// Size used - a section must have enough free space to support this module
-	var/size = 0
+	var/size = RIG_COMPONENT_SIZE_NONEw
 	/// Prevent the **exact** same type of component from being mounted if one's already in ANY of the sections this occupies
 	var/prevent_duplicates = TRUE
 	/// Automatically allow changing attachment side of this component for arms/legs

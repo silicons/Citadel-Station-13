@@ -9,7 +9,7 @@
  */
 /obj/item/rig/proc/rebuild_control_system()
 	for(var/mob/M in users)
-		set_control_flags(i, isnum(users[i])? users[i] : NONE)
+		set_control_flags(M, isnum(users[i])? users[i] : NONE)
 		initialize_user(M)
 
 /**
@@ -72,7 +72,7 @@
 /**
  * initialize an user
  */
-/obj/item/rig/proc/initailize_user(mob/M)
+/obj/item/rig/proc/initialize_user(mob/M)
 
 /**
  * remove an user

@@ -84,16 +84,19 @@
 	var/flush_module_refs = FALSE
 
 // WARNING: Quick deploy onto only supports humans with back slots for now!
-/obj/item/rig/Initialize(mapload, datum/rig_theme/theme_override, mob/living/carbon/human/quick_deploy_onto)
+/obj/item/rig/Initializew(mapload, datum/rig_theme/theme_override, mob/living/carbon/human/quick_deploy_onto)
 	. = ..()
 	apply_theme(theme_override || theme)
 	if(quick_deploy_onto)
+		#warn ugh
+		/*
 		qdel(quick_deploy_onto.back)
 		quick_deploy_onto.equip_to_slot(src, SLOT_BACK)
 		activate()
+		*/
 
 /obj/item/rig/Destroy()
-	deactivate()
+	// deactivate()
 	delete_everything()
 	return ..()
 
