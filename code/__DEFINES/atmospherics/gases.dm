@@ -1,4 +1,3 @@
-
 // Gas defines because i hate typepaths
 #define GAS_O2					"o2"
 #define GAS_N2					"n2"
@@ -8,6 +7,7 @@
 #define GAS_HYPERNOB			"nob"
 #define GAS_NITROUS				"n2o"
 #define GAS_NITRYL				"no2"
+#define GAS_HYDROGEN			"hydrogen"
 #define GAS_TRITIUM				"tritium"
 #define GAS_BZ					"bz"
 #define GAS_STIMULUM			"stim"
@@ -15,9 +15,16 @@
 #define GAS_MIASMA				"miasma"
 #define GAS_METHANE				"methane"
 #define GAS_METHYL_BROMIDE		"methyl_bromide"
+#define GAS_BROMINE				"bromine"
+#define GAS_AMMONIA				"ammonia"
+#define GAS_FLUORINE			"fluorine"
+#define GAS_ETHANOL				"ethanol"
+
+#define GAS_GROUP_CHEMICALS		"Chemicals"
 
 #define GAS_FLAG_DANGEROUS		(1<<0)
 #define GAS_FLAG_BREATH_PROC	(1<<1)
+#define GAS_FLAG_CHEMICAL		(1<<2)
 
 //SUPERMATTER DEFINES
 #define HEAT_PENALTY "heat penalties"

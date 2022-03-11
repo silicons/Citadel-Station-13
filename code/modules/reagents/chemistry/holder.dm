@@ -14,6 +14,7 @@
 		GLOB.chemical_reagents_list[path] = D
 
 /proc/build_chemical_reactions_list()
+	message_admins("STARTY START START!")
 	//Chemical Reactions - Initialises all /datum/chemical_reaction into a list
 	// It is filtered into multiple lists within a list.
 	// For example:
@@ -26,11 +27,20 @@
 	//Randomized need to go last since they need to check against conflicts with normal recipes
 	var/paths = subtypesof(/datum/chemical_reaction) - typesof(/datum/chemical_reaction/randomized) + subtypesof(/datum/chemical_reaction/randomized)
 	GLOB.chemical_reactions_list = list()
+	GLOB.normalized_chemical_reactions_list = list() // chemistry pda
+	GLOB.drink_reactions_list = list() // bartender pda
 
 	for(var/path in paths)
 
 		var/datum/chemical_reaction/D = new path()
 		var/list/reaction_ids = list()
+		// store recipes separately for bartender/chemistry cartridges
+		if(D.id && !D.is_secret) // don't show things like secretcatchem or secret sauce
+			var/datum/reagent/r = D.id
+			if(ispath(D.id, /datum/reagent/consumable))
+				GLOB.drink_reactions_list[initial(r.name)] = D
+			if(ispath(D.id, /datum/reagent))
+				GLOB.normalized_chemical_reactions_list[initial(r.name)] = D
 
 		if(D.required_reagents && D.required_reagents.len)
 			for(var/reaction in D.required_reagents)
@@ -42,6 +52,31 @@
 				GLOB.chemical_reactions_list[id] = list()
 			GLOB.chemical_reactions_list[id] += D
 			break // Don't bother adding ourselves to other reagent ids, it is redundant
+
+/proc/recipe_search(mob/M, list/reaction_list)
+	var/option = input(M, "Enter keyword to return a recipe.")
+	if(option)
+		option = lowertext(option)
+		var/list/reagents_required
+		var/found_reagent_name
+		var/required_temp
+		for(var/reagent_name in reaction_list)
+			if(findtext(lowertext(reagent_name), option))
+				var/datum/chemical_reaction/reaction = reaction_list[reagent_name]
+				found_reagent_name = reagent_name
+				reagents_required = reaction.required_reagents
+				required_temp = reaction.required_temp
+				break
+		if(length(reagents_required))
+			to_chat(M, "<b>Recipe found: [found_reagent_name]</b>[required_temp ? "<br>Required Temperature: [required_temp]K" : ""]<br>Required Reagents:")
+			var/reagents_required_string = ""
+			for(var/r in reagents_required)
+				var/datum/reagent/reagent = r
+				reagents_required_string += "<br>[initial(reagent.name)]: [reagents_required[r]]"
+			to_chat(M, reagents_required_string)
+			return
+		else
+			to_chat(M, "<span class='warning'>Reagent with term: [option] could not be located!</span>")
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -345,6 +380,8 @@
 	if(owner && reagent)
 		if(!owner.reagent_check(reagent, delta_time, times_fired) != TRUE)
 			return
+		if(is_reagent_processing_invalid(reagent, owner))
+			return reagent.on_invalid_process(owner, delta_time, times_fired)
 		if(liverless && !reagent.self_consuming) //need to be metabolized
 			return
 		if(!reagent.metabolizing)
@@ -823,7 +860,7 @@
 	pH = REAGENT_NORMAL_PH
 	return 0
 
-/datum/reagents/proc/reaction(atom/A, method = TOUCH, volume_modifier = 1, show_message = 1)
+/datum/reagents/proc/reaction(atom/A, method = TOUCH, volume_modifier = 1, show_message = 1, from_gas = 0)
 	var/react_type
 	if(isliving(A))
 		react_type = "LIVING"
@@ -847,7 +884,7 @@
 					touch_protection = L.get_permeability_protection()
 				R.reaction_mob(A, method, R.volume * volume_modifier, show_message, touch_protection)
 			if("TURF")
-				R.reaction_turf(A, R.volume * volume_modifier, show_message)
+				R.reaction_turf(A, R.volume * volume_modifier, show_message, from_gas)
 			if("OBJ")
 				R.reaction_obj(A, R.volume * volume_modifier, show_message)
 
@@ -857,17 +894,16 @@
 	return FALSE
 
 //Returns the average specific heat for all reagents currently in this holder.
-/datum/reagents/proc/specific_heat()
+/datum/reagents/proc/heat_capacity()
 	. = 0
-	var/cached_amount = total_volume		//cache amount
 	var/list/cached_reagents = reagent_list		//cache reagents
 	for(var/I in cached_reagents)
 		var/datum/reagent/R = I
-		. += R.specific_heat * (R.volume / cached_amount)
+		. += R.specific_heat * R.volume
 
 /datum/reagents/proc/adjust_thermal_energy(J, min_temp = 2.7, max_temp = 1000)
-	var/S = specific_heat()
-	chem_temp = clamp(chem_temp + (J / (S * total_volume)), min_temp, max_temp)
+	var/S = heat_capacity()
+	chem_temp = clamp(chem_temp + (J / S), min_temp, max_temp)
 	if(istype(my_atom, /obj/item/reagent_containers))
 		var/obj/item/reagent_containers/RC = my_atom
 		RC.temp_check()

@@ -73,10 +73,10 @@
 	QDEL_NULL(beaker)
 	return ..()
 
-/obj/machinery/atmospherics/component/unary/cryo_cell/contents_explosion(severity, target)
+/obj/machinery/atmospherics/component/unary/cryo_cell/contents_explosion(severity, target, origin)
 	..()
 	if(beaker)
-		beaker.ex_act(severity, target)
+		beaker.ex_act(severity, target, origin)
 
 /obj/machinery/atmospherics/component/unary/cryo_cell/handle_atom_del(atom/A)
 	..()
@@ -440,7 +440,7 @@
 	return // we don't see the pipe network while inside cryo.
 
 /obj/machinery/atmospherics/component/unary/cryo_cell/get_remote_view_fullscreens(mob/user)
-	user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 1)
+	user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/scaled/impaired, 1)
 
 /obj/machinery/atmospherics/component/unary/cryo_cell/can_crawl_through()
 	return // can't ventcrawl in or out of cryo.

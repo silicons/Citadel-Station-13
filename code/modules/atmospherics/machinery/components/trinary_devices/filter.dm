@@ -68,6 +68,7 @@ ATMOS_MAPPING_LAYERS_PX_DOUBLE(/obj/machinery/atmospherics/component/trinary/fil
 	// cheaper check. only pumps have precise checks
 	if(sink_air.return_pressure() > pressure_setting || filter_air.return_pressure() > pressure_setting)
 		return
+<<<<<<< HEAD
 	var/datum/gas_mixture/source_air = airs[1]
 	var/old_moles = source_air.total_moles()
 	last_power_draw = active_power_usage = filter_gas(
@@ -82,6 +83,28 @@ ATMOS_MAPPING_LAYERS_PX_DOUBLE(/obj/machinery/atmospherics/component/trinary/fil
 	last_transfer_rate = round((1 - (source_air.total_moles() / old_moles)) * source_air.return_volume(), 0.1)
 
 /obj/machinery/atmospherics/component/trinary/filter/InitAtmos()
+=======
+
+	//Calculate necessary moles to transfer using PV=nRT
+
+	var/transfer_ratio = transfer_rate/air1.return_volume()
+
+	//Actually transfer the gas
+
+	if(transfer_ratio > 0)
+
+		if(filter_type && air2.return_pressure() <= 9000)
+			if(filter_type in GLOB.gas_data.groups)
+				air1.scrub_into(air2, transfer_ratio, GLOB.gas_data.groups[filter_type])
+			else
+				air1.scrub_into(air2, transfer_ratio, list(filter_type))
+		if(air3.return_pressure() <= 9000)
+			air1.transfer_ratio_to(air3, transfer_ratio)
+
+	update_parents()
+
+/obj/machinery/atmospherics/components/trinary/filter/atmosinit()
+>>>>>>> citadel/master
 	set_frequency(frequency)
 	return ..()
 
@@ -96,7 +119,15 @@ ATMOS_MAPPING_LAYERS_PX_DOUBLE(/obj/machinery/atmospherics/component/trinary/fil
 	.["filter_types"] = list()
 	.["filter_types"] += list(list("name" = "Nothing", "id" = "", "selected" = !filter_type))
 	for(var/id in GLOB.gas_data.ids)
+<<<<<<< HEAD
 		.["filter_types"] += list(list("name" = GLOB.gas_data.names[id], "id" = id, "selected" = (id == filter_type)))
+=======
+		if(!(id in GLOB.gas_data.groups_by_gas))
+			data["filter_types"] += list(list("name" = GLOB.gas_data.names[id], "id" = id, "selected" = (id == filter_type)))
+	for(var/group in GLOB.gas_data.groups)
+		data["filter_types"] += list(list("name" = group, "id" = group, "selected" = (group == filter_type)))
+	return data
+>>>>>>> citadel/master
 
 /obj/machinery/atmospherics/component/trinary/filter/ui_act(action, params)
 	if(..())
