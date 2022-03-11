@@ -6,6 +6,8 @@
 	transfer_prints = TRUE
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
+	heat_protection = HANDS
+	max_heat_protection_temperature = COAT_MAX_TEMP_PROTECT
 	resistance_flags = NONE
 	//custom_premium_price = PRICE_EXPENSIVE
 	/// For storing our tackler datum so we can remove it after
@@ -27,9 +29,12 @@
 	. = ..()
 	if(!ishuman(user))
 		return
-	if(slot == ITEM_SLOT_GLOVES)
-		var/mob/living/carbon/human/H = user
-		tackler = H.AddComponent(/datum/component/tackler, stamina_cost=tackle_stam_cost, base_knockdown = base_knockdown, range = tackle_range, speed = tackle_speed, skill_mod = skill_mod, min_distance = min_distance)
+	switch(slot) // I didn't like how it looked
+		if(ITEM_SLOT_GLOVES)
+			var/mob/living/carbon/human/H = user
+			tackler = H.AddComponent(/datum/component/tackler, stamina_cost=tackle_stam_cost, base_knockdown = base_knockdown, range = tackle_range, speed = tackle_speed, skill_mod = skill_mod, min_distance = min_distance)
+		else
+			qdel(tackler) // Only wearing it!
 
 /obj/item/clothing/gloves/tackler/dropped(mob/user)
 	. = ..()
@@ -100,7 +105,7 @@
 
 /obj/item/clothing/gloves/tackler/combat/insulated/infiltrator/equipped(mob/user, slot)
 	. = ..()
-	if(slot == SLOT_GLOVES)
+	if(slot == ITEM_SLOT_GLOVES)
 		ADD_TRAIT(user, carrytrait, GLOVE_TRAIT)
 
 /obj/item/clothing/gloves/tackler/combat/insulated/infiltrator/dropped(mob/user)
@@ -130,3 +135,9 @@
 	base_knockdown = 1.75 SECONDS
 	min_distance = 2
 	skill_mod = -1
+
+/obj/item/clothing/gloves/tackler/football
+	name = "football gloves"
+	desc = "Gloves for football players! Teaches them how to tackle like a pro."
+	icon_state = "tackle_gloves"
+	item_state = "tackle_gloves"

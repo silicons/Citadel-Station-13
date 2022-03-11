@@ -79,12 +79,15 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	// Tgui Topic middleware
 	if(tgui_Topic(href_list))
-		if(CONFIG_GET(flag/emergency_tgui_logging))
-			log_href("[src] (usr:[usr]\[[COORD(usr)]\]) : [hsrc ? "[hsrc] " : ""][href]")
 		return
-
-	//Logs all hrefs
+	if(href_list["reload_tguipanel"])
+		nuke_chat()
+	if(href_list["reload_statbrowser"])
+		src << browse(file('html/statbrowser.html'), "window=statbrowser")
+	// Log all hrefs
 	log_href("[src] (usr:[usr]\[[COORD(usr)]\]) : [hsrc ? "[hsrc] " : ""][href]")
+
+	last_activity = world.time
 
 	//byond bug ID:2256651
 	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
@@ -151,7 +154,15 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/atom/target = locate(href_list["statpanel_item_target"])
 	if(!target)
 		return
-	Click(target, target.loc, null, "[href_list["statpanel_item_shiftclick"]?"shift=1;":null][href_list["statpanel_item_ctrlclick"]?"ctrl=1;":null]&alt=[href_list["statpanel_item_altclick"]?"alt=1;":null]", FALSE, "statpanel")
+	var/button = "left=1"
+	switch(href_list["statpanel_item_click"])
+		if("middle")
+			button = "middle=1"
+		if("right")
+			button = "right=1"
+		else
+			button = "left=1"
+	Click(target, target.loc, null, "[button];[href_list["statpanel_item_shiftclick"]?"shift=1;":null][href_list["statpanel_item_ctrlclick"]?"ctrl=1;":null]&alt=[href_list["statpanel_item_altclick"]?"alt=1;":null]", FALSE, "statpanel")
 
 /client/proc/is_content_unlocked()
 	if(!prefs.unlock_content)
@@ -222,6 +233,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	///////////
 
 /client/New(TopicData)
+	last_activity = world.time
 	world.SetConfig("APP/admin", ckey, "role=admin")
 	var/tdata = TopicData //save this for later use
 	TopicData = null							//Prevent calls to client.Topic from connect
@@ -350,13 +362,19 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				return
 
 	// Initialize tgui panel
-	tgui_panel.initialize()
 	src << browse(file('html/statbrowser.html'), "window=statbrowser")
+	addtimer(CALLBACK(src, .proc/check_panel_loaded), 30 SECONDS)
+	tgui_panel.initialize()
 
-
-	if(alert_mob_dupe_login)
-		spawn()
-			alert(mob, "You have logged in already with another key this round, please log out of this one NOW or risk being banned!")
+	if(alert_mob_dupe_login && !holder)
+		var/dupe_login_message = "Your ComputerID has already logged in with another key this round, please log out of this one NOW or risk being banned!"
+		// if (alert_admin_multikey)
+		// 	dupe_login_message += "\nAdmins have been informed."
+		// 	message_admins(span_danger("<B>MULTIKEYING: </B></span><span class='notice'>[key_name_admin(src)] has a matching CID+IP with another player and is clearly multikeying. They have been warned to leave the server or risk getting banned."))
+		// 	log_admin_private("MULTIKEYING: [key_name(src)] has a matching CID+IP with another player and is clearly multikeying. They have been warned to leave the server or risk getting banned.")
+		spawn(0.5 SECONDS) //needs to run during world init, do not convert to add timer
+			alert(mob, dupe_login_message) //players get banned if they don't see this message, do not convert to tgui_alert (or even tg_alert) please.
+			to_chat(mob, span_danger(dupe_login_message))
 
 	connection_time = world.time
 	connection_realtime = world.realtime
@@ -434,8 +452,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	send_resources()
 
-	generate_clickcatcher()
-	apply_clickcatcher()
+	update_clickcatcher()
 
 	if(prefs.lastchangelog != GLOB.changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		to_chat(src, "<span class='info'>You have unread updates in the changelog.</span>")
@@ -525,9 +542,6 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 			send2adminchat("Server", "[cheesy_message] (No admins online)")
 	QDEL_LIST_ASSOC_VAL(char_render_holders)
-	if(movingmob != null)
-		movingmob.client_mobs_in_contents -= mob
-		UNSETEMPTY(movingmob.client_mobs_in_contents)
 	// seen_messages = null
 	Master.UpdateTickRate()
 	. = ..() //Even though we're going to be hard deleted there are still some things that want to know the destroy is happening
@@ -578,9 +592,10 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	//If we aren't an admin, and the flag is set
 	if(CONFIG_GET(flag/panic_bunker) && !holder && !GLOB.deadmins[ckey] && !(ckey in GLOB.bunker_passthrough))
 		var/living_recs = CONFIG_GET(number/panic_bunker_living)
+		var/vpn_living_recs = CONFIG_GET(number/panic_bunker_living_vpn)
 		//Relies on pref existing, but this proc is only called after that occurs, so we're fine.
 		var/minutes = get_exp_living(pure_numeric = TRUE)
-		if(minutes <= living_recs) // && !CONFIG_GET(flag/panic_bunker_interview)
+		if((minutes <= living_recs) || (IsVPN() && (minutes < vpn_living_recs)))
 			var/reject_message = "Failed Login: [key] - Account attempting to connect during panic bunker, but they do not have the required living time [minutes]/[living_recs]"
 			log_access(reject_message)
 			message_admins("<span class='adminnotice'>[reject_message]</span>")
@@ -850,6 +865,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 /client/Click(atom/object, atom/location, control, params, ignore_spam = FALSE, extra_info)
 	if(last_click > world.time - world.tick_lag)
 		return
+	last_activity = world.time
 	last_click = world.time
 	var/ab = FALSE
 	var/list/L = params2list(params)
@@ -922,6 +938,7 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 //checks if a client is afk
 //3000 frames = 5 minutes
 /client/proc/is_afk(duration = CONFIG_GET(number/inactivity_period))
+	var/inactivity = world.time - last_activity
 	if(inactivity > duration)
 		return inactivity
 	return FALSE
@@ -1001,7 +1018,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	var/list/old_view = getviewsize(view)
 	view = new_size
 	var/list/actualview = getviewsize(view)
-	apply_clickcatcher(actualview)
+	update_clickcatcher()
+	parallax_holder.Reset()
+	mob.hud_used.screentip_text.update_view()
 	mob.reload_fullscreen()
 	if (isliving(mob))
 		var/mob/living/M = mob
@@ -1010,33 +1029,31 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		addtimer(CALLBACK(src,.verb/fit_viewport,10)) //Delayed to avoid wingets from Login calls.
 	SEND_SIGNAL(mob, COMSIG_MOB_CLIENT_CHANGE_VIEW, src, old_view, actualview)
 
-/client/proc/generate_clickcatcher()
-	if(!void)
-		void = new()
-		screen += void
-
-/client/proc/apply_clickcatcher(list/actualview)
-	generate_clickcatcher()
-	if(!actualview)
-		actualview = getviewsize(view)
-	void.UpdateGreed(actualview[1],actualview[2])
-
 /client/proc/AnnouncePR(announcement)
 	if(prefs && prefs.chat_toggles & CHAT_PULLR)
 		to_chat(src, announcement)
 
-/client/proc/show_character_previews(mutable_appearance/MA)
+/client/proc/show_character_previews(mutable_appearance/source)
+	LAZYINITLIST(char_render_holders)
+	if(!LAZYLEN(char_render_holders))
+		for(var/plane_master_path as anything in subtypesof(/atom/movable/screen/plane_master))
+			var/atom/movable/screen/plane_master/plane_master = new plane_master_path()
+			char_render_holders["plane_master-[plane_master.plane]"] = plane_master
+			plane_master.backdrop(mob)
+			screen |= plane_master
+			plane_master.screen_loc = "character_preview_map:0,CENTER"
+
 	var/pos = 0
-	for(var/D in GLOB.cardinals)
+	for(var/dir in GLOB.cardinals)
 		pos++
-		var/atom/movable/screen/O = LAZYACCESS(char_render_holders, "[D]")
-		if(!O)
-			O = new
-			LAZYSET(char_render_holders, "[D]", O)
-			screen |= O
-		O.appearance = MA
-		O.dir = D
-		O.screen_loc = "character_preview_map:0,[pos]"
+		var/atom/movable/screen/preview = char_render_holders["preview-[dir]"]
+		if(!preview)
+			preview = new
+			char_render_holders["preview-[dir]"] = preview
+			screen |= preview
+		preview.appearance = source
+		preview.dir = dir
+		preview.screen_loc = "character_preview_map:0,[pos]"
 
 /client/proc/clear_character_previews()
 	for(var/index in char_render_holders)
@@ -1072,8 +1089,14 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	if(IsAdminAdvancedProcCall())
 		return
 	var/list/verblist = list()
-	verb_tabs.Cut()
-	for(var/thing in (verbs + mob?.verbs))
+	var/list/verbstoprocess = verbs.Copy()
+	if(mob)
+		verbstoprocess += mob.verbs
+		for(var/AM in mob.contents)
+			var/atom/movable/thing = AM
+			verbstoprocess += thing.verbs
+	panel_tabs.Cut() // panel_tabs get reset in init_verbs on JS side anyway
+	for(var/thing in verbstoprocess)
 		var/procpath/verb_to_init = thing
 		if(!verb_to_init)
 			continue
@@ -1081,9 +1104,14 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			continue
 		if(!istext(verb_to_init.category))
 			continue
-		verb_tabs |= verb_to_init.category
+		panel_tabs |= verb_to_init.category
 		verblist[++verblist.len] = list(verb_to_init.category, verb_to_init.name)
-	src << output("[url_encode(json_encode(verb_tabs))];[url_encode(json_encode(verblist))]", "statbrowser:init_verbs")
+	src << output("[url_encode(json_encode(panel_tabs))];[url_encode(json_encode(verblist))]", "statbrowser:init_verbs")
+
+/client/proc/check_panel_loaded()
+	if(statbrowser_ready)
+		return
+	to_chat(src, span_userdanger("Statpanel failed to load, click <a href='?src=[REF(src)];reload_statbrowser=1'>here</a> to reload the panel "))
 
 //increment progress for an unlockable loadout item
 /client/proc/increment_progress(key, amount)

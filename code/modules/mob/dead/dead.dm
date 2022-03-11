@@ -13,7 +13,7 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	flags_1 |= INITIALIZED_1
 	tag = "mob_[next_mob_id++]"
-	GLOB.mob_list += src
+	add_to_mob_list()
 
 	prepare_huds()
 
@@ -126,5 +126,5 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	return ..()
 
 /mob/dead/onTransitZ(old_z,new_z)
-	..()
+	. = ..()
 	update_z(new_z)

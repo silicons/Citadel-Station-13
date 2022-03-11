@@ -11,7 +11,7 @@
 	l_pocket = /obj/item/grenade/plastic/c4/ninja
 	r_pocket = /obj/item/hypospray/mkii/CMO/combat
 	suit_store = /obj/item/tank/internals/oxygen
-	internals_slot = SLOT_S_STORE
+	internals_slot = ITEM_SLOT_SUITSTORE
 	belt = /obj/item/energy_katana
 	implants = list(/obj/item/implant/explosive)
 
@@ -21,3 +21,6 @@
 		var/obj/item/clothing/suit/space/space_ninja/S = H.wear_suit
 		if(istype(H.belt, belt))
 			S.energyKatana = H.belt
+	H.grant_language(/datum/language/neokanji)
+	var/datum/language_holder/LH = H.get_language_holder()
+	LH.selected_language = /datum/language/neokanji

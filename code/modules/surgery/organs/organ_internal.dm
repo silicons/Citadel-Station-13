@@ -106,7 +106,7 @@
 	applyOrganDamage(maxHealth * decay_factor * (seconds * 0.5))
 
 /obj/item/organ/proc/can_decay()
-	if(CHECK_BITFIELD(organ_flags, ORGAN_NO_SPOIL | ORGAN_SYNTHETIC | ORGAN_FAILING))
+	if(organ_flags & (ORGAN_NO_SPOIL | ORGAN_SYNTHETIC | ORGAN_FAILING))
 		return FALSE
 	return TRUE
 
@@ -249,7 +249,7 @@
 	var/breathes = TRUE
 	var/blooded = TRUE
 	if(dna && dna.species)
-		if(HAS_TRAIT_FROM(src, TRAIT_NOBREATH, SPECIES_TRAIT))
+		if(!HAS_TRAIT_FROM(src, TRAIT_AUXILIARY_LUNGS, SPECIES_TRAIT) && HAS_TRAIT_FROM(src, TRAIT_NOBREATH, SPECIES_TRAIT))
 			breathes = FALSE
 		if(NOBLOOD in dna.species.species_traits)
 			blooded = FALSE
