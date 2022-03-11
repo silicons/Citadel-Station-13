@@ -63,7 +63,7 @@ GLOBAL_LIST_EMPTY(plague_rats)
 			target = null
 		if(entry_vent && get_dist(src, entry_vent) <= 1)
 			var/list/vents = list()
-			var/datum/pipeline/entry_vent_parent = entry_vent.parents[1]
+			var/datum/pipeline/entry_vent_parent = entry_vent.pipelines[1]
 			for(var/obj/machinery/atmospherics/component/unary/temp_vent in entry_vent_parent.other_atmosmch)
 				vents += temp_vent
 			if(!vents.len)

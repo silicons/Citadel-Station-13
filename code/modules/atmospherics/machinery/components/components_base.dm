@@ -64,6 +64,7 @@
 /obj/machinery/atmospherics/component/proc/update_icon_nopipes()
 	return
 
+#warn overhaul
 /obj/machinery/atmospherics/component/update_overlays()
 	. = ..()
 	underlays.Cut()
@@ -108,6 +109,7 @@
 		showpipe = FALSE
 		plane = FLOOR_PLANE
 
+#warn overhaul
 /obj/machinery/atmospherics/component/proc/get_pipe_underlay(state, dir, color, layer)
 	if(color)
 		. = getpipeimage('icons/obj/atmospherics/component/binary_devices.dmi', state, dir, color, pipe_layer = layer)

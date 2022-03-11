@@ -5,7 +5,6 @@
 	icon_state = "teg"
 	density = TRUE
 	use_power = NO_POWER_USE
-<<<<<<< HEAD
 	circuit = /obj/item/circuitboard/machine/generator
 
 	/// first circulator
@@ -41,18 +40,6 @@
 	var/spark_chance = 5
 	/// ratio of stored energy lost per spark
 	var/spark_loss_ratio = 0.35
-=======
-
-	var/obj/machinery/atmospherics/components/binary/circulator/cold_circ
-	var/obj/machinery/atmospherics/components/binary/circulator/hot_circ
-
-	var/lastgen = 0
-	var/lastgenlev = -1
-	var/lastcirc = "00"
-
-	var/max_efficiency = 0.45
-
->>>>>>> citadel/master
 
 /obj/machinery/power/generator/Initialize(mapload)
 	. = ..()

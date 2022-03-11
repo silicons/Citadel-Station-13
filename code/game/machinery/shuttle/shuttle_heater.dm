@@ -52,21 +52,9 @@
 /obj/machinery/atmospherics/component/unary/shuttle/heater/default_change_direction_wrench(mob/user, obj/item/I)
 	if(!..())
 		return FALSE
+	Leave()
 	SetInitDirections()
-	var/obj/machinery/atmospherics/node = nodes[1]
-	if(node)
-		node.disconnect(src)
-		nodes[1] = null
-	if(!parents[1])
-		return
-	nullifyPipenet(parents[1])
-
-	atmosinit()
-	node = nodes[1]
-	if(node)
-		node.atmosinit()
-		node.addMember(src)
-	build_network()
+	Join()
 	return TRUE
 
 /obj/machinery/atmospherics/component/unary/shuttle/heater/RefreshParts()

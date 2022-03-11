@@ -25,31 +25,9 @@ ATMOS_MAPPING_LAYERS_IX(/obj/machinery/atmospherics/component/binary/pump, "volp
 	construction_type = /obj/item/pipe/directional
 	pipe_state = "volumepump"
 
-<<<<<<< HEAD
 	allow_alt_click_max_rate = TRUE
 	ui_pump_control_capabilities = ATMOS_UI_CONTROL_POWER | ATMOS_UI_CONTROL_VOLUME | ATMOS_UI_CONTROL_PRESSURE | ATMOS_UI_CONTROL_ACTIVE | ATMOS_UI_POWER_USAGE | ATMOS_UI_FLOW_RATE
 	allow_ctrl_click_toggle_power = TRUE
-=======
-/obj/machinery/atmospherics/components/binary/pump/examine(mob/user)
-	. = ..()
-	. += "<span class='notice'>You can hold <b>Ctrl</b> and click on it to toggle it on and off.</span>"
-	. += "<span class='notice'>You can hold <b>Alt</b> and click on it to maximize its pressure.</span>"
-
-/obj/machinery/atmospherics/components/binary/pump/CtrlClick(mob/user)
-	if(can_interact(user))
-		on = !on
-		investigate_log("was turned [on ? "on" : "off"] by [key_name(user)]", INVESTIGATE_ATMOS)
-		update_appearance()
-	return ..()
-
-/obj/machinery/atmospherics/components/binary/pump/AltClick(mob/user)
-	if(can_interact(user))
-		target_pressure = MAX_OUTPUT_PRESSURE
-		investigate_log("was set to [target_pressure] kPa by [key_name(user)]", INVESTIGATE_ATMOS)
-		balloon_alert(user, "pressure output set to [target_pressure] kPa")
-		update_appearance()
-	return ..()
->>>>>>> citadel/master
 
 /obj/machinery/atmospherics/component/binary/pump/Destroy()
 	SSradio.remove_object(src,frequency)
