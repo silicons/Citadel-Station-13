@@ -15,20 +15,20 @@
 /// Fully registers a path for all 5 layers and every valid pipe color, as well as registering the standard lines. Used for pipes that use pixel-shifting to visualize layers
 #define ATMOS_MAPPING_FULL_PX_DOUBLE(path)				\
 	ATMOS_MAPPING_LAYERS_PX_COLORS_INT(path)			\
-	ATMOS_MAPPING_DISTRO(path)							\
-	ATMOS_MAPPING_SCRUBBER(path)						\
-	ATMOS_MAPPING_FUEL(path)							\
-	ATMOS_MAPPING_AUX(path)								\
-	ATMOS_MAPPING_GENERAL(path)
+	ATMOS_MAPPING_DISTRO_PX(path)							\
+	ATMOS_MAPPING_SCRUBBER_PX(path)						\
+	ATMOS_MAPPING_FUEL_PX(path)							\
+	ATMOS_MAPPING_AUX_PX(path)								\
+	ATMOS_MAPPING_GENERAL_PX(path)
 
 /// Fully registers a path for all 5 layers and every valid pipe color, as well as registering the standard lines. Used for pipes that use icon-# state changes to visualize layers.
 #define ATMOS_MAPPING_FULL_IX(path, iconbase)			\
 	ATMOS_MAPPING_LAYERS_IX_COLORS_INT(path, iconbase)	\
-	ATMOS_MAPPING_DISTRO(path)							\
-	ATMOS_MAPPING_SCRUBBER(path)						\
-	ATMOS_MAPPING_FUEL(path)							\
-	ATMOS_MAPPING_AUX(path)								\
-	ATMOS_MAPPING_GENERAL(path)
+	ATMOS_MAPPING_DISTRO_IX(path)							\
+	ATMOS_MAPPING_SCRUBBER_IX(path)						\
+	ATMOS_MAPPING_FUEL_IX(path)							\
+	ATMOS_MAPPING_AUX_IX(path)								\
+	ATMOS_MAPPING_GENERAL_IX(path)
 
 /// Registers a path for every valid pipe color
 #define ATMOS_MAPPING_COLORS(path)									\
@@ -175,37 +175,87 @@
 		level = PIPE_HIDDEN_LEVEL		\
 	}
 
-#define ATMOS_MAPPING_DISTRO(path)		\
-	##path/distro {						\
-		pipe_color = PIPE_COLOR_BLUE;	\
-		pipe_layer = 2;					\
-	}									\
+#define ATMOS_MAPPING_DISTRO_PX(path)							\
+	##path/distro {												\
+		pipe_color = PIPE_COLOR_BLUE;							\
+		pipe_layer = 2;											\
+		pixel_x = PIPE_LAYER_P_X * (2 - PIPE_LAYER_DEFAULT);	\
+		pixel_y = PIPE_LAYER_P_Y * (2 - PIPE_LAYER_DEFAULT);	\
+	}															\
 	ATMOS_MAPPING_MINIMAL(path/distro)
 
-#define ATMOS_MAPPING_SCRUBBER(path)	\
-	##path/scrubber {					\
-		pipe_color = PIPE_COLOR_RED;	\
-		pipe_layer = 4;					\
-	}									\
+#define ATMOS_MAPPING_SCRUBBER_PX(path)							\
+	##path/scrubber {											\
+		pipe_color = PIPE_COLOR_RED;							\
+		pipe_layer = 4;											\
+		pixel_x = PIPE_LAYER_P_X * (4 - PIPE_LAYER_DEFAULT);	\
+		pixel_y = PIPE_LAYER_P_Y * (4 - PIPE_LAYER_DEFAULT);	\
+	}															\
 	ATMOS_MAPPING_MINIMAL(path/scrubber)
 
-#define ATMOS_MAPPING_FUEL(path)		\
-	##path/fuel {						\
-		pipe_color = PIPE_COLOR_YELLOW;	\
-		pipe_layer = 1;					\
-	}									\
+#define ATMOS_MAPPING_FUEL_PX(path)								\
+	##path/fuel {												\
+		pipe_color = PIPE_COLOR_YELLOW;							\
+		pipe_layer = 1;											\
+		pixel_x = PIPE_LAYER_P_X * (1 - PIPE_LAYER_DEFAULT);	\
+		pixel_y = PIPE_LAYER_P_Y * (1 - PIPE_LAYER_DEFAULT);	\
+	}															\
 	ATMOS_MAPPING_MINIMAL(path/fuel)
 
-#define ATMOS_MAPPING_AUX(path)			\
-	##path/aux {						\
-		pipe_color = PIPE_COLOR_VIOLET;	\
-		pipe_layer = 5;					\
-	}									\
+#define ATMOS_MAPPING_AUX_PX(path)								\
+	##path/aux {												\
+		pipe_color = PIPE_COLOR_VIOLET;							\
+		pipe_layer = 5;											\
+		pixel_x = PIPE_LAYER_P_X * (5 - PIPE_LAYER_DEFAULT);	\
+		pixel_y = PIPE_LAYER_P_Y * (5 - PIPE_LAYER_DEFAULT);	\
+	}															\
 	ATMOS_MAPPING_MINIMAL(path/aux)
 
-#define ATMOS_MAPPING_GENERAL(path)		\
-	##path/general {					\
-		pipe_color = PIPE_COLOR_GREY;	\
-		pipe_layer = 3;					\
-	}									\
+#define ATMOS_MAPPING_GENERAL_PX(path)							\
+	##path/general {											\
+		pipe_color = PIPE_COLOR_GREY;							\
+		pipe_layer = 3;											\
+		pixel_x = PIPE_LAYER_P_X * (3 - PIPE_LAYER_DEFAULT);	\
+		pixel_y = PIPE_LAYER_P_Y * (3 - PIPE_LAYER_DEFAULT);	\
+	}															\
+	ATMOS_MAPPING_MINIMAL(path/general)
+
+#define ATMOS_MAPPING_DISTRO_IX(path, iconbase)		\
+	##path/distro {									\
+		pipe_color = PIPE_COLOR_BLUE;				\
+		pipe_layer = 2;								\
+		icon_state = iconbase + "-2"				\
+	}												\
+	ATMOS_MAPPING_MINIMAL(path/distro)
+
+#define ATMOS_MAPPING_SCRUBBER_IX(path, iconbase)	\
+	##path/scrubber {								\
+		pipe_color = PIPE_COLOR_RED;				\
+		pipe_layer = 4;								\
+		icon_state = iconbase + "-4"				\
+	}												\
+	ATMOS_MAPPING_MINIMAL(path/scrubber)
+
+#define ATMOS_MAPPING_FUEL_IX(path, iconbase)		\
+	##path/fuel {									\
+		pipe_color = PIPE_COLOR_YELLOW;				\
+		pipe_layer = 1;								\
+		icon_state = iconbase + "-1"				\
+	}												\
+	ATMOS_MAPPING_MINIMAL(path/fuel)
+
+#define ATMOS_MAPPING_AUX_IX(path, iconbase)		\
+	##path/aux {									\
+		pipe_color = PIPE_COLOR_VIOLET;				\
+		pipe_layer = 5;								\
+		icon_state = iconbase + "-5"				\
+	}												\
+	ATMOS_MAPPING_MINIMAL(path/aux)
+
+#define ATMOS_MAPPING_GENERAL_IX(path, iconbase)	\
+	##path/general {								\
+		pipe_color = PIPE_COLOR_GREY;				\
+		pipe_layer = 3;								\
+		icon_state = iconbase + "-3"				\
+	}												\
 	ATMOS_MAPPING_MINIMAL(path/general)
