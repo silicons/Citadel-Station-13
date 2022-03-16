@@ -118,7 +118,7 @@
 
 /obj/item/toy/deck
 	name = "deck of cards"
-	desc = "A nondescript deck of cards""
+	desc = "A nondescript deck of cards"
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
 
