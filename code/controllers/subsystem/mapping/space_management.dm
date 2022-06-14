@@ -603,9 +603,7 @@
  * z is in a world_struct
  */
 /datum/controller/subsystem/mapping/proc/IsManagedLevel(z)
-	if(struct_by_z[z])
-		return TRUE
-	return FALSE
+	return !!struct_by_z[z]
 
 /**
  * Get logical step in dir

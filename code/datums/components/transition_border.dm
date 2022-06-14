@@ -61,6 +61,10 @@
 	holder2?.Reset()
 	holder3?.Reset()
 
+	#warn can avoid needing 2-2 spacing and have 1-1 spacing
+	#warn where first tile from edge teleports to second tile from edge
+	#warn using VIS_HIDE.
+
 	// "why the hell do you need 3 holders"
 	// because otherwise i can't offset them right, because we want the map to look like it's continuous, not overlapping
 	// i hate byond!
